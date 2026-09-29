@@ -223,13 +223,17 @@
   .card-title{font-family:'Poppins',sans-serif; font-weight:600; font-size:18px}
   .card-body{font-size:14px; color:var(--ink-soft); line-height:1.6}
 
-  .chips{display:flex; flex-wrap:wrap; gap:10px; margin-top:40px}
-  .chip{
-    border:1.5px solid #dcdcdc; border-radius:100px; padding:9px 18px;
-    font-size:13px; font-weight:700; cursor:default;
-    transition:all .2s ease;
+  /* points forts */
+  .strengths{display:grid; grid-template-columns:repeat(2,1fr); gap:32px 48px}
+  .strength{display:flex; align-items:flex-start; gap:18px}
+  .strength .icon-box{flex:none}
+  .strength-title{font-family:'Poppins',sans-serif; font-weight:600; font-size:17px; margin-bottom:4px}
+  .strength-sub{font-size:14px; color:var(--ink-soft); line-height:1.55}
+  .strength:hover .icon-box{background:var(--ink); transform:rotate(-6deg) scale(1.05)}
+  .strength:hover .icon-box svg{stroke:#fff}
+  @media (max-width:700px){
+    .strengths{grid-template-columns:1fr; gap:24px}
   }
-  .chip:hover{background:var(--ink); color:#fff; border-color:var(--ink); transform:translateY(-2px)}
 
   /* experience */
   .experience-section{background:#fbfaf9}
@@ -417,11 +421,52 @@
         <div class="card-body">ChatGPT · Discord · Behance · Claude</div>
       </div>
     </div>
-    <div class="chips reveal">
-      <span class="chip">Créative &amp; en veille</span>
-      <span class="chip">Réactive &amp; organisée</span>
-      <span class="chip">À l'écoute</span>
-      <span class="chip">Booster de bonne humeur</span>
+  </div>
+</section>
+
+<section id="points-forts">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>Ce qui fait la différence</h2>
+      <span class="eyebrow">02 — Points forts</span>
+    </div>
+    <div class="strengths reveal-stagger">
+      <div class="strength reveal" style="--i:0">
+        <div class="icon-box">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.9c.6.4 1 1.1 1 1.9v.2h6v-.2c0-.8.4-1.5 1-1.9A7 7 0 0 0 12 2z"/></svg>
+        </div>
+        <div>
+          <div class="strength-title">Créative et toujours en veille</div>
+          <div class="strength-sub">Tendances, outils, techniques, force de propositions</div>
+        </div>
+      </div>
+      <div class="strength reveal" style="--i:1">
+        <div class="icon-box">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        </div>
+        <div>
+          <div class="strength-title">Réactive et organisée</div>
+          <div class="strength-sub">Délais tenus, gestion multi-projets</div>
+        </div>
+      </div>
+      <div class="strength reveal" style="--i:2">
+        <div class="icon-box">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14v-2a9 9 0 0 1 18 0v2"/><path d="M21 14v4a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 14v4a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+        </div>
+        <div>
+          <div class="strength-title">À l'écoute</div>
+          <div class="strength-sub">Clients, équipe, utilisateurs</div>
+        </div>
+      </div>
+      <div class="strength reveal" style="--i:3">
+        <div class="icon-box">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        </div>
+        <div>
+          <div class="strength-title">Booster de bonne humeur</div>
+          <div class="strength-sub">Toujours prête à faire rire les copaings</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -430,7 +475,7 @@
   <div class="container">
     <div class="section-header reveal">
       <h2>Les quêtes accomplies</h2>
-      <span class="eyebrow">02 — Expérience</span>
+      <span class="eyebrow">03 — Expérience</span>
     </div>
     <div class="exp-tabs reveal" role="tablist">
       <button type="button" class="exp-tab active" data-tab="design" role="tab" aria-selected="true">Design &amp; motion</button>
@@ -533,7 +578,7 @@
   <div class="container">
     <div class="section-header reveal">
       <h2>Making-off</h2>
-      <span class="eyebrow">03 — Formation</span>
+      <span class="eyebrow">04 — Formation</span>
     </div>
     <div class="degrees reveal-stagger">
       <div class="degree reveal" style="--i:0">
@@ -687,7 +732,7 @@
     }
     ringLoop();
 
-    var hoverables = document.querySelectorAll('a, button, .btn, .card, .chip, .exp-row, .exp-row-simple, .exp-tab');
+    var hoverables = document.querySelectorAll('a, button, .btn, .card, .strength, .exp-row, .exp-row-simple, .exp-tab');
     hoverables.forEach(function(el){
       el.addEventListener('mouseenter', function(){ ring.classList.add('is-active'); });
       el.addEventListener('mouseleave', function(){ ring.classList.remove('is-active'); });
