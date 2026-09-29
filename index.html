@@ -302,6 +302,12 @@
     margin-top:36px; font-size:14px; font-weight:600; color:var(--grey);
     letter-spacing:0.02em;
   }
+  .tools-icons{
+    display:flex; align-items:center; flex-wrap:wrap; gap:30px;
+    margin-top:36px;
+  }
+  .tools-icons svg{display:block; flex:none; transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+  .tools-icons svg:hover{transform:translateY(-3px)}
   .card{
     border:1px solid var(--line); border-radius:20px; padding:32px;
     display:flex; flex-direction:column; gap:16px;
@@ -569,7 +575,14 @@
         <div class="card-body">Maquettes · parcours · interfaces · Figma · Webflow</div>
       </div>
     </div>
-    <div class="tools-line reveal">Adobe CC · Figma · Webflow · Notion · Claude · ChatGPT…</div>
+    <div class="tools-icons reveal" role="list" aria-label="Outils utilisés : Adobe CC, Figma, Webflow, Notion, Claude, ChatGPT">
+      <svg role="listitem" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><title>Adobe CC</title><path d="M12 2 L20 10 L12 22 L4 10 Z"/><path d="M12 2 L12 22"/></svg>
+      <svg role="listitem" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><title>Figma</title><circle cx="15" cy="7" r="4"/><rect x="5" y="13" width="8" height="8" rx="2"/></svg>
+      <svg role="listitem" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><title>Webflow</title><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><path d="M7 14 L11 18 L17 12"/></svg>
+      <svg role="listitem" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><title>Notion</title><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg>
+      <svg role="listitem" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><title>Claude</title><path d="M12 2 L14 10 L22 12 L14 14 L12 22 L10 14 L2 12 L10 10 Z"/></svg>
+      <svg role="listitem" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><title>ChatGPT</title><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+    </div>
   </div>
 </section>
 
