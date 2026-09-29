@@ -152,6 +152,50 @@
     -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;
   }
 
+  /* ---------- mobile burger + dropdown ---------- */
+  .nav-burger{
+    display:none;
+    position:relative;
+    width:38px; height:38px; flex:none;
+    border:none; background:transparent; cursor:pointer;
+    padding:0;
+  }
+  .nav-burger span{
+    position:absolute; left:8px; right:8px; height:2px; border-radius:2px;
+    background:var(--ink);
+    transition:transform .3s cubic-bezier(.34,1.56,.64,1), opacity .25s ease, top .3s ease;
+  }
+  .nav-burger span:nth-child(1){top:13px}
+  .nav-burger span:nth-child(2){top:19px}
+  .nav-burger span:nth-child(3){top:25px}
+  .nav-burger.is-open span:nth-child(1){top:19px; transform:rotate(45deg)}
+  .nav-burger.is-open span:nth-child(2){opacity:0}
+  .nav-burger.is-open span:nth-child(3){top:19px; transform:rotate(-45deg)}
+
+  .mobile-nav{
+    position:absolute; left:0; right:0; top:calc(100% + 10px);
+    background:rgba(255,255,255,0.85);
+    backdrop-filter:blur(24px) saturate(140%); -webkit-backdrop-filter:blur(24px) saturate(140%);
+    border:1px solid rgba(255,255,255,0.7);
+    border-radius:24px;
+    box-shadow:0 16px 40px rgba(17,17,17,0.14);
+    padding:14px;
+    display:flex; flex-direction:column; gap:2px;
+    opacity:0; visibility:hidden; transform:translateY(-8px);
+    transition:opacity .25s ease, transform .25s cubic-bezier(.16,1,.3,1), visibility .25s;
+    z-index:60;
+  }
+  .mobile-nav.is-open{opacity:1; visibility:visible; transform:translateY(0)}
+  .mobile-nav a{
+    padding:13px 16px; border-radius:14px; font-weight:600; font-size:15px; color:var(--ink);
+    transition:background .2s ease;
+  }
+  .mobile-nav a:hover, .mobile-nav a:active{background:rgba(17,17,17,0.06)}
+
+  @media (max-width:1080px){
+    .nav-burger{display:block}
+  }
+
   .btn{
     display:inline-flex; align-items:center; justify-content:center;
     border-radius:100px; font-weight:700; font-size:13px;
@@ -470,6 +514,17 @@
       <a href="#contact">Contact</a>
     </nav>
     <a href="CV-Estelle-Lavenac-2026.pdf" download="CV-Estelle-Lavenac-2026.pdf" class="btn btn-ghost">Télécharger le CV ↓</a>
+    <button class="nav-burger" id="navBurger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobileNav">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="mobile-nav" id="mobileNav">
+      <a href="#competences">Compétences</a>
+      <a href="#points-forts">Points forts</a>
+      <a href="#experience">Expérience</a>
+      <a href="#formation">Formation</a>
+      <a href="#et-maintenant">Et maintenant</a>
+      <a href="#contact">Contact</a>
+    </nav>
   </div>
 </div>
 
@@ -907,6 +962,34 @@
     });
   }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
   revealEls.forEach(function(el){ io.observe(el); });
+
+  // Mobile burger menu
+  var navBurger = document.getElementById('navBurger');
+  var mobileNav = document.getElementById('mobileNav');
+  function closeMobileNav(){
+    navBurger.classList.remove('is-open');
+    mobileNav.classList.remove('is-open');
+    navBurger.setAttribute('aria-expanded', 'false');
+  }
+  if (navBurger && mobileNav) {
+    navBurger.addEventListener('click', function(){
+      var open = mobileNav.classList.toggle('is-open');
+      navBurger.classList.toggle('is-open', open);
+      navBurger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    mobileNav.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', closeMobileNav);
+    });
+    document.addEventListener('click', function(e){
+      if (!navPill.contains(e.target)) closeMobileNav();
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') closeMobileNav();
+    });
+    window.addEventListener('resize', function(){
+      if (window.innerWidth > 1080) closeMobileNav();
+    });
+  }
 
   // Experience tabs: Design & motion / Autres
   var expTabs = document.querySelectorAll('.exp-tab');
