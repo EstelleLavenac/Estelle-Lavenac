@@ -225,6 +225,22 @@
   }
   .hero-actions{display:flex; gap:14px; margin-top:8px; flex-wrap:wrap; justify-content:center}
   .hero-actions .btn{padding:15px 30px; font-size:14px}
+  .scroll-indicator{margin-top:20px; display:flex; align-items:center; justify-content:center}
+  .scroll-mouse{
+    width:26px; height:42px; border-radius:14px; border:2px solid rgba(17,17,17,0.32);
+    display:flex; justify-content:center; padding-top:7px; box-sizing:border-box;
+    transition:border-color .25s ease;
+  }
+  .scroll-indicator:hover .scroll-mouse{border-color:rgba(17,17,17,0.55)}
+  .scroll-dot{
+    width:4px; height:8px; border-radius:2px; background:rgba(17,17,17,0.5);
+    animation:scrollDot 1.8s ease-in-out infinite;
+  }
+  @keyframes scrollDot{
+    0%{opacity:1; transform:translateY(0)}
+    70%{opacity:0; transform:translateY(14px)}
+    100%{opacity:0; transform:translateY(0)}
+  }
 
   /* ---------- sections ---------- */
   section{padding:96px 24px}
@@ -463,6 +479,9 @@
       <a href="https://behance.net/estellelavenac" target="_blank" rel="noopener" class="btn btn-solid">Voir mon book →</a>
       <a href="CV-Estelle-Lavenac-2026.pdf" download="CV-Estelle-Lavenac-2026.pdf" class="btn btn-ghost">Télécharger mon CV ↓</a>
     </div>
+    <a href="#competences" class="scroll-indicator reveal" aria-label="Défiler vers le contenu">
+      <span class="scroll-mouse"><span class="scroll-dot"></span></span>
+    </a>
   </div>
 </div>
 
