@@ -173,9 +173,19 @@
   }
   .hero-bg{
     position:absolute; top:0; left:0; right:0; height:130%;
-    background:linear-gradient(180deg, var(--lav) 0%, #d6c5ea 22%, #ecc9df 46%, var(--pink2) 70%, #ffffff 100%);
-    will-change:transform;
+    background-image:
+      linear-gradient(180deg, transparent 0%, transparent 42%, var(--pink2) 72%, #ffffff 100%),
+      linear-gradient(120deg, var(--lav), #d6c5ea, #ecc9df, var(--pink2), var(--lav));
+    background-size: 100% 100%, 320% 320%;
+    background-position: 0% 0%, 0% 50%;
+    animation: heroGradientFlow 18s ease-in-out infinite alternate;
+    will-change:transform, background-position;
     z-index:0;
+  }
+  @keyframes heroGradientFlow{
+    0%{background-position: 0% 0%, 0% 50%}
+    50%{background-position: 0% 0%, 100% 30%}
+    100%{background-position: 0% 0%, 50% 100%}
   }
   .hero-bg::after{
     content:'';
