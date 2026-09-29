@@ -248,6 +248,29 @@
   }
   .exp-row:hover .exp-arrow{opacity:1; transform:translateX(0)}
 
+  /* experience tabs */
+  .exp-tabs{display:flex; gap:10px; margin-bottom:32px}
+  .exp-tab{
+    font-family:inherit; border:1.5px solid #dcdcdc; border-radius:100px; padding:9px 20px;
+    font-size:13px; font-weight:700; background:transparent; color:var(--ink-soft);
+    cursor:pointer; transition:background .25s ease, color .25s ease, border-color .25s ease, transform .2s ease;
+  }
+  .exp-tab:hover{border-color:var(--ink); transform:translateY(-1px)}
+  .exp-tab.active{background:var(--ink); color:#fff; border-color:var(--ink)}
+  .exp-panel{display:none}
+  .exp-panel.exp-panel-active{display:block; animation:panelIn .5s cubic-bezier(.16,1,.3,1)}
+  @keyframes panelIn{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:translateY(0)}}
+
+  .exp-row-simple{
+    display:grid; grid-template-columns:260px 1fr; gap:32px; align-items:baseline;
+    padding:16px 0; border-top:1px solid #e6e6e6;
+    transition:background .25s ease, padding-left .25s ease;
+  }
+  .exp-row-simple:last-child{border-bottom:1px solid #e6e6e6}
+  .exp-row-simple:hover{background:#f3eef6; padding-left:16px; padding-right:16px; margin:0 -16px}
+  .exp-row-simple .exp-name{font-family:'Poppins',sans-serif; font-weight:600; font-size:15px}
+  .exp-row-simple .exp-place{font-size:13px; color:var(--grey); margin-top:0}
+
   /* formation */
   .degrees{display:grid; grid-template-columns:repeat(4,1fr); gap:24px}
   .degree{display:flex; flex-direction:column; gap:6px; padding:4px 0; border-left:2px solid transparent; padding-left:14px; margin-left:-16px; transition:border-color .25s ease}
@@ -292,6 +315,7 @@
     .cards{grid-template-columns:1fr}
     .degrees{grid-template-columns:repeat(2,1fr)}
     .exp-row{grid-template-columns:1fr; gap:8px}
+    .exp-row-simple{grid-template-columns:1fr; gap:4px}
     .nav-links{display:none}
   }
   @media (max-width:560px){
@@ -399,7 +423,12 @@
       <h2>Les quêtes accomplies</h2>
       <span class="eyebrow">02 — Expérience</span>
     </div>
-    <div class="reveal-stagger">
+    <div class="exp-tabs reveal" role="tablist">
+      <button type="button" class="exp-tab active" data-tab="design" role="tab" aria-selected="true">Design &amp; motion</button>
+      <button type="button" class="exp-tab" data-tab="autres" role="tab" aria-selected="false">Autres</button>
+    </div>
+
+    <div class="reveal-stagger exp-panel exp-panel-active" data-panel="design">
       <a href="#" class="exp-row reveal" style="--i:0">
         <div>
           <div class="exp-name">Evoliz</div>
@@ -440,6 +469,53 @@
         <div class="exp-desc">Visuels web (réseaux sociaux, bannières, maquettes site web, identités visuelles), visuels print (flyers, affiches, brochures), gestion devis/facturation.</div>
         <span class="exp-arrow">↗</span>
       </a>
+    </div>
+
+    <div class="exp-panel" data-panel="autres" hidden>
+      <div class="exp-row-simple reveal" style="--i:0">
+        <div class="exp-name">Aide à domicile</div>
+        <div class="exp-place">Azae · Toulon — Octobre 2017 → Juin 2018</div>
+      </div>
+      <div class="exp-row-simple reveal" style="--i:1">
+        <div class="exp-name">Mise en place de l'agence Pure Comm' (freelance)</div>
+        <div class="exp-place">Février 2017 → Septembre 2017</div>
+      </div>
+      <div class="exp-row-simple reveal" style="--i:2">
+        <div class="exp-name">Hôtesse de caisse / mise en rayon</div>
+        <div class="exp-place">Toys'R'Us · Toulon — Octobre 2016 → Janvier 2017</div>
+      </div>
+      <div class="exp-row-simple reveal" style="--i:3">
+        <div class="exp-name">Préparatrice manutentionnaire</div>
+        <div class="exp-place">La Niçoise · Toulon — Juin → Septembre 2016</div>
+      </div>
+      <div class="exp-row-simple reveal" style="--i:4">
+        <div class="exp-name">Employée de banque / service assemblées générales</div>
+        <div class="exp-place">Société Générale · Nantes — Mars → Juin 2016</div>
+      </div>
+      <div class="exp-row-simple reveal" style="--i:5">
+        <div class="exp-name">Employée de banque / service fiscalité</div>
+        <div class="exp-place">Société Générale · Nantes — Décembre 2015</div>
+      </div>
+      <div class="exp-row-simple reveal" style="--i:6">
+        <div class="exp-name">Hôtesse de caisse</div>
+        <div class="exp-place">Leroy Merlin · Toulouse — 2015 (contrat étudiant, 24h/semaine)</div>
+      </div>
+      <div class="exp-row-simple reveal" style="--i:7">
+        <div class="exp-name">Hôtesse de caisse</div>
+        <div class="exp-place">Carrefour · Nantes — Mai → Août 2014</div>
+      </div>
+      <div class="exp-row-simple reveal" style="--i:8">
+        <div class="exp-name">Agent de fabrication de bougies</div>
+        <div class="exp-place">Devinaud · Carquefou — 2012 (périodes de vacances scolaires)</div>
+      </div>
+      <div class="exp-row-simple reveal" style="--i:9">
+        <div class="exp-name">Cueillette du muguet</div>
+        <div class="exp-place">Delfosse · Carquefou — Avril 2011</div>
+      </div>
+      <div class="exp-row-simple reveal" style="--i:10">
+        <div class="exp-name">Employée de banque / service archives</div>
+        <div class="exp-place">Société Générale · Nantes — Juillet 2010</div>
+      </div>
     </div>
   </div>
 </section>
@@ -553,6 +629,28 @@
   }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
   revealEls.forEach(function(el){ io.observe(el); });
 
+  // Experience tabs: Design & motion / Autres
+  var expTabs = document.querySelectorAll('.exp-tab');
+  var expPanels = document.querySelectorAll('.exp-panel');
+  expTabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      var target = tab.getAttribute('data-tab');
+      expTabs.forEach(function(t){
+        t.classList.toggle('active', t === tab);
+        t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+      });
+      expPanels.forEach(function(panel){
+        if (panel.getAttribute('data-panel') === target) {
+          panel.hidden = false;
+          panel.classList.add('exp-panel-active');
+        } else {
+          panel.hidden = true;
+          panel.classList.remove('exp-panel-active');
+        }
+      });
+    });
+  });
+
   // Custom cursor: dot + lagging ring, only for fine pointers (mouse/trackpad)
   var isFinePointer = window.matchMedia && window.matchMedia('(pointer:fine)').matches;
   if (isFinePointer) {
@@ -580,7 +678,7 @@
     }
     ringLoop();
 
-    var hoverables = document.querySelectorAll('a, button, .btn, .card, .chip, .exp-row');
+    var hoverables = document.querySelectorAll('a, button, .btn, .card, .chip, .exp-row, .exp-row-simple, .exp-tab');
     hoverables.forEach(function(el){
       el.addEventListener('mouseenter', function(){ ring.classList.add('is-active'); });
       el.addEventListener('mouseleave', function(){ ring.classList.remove('is-active'); });
