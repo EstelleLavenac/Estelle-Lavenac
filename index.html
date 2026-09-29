@@ -96,15 +96,16 @@
     display:flex; align-items:center; justify-content:space-between;
     gap:24px;
     padding:10px 26px 10px 12px;
-    background:rgba(255,255,255,0.6);
-    backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
-    border:1px solid rgba(255,255,255,0.7);
+    background:rgba(255,255,255,0.42);
+    backdrop-filter:blur(24px) saturate(140%); -webkit-backdrop-filter:blur(24px) saturate(140%);
+    border:1px solid rgba(255,255,255,0.6);
     border-radius:100px;
     box-shadow:0 10px 30px rgba(17,17,17,0.08);
-    transition:box-shadow .3s ease, background .3s ease;
+    transition:box-shadow .3s ease, background .3s ease, backdrop-filter .3s ease;
   }
   .nav-pill.scrolled{
-    background:rgba(255,255,255,0.85);
+    background:rgba(255,255,255,0.65);
+    backdrop-filter:blur(24px) saturate(140%); -webkit-backdrop-filter:blur(24px) saturate(140%);
     box-shadow:0 14px 36px rgba(17,17,17,0.12);
   }
   .brand{display:flex; align-items:center; gap:12px}
@@ -288,6 +289,7 @@
   .exp-group-label.digital{background:var(--lav)}
   .exp-group-label.print{background:var(--pink)}
   .exp-group-label.motion{background:var(--lav2)}
+  .exp-group-label.other{background:var(--line)}
   .exp-group-items{font-size:14.5px; color:var(--ink-soft); line-height:1.5}
   .exp-extra{font-size:13px; color:var(--grey); margin-top:2px}
 
@@ -317,14 +319,15 @@
   @keyframes panelIn{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:translateY(0)}}
 
   .exp-row-simple{
-    display:grid; grid-template-columns:260px 1fr; gap:32px; align-items:baseline;
+    display:grid; grid-template-columns:260px 1fr; gap:32px; align-items:start;
     padding:16px 0; border-top:1px solid #e6e6e6;
     transition:background .25s ease, padding-left .25s ease;
   }
   .exp-row-simple:last-child{border-bottom:1px solid #e6e6e6}
   .exp-row-simple:hover{background:#f3eef6; padding-left:16px; padding-right:16px; margin:0 -16px}
   .exp-row-simple .exp-name{font-family:'Poppins',sans-serif; font-weight:600; font-size:15px}
-  .exp-row-simple .exp-place{font-size:13px; color:var(--grey); margin-top:0}
+  .exp-row-simple .exp-place{font-size:13px; color:var(--grey); margin-top:0; padding-top:27px}
+  .exp-name-wrap{display:flex; flex-direction:column; gap:7px}
 
   /* formation */
   .degrees{display:grid; grid-template-columns:repeat(4,1fr); gap:24px}
@@ -613,47 +616,80 @@
 
     <div class="exp-panel" data-panel="autres" hidden>
       <div class="exp-row-simple reveal" style="--i:0">
-        <div class="exp-name">Aide à domicile</div>
+        <div class="exp-name-wrap">
+          <span class="exp-group-label other">Service à la personne</span>
+          <div class="exp-name">Aide à domicile</div>
+        </div>
         <div class="exp-place">Azae · Toulon — Octobre 2017 → Juin 2018</div>
       </div>
       <div class="exp-row-simple reveal" style="--i:1">
-        <div class="exp-name">Mise en place de l'agence Pure Comm' (freelance)</div>
+        <div class="exp-name-wrap">
+          <span class="exp-group-label other">Freelance</span>
+          <div class="exp-name">Mise en place de l'agence Pure Comm' (freelance)</div>
+        </div>
         <div class="exp-place">Février 2017 → Septembre 2017</div>
       </div>
       <div class="exp-row-simple reveal" style="--i:2">
-        <div class="exp-name">Hôtesse de caisse / mise en rayon</div>
+        <div class="exp-name-wrap">
+          <span class="exp-group-label other">Commerce</span>
+          <div class="exp-name">Hôtesse de caisse / mise en rayon</div>
+        </div>
         <div class="exp-place">Toys'R'Us · Toulon — Octobre 2016 → Janvier 2017</div>
       </div>
       <div class="exp-row-simple reveal" style="--i:3">
-        <div class="exp-name">Préparatrice manutentionnaire</div>
+        <div class="exp-name-wrap">
+          <span class="exp-group-label other">Logistique</span>
+          <div class="exp-name">Préparatrice manutentionnaire</div>
+        </div>
         <div class="exp-place">La Niçoise · Toulon — Juin → Septembre 2016</div>
       </div>
       <div class="exp-row-simple reveal" style="--i:4">
-        <div class="exp-name">Employée de banque / service assemblées générales</div>
+        <div class="exp-name-wrap">
+          <span class="exp-group-label other">Banque</span>
+          <div class="exp-name">Employée de banque / service assemblées générales</div>
+        </div>
         <div class="exp-place">Société Générale · Nantes — Mars → Juin 2016</div>
       </div>
       <div class="exp-row-simple reveal" style="--i:5">
-        <div class="exp-name">Employée de banque / service fiscalité</div>
+        <div class="exp-name-wrap">
+          <span class="exp-group-label other">Banque</span>
+          <div class="exp-name">Employée de banque / service fiscalité</div>
+        </div>
         <div class="exp-place">Société Générale · Nantes — Décembre 2015</div>
       </div>
       <div class="exp-row-simple reveal" style="--i:6">
-        <div class="exp-name">Hôtesse de caisse</div>
+        <div class="exp-name-wrap">
+          <span class="exp-group-label other">Commerce</span>
+          <div class="exp-name">Hôtesse de caisse</div>
+        </div>
         <div class="exp-place">Leroy Merlin · Toulouse — 2015 (contrat étudiant, 24h/semaine)</div>
       </div>
       <div class="exp-row-simple reveal" style="--i:7">
-        <div class="exp-name">Hôtesse de caisse</div>
+        <div class="exp-name-wrap">
+          <span class="exp-group-label other">Commerce</span>
+          <div class="exp-name">Hôtesse de caisse</div>
+        </div>
         <div class="exp-place">Carrefour · Nantes — Mai → Août 2014</div>
       </div>
       <div class="exp-row-simple reveal" style="--i:8">
-        <div class="exp-name">Agent de fabrication de bougies</div>
+        <div class="exp-name-wrap">
+          <span class="exp-group-label other">Production</span>
+          <div class="exp-name">Agent de fabrication de bougies</div>
+        </div>
         <div class="exp-place">Devinaud · Carquefou — 2012 (périodes de vacances scolaires)</div>
       </div>
       <div class="exp-row-simple reveal" style="--i:9">
-        <div class="exp-name">Cueillette du muguet</div>
+        <div class="exp-name-wrap">
+          <span class="exp-group-label other">Saisonnier</span>
+          <div class="exp-name">Cueillette du muguet</div>
+        </div>
         <div class="exp-place">Delfosse · Carquefou — Avril 2011</div>
       </div>
       <div class="exp-row-simple reveal" style="--i:10">
-        <div class="exp-name">Employée de banque / service archives</div>
+        <div class="exp-name-wrap">
+          <span class="exp-group-label other">Banque</span>
+          <div class="exp-name">Employée de banque / service archives</div>
+        </div>
         <div class="exp-place">Société Générale · Nantes — Juillet 2010</div>
       </div>
     </div>
