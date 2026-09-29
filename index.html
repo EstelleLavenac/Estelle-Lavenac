@@ -112,7 +112,7 @@
     position:relative; padding-bottom:2px; color:var(--ink);
     transition:color .25s ease;
   }
-  .nav-links a:hover{
+  .nav-links a:hover, .nav-links a.active{
     background:linear-gradient(90deg, var(--lav) 0%, var(--lav2) 50%, var(--pink) 100%);
     -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;
   }
@@ -395,9 +395,6 @@
 <div class="cursor-dot" id="cursorDot"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
-<div class="top-wrap">
-<div class="hero-bg" id="heroBg"></div>
-
 <div class="nav-wrap">
   <div class="nav-pill" id="navPill">
     <div class="brand">
@@ -426,6 +423,9 @@
     <a href="CV-Estelle-Lavenac-2026.pdf" download="CV-Estelle-Lavenac-2026.pdf" class="btn btn-ghost">Télécharger le CV ↓</a>
   </div>
 </div>
+
+<div class="top-wrap">
+<div class="hero-bg" id="heroBg"></div>
 
 <div class="hero-wrap">
   <div class="hero-glow" id="heroGlow"></div>
@@ -759,10 +759,30 @@
   var progressBar = document.getElementById('scrollProgress');
   var ticking = false;
 
+  // Scroll-spy: highlight the nav link matching the section in view, all the way to the footer
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-links a'));
+  var navSections = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute('href').slice(1));
+  });
+
+  function updateActiveLink(y){
+    var scrollPos = y + 160;
+    var atBottom = (window.innerHeight + y) >= (document.documentElement.scrollHeight - 4);
+    var currentIndex = 0;
+    for (var i = 0; i < navSections.length; i++) {
+      if (navSections[i] && navSections[i].offsetTop <= scrollPos) currentIndex = i;
+    }
+    if (atBottom) currentIndex = navSections.length - 1;
+    navLinks.forEach(function(a, i){
+      a.classList.toggle('active', i === currentIndex);
+    });
+  }
+
   function onScroll(){
     var y = window.scrollY || window.pageYOffset;
 
     navPill.classList.toggle('scrolled', y > 12);
+    updateActiveLink(y);
 
     // Scroll progress bar
     var docH = document.documentElement.scrollHeight - window.innerHeight;
