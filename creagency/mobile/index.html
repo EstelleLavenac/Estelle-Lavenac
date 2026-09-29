@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Application mobile de Créagency ! : offres à swiper, candidature avec book, suivi. Projet conceptuel d'Estelle Lavenac.">
+<meta property="og:title" content="Créagency ! · Application mobile">
+<meta property="og:description" content="Application mobile de Créagency ! : offres à swiper, candidature avec book, suivi. Projet conceptuel d'Estelle Lavenac.">
+<meta property="og:image" content="https://estellelavenac.github.io/estelle-lavenac/creagency/cover.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.4 system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Créagency ! mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout : app native plein écran sur téléphone ; sur grand écran, l'app est posée dans un cadre de téléphone à côté d'un court texte de présentation */
+:root{
+  --bg:#F5F4F0; --card:#FFFFFF; --ink:#1C1A2B; --muted:#6A6780; --line:#E4E1EC;
+  --lav:#6C4DF5; --lav-ink:#FFFFFF; --lav-soft:#ECE7FF;
+  --sky:#D6ECFF; --sky-ink:#1E5A87; --butter:#FFEBA8; --butter-ink:#6E5200;
+  --mint:#D3F2DF; --mint-ink:#1C6A3E; --clay:#F0DFCC; --clay-ink:#7A4B25;
+  --rose:#FFE0E0; --rose-ink:#9A2C2C;
+  --stage:#E9E6F4; --frame:#1C1A2B;
+  --shadow:0 1px 2px rgba(28,26,43,.06),0 10px 28px -12px rgba(28,26,43,.22);
+  --f-display:"Bricolage Grotesque",ui-rounded,"Segoe UI",system-ui,sans-serif;
+  --f-body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"DM Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#14131B; --card:#1E1C28; --ink:#F1EFF8; --muted:#A29EB8; --line:#2E2B3C;
+  --lav:#9C87FF; --lav-ink:#15121F; --lav-soft:#2A2350;
+  --sky:#1B3245; --sky-ink:#A3D3FF; --butter:#3A3015; --butter-ink:#FFD86E;
+  --mint:#16372A; --mint-ink:#8FE3B2; --clay:#382A1F; --clay-ink:#EBC6A0; --rose:#3E1D22; --rose-ink:#FFABAB;
+  --stage:#0D0C12; --frame:#3A3650;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 30px -14px rgba(0,0,0,.7); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#14131B; --card:#1E1C28; --ink:#F1EFF8; --muted:#A29EB8; --line:#2E2B3C;
+  --lav:#9C87FF; --lav-ink:#15121F; --lav-soft:#2A2350;
+  --sky:#1B3245; --sky-ink:#A3D3FF; --butter:#3A3015; --butter-ink:#FFD86E;
+  --mint:#16372A; --mint-ink:#8FE3B2; --clay:#382A1F; --clay-ink:#EBC6A0; --rose:#3E1D22; --rose-ink:#FFABAB;
+  --stage:#0D0C12; --frame:#3A3650;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 30px -14px rgba(0,0,0,.7); color-scheme:dark}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:var(--stage);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.45}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--lav);outline-offset:2px}
+h1,h2,h3{font-family:var(--f-display);margin:0;letter-spacing:-.02em;text-wrap:balance}
+
+.stage{min-height:100%;display:flex;align-items:center;justify-content:center;gap:64px;padding:32px 16px}
+.pitch{max-width:340px;display:grid;gap:16px}
+.pitch .brand{font-family:var(--f-display);font-weight:800;font-size:26px;display:flex;align-items:center;gap:10px}
+.pitch h1{font-size:44px;line-height:1.02;font-weight:800}
+.pitch p{margin:0;color:var(--muted);font-size:16px}
+.pitch ul{margin:0;padding:0;list-style:none;display:grid;gap:8px;font-size:14.5px}
+.pitch li::before{content:"#";font-family:var(--f-mono);color:var(--lav);margin-right:8px}
+.tag-h{display:inline-block;background:var(--lav);color:var(--lav-ink);padding:0 .2em .04em;border-radius:.28em;transform:rotate(-2deg)}
+
+.phone{width:390px;height:min(820px,calc(100vh - 64px));min-height:640px;border-radius:48px;border:10px solid var(--frame);background:var(--bg);position:relative;overflow:hidden;box-shadow:0 30px 80px -30px rgba(28,26,43,.45);flex:none}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column}
+.notch{height:34px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:0 26px;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
+.notch i{width:90px;height:24px;border-radius:14px;background:var(--frame)}
+
+@media (max-width:760px){
+  body{background:var(--bg)}
+  .stage{padding:0;display:block;height:100%}
+  .pitch{display:none}
+  .phone{width:100%;height:100%;min-height:0;border:0;border-radius:0;box-shadow:none}
+  .notch{display:none}
+  .screen{padding-top:env(safe-area-inset-top,0px)}
+}
+
+.views{flex:1;min-height:0;position:relative}
+.view{position:absolute;inset:0;overflow-y:auto;padding:8px 18px 100px;display:flex;flex-direction:column;gap:14px}
+.view[hidden]{display:none}
+.top{display:flex;align-items:center;gap:10px;padding-top:6px}
+.top h1{font-size:26px;font-weight:800;line-height:1.1}
+.top .sub{font-size:13px;color:var(--muted)}
+.avatar{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:15px;flex:none}
+.me{margin-left:auto;width:40px;height:40px;border-radius:50%;background:var(--butter);color:var(--butter-ink);border:0;font-family:var(--f-display);font-weight:800}
+.c-sky{background:var(--sky);color:var(--sky-ink)} .c-butter{background:var(--butter);color:var(--butter-ink)}
+.c-mint{background:var(--mint);color:var(--mint-ink)} .c-clay{background:var(--clay);color:var(--clay-ink)}
+.c-lav{background:var(--lav-soft);color:var(--lav)} .c-rose{background:var(--rose);color:var(--rose-ink)}
+
+.chips{display:flex;gap:7px;overflow-x:auto;margin:0 -18px;padding:2px 18px 4px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;font-family:var(--f-mono);font-size:13px;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 13px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* pile de cartes */
+.deck{position:relative;flex:1;min-height:400px}
+.swipe{position:absolute;inset:0 0 4px;background:var(--card);border-radius:26px;box-shadow:var(--shadow);border:1px solid var(--line);display:flex;flex-direction:column;overflow:hidden;touch-action:pan-y;user-select:none;transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .3s}
+.swipe.dragging{transition:none}
+.swipe:nth-last-child(2){transform:scale(.95) translateY(12px)}
+.swipe:nth-last-child(n+3){transform:scale(.9) translateY(24px);opacity:.6}
+.swipe .art{flex:1;min-height:150px;position:relative;display:grid;place-items:center;overflow:hidden}
+.swipe .big{font-family:var(--f-display);font-weight:800;font-size:76px;letter-spacing:-.04em;opacity:.9}
+.sticker{position:absolute;font-family:var(--f-mono);font-size:12.5px;background:var(--card);color:var(--ink);border-radius:999px;padding:5px 11px;box-shadow:var(--shadow)}
+.swipe .body{padding:16px 18px 18px;display:grid;gap:8px}
+.swipe h2{font-size:22px;line-height:1.12;font-weight:800}
+.swipe .who{color:var(--muted);font-size:14px}
+.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pill{border-radius:999px;padding:3px 10px;font-weight:600;font-size:12.5px}
+.pay{font-size:13.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.matchbar{display:flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:12.5px}
+.matchbar i{flex:1;height:6px;border-radius:3px;background:var(--line);position:relative;overflow:hidden}
+.matchbar i::after{content:"";position:absolute;inset:0;width:var(--w);background:var(--lav)}
+.stamp{position:absolute;top:22px;font-family:var(--f-display);font-weight:800;font-size:26px;padding:2px 12px;border:3px solid;border-radius:10px;opacity:0;pointer-events:none}
+.stamp.keep{left:18px;color:var(--mint-ink);transform:rotate(-12deg)}
+.stamp.pass{right:18px;color:var(--rose-ink);transform:rotate(12deg)}
+.actions{display:flex;justify-content:center;align-items:center;gap:18px;padding:2px 0 4px}
+.round{border:0;border-radius:50%;display:grid;place-items:center;box-shadow:var(--shadow);background:var(--card)}
+.round svg{width:26px;height:26px}
+.round.pass{width:60px;height:60px;color:var(--rose-ink)}
+.round.info{width:48px;height:48px;color:var(--muted)}
+.round.keep{width:60px;height:60px;background:var(--lav);color:var(--lav-ink)}
+.done{flex:1;display:grid;place-items:center;text-align:center;gap:10px;align-content:center;color:var(--muted)}
+.done strong{font-family:var(--f-display);font-size:22px;color:var(--ink)}
+
+/* listes */
+.list{display:grid;gap:10px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px;display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:12px;align-items:center;text-align:left;width:100%}
+.item h3{font-size:15.5px;font-weight:700;line-height:1.25}
+.item .who{font-size:12.5px;color:var(--muted)}
+.chev{color:var(--muted)}
+.track{display:flex;gap:3px;margin-top:6px}
+.track i{height:4px;flex:1;border-radius:2px;background:var(--line)}
+.track i.on{background:var(--lav)}
+.track.refus i.on{background:var(--rose-ink)}
+.status{font-family:var(--f-mono);font-size:11.5px;border-radius:999px;padding:2px 8px;background:var(--lav-soft);color:var(--lav);white-space:nowrap}
+.ex{font-family:var(--f-mono);font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:0 6px;margin-left:4px;vertical-align:2px}
+.empty{background:var(--card);border:1px dashed var(--line);border-radius:18px;padding:28px 18px;text-align:center;color:var(--muted);display:grid;gap:8px;justify-items:center}
+.empty strong{font-family:var(--f-display);font-size:18px;color:var(--ink)}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.stats div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.stats b{display:block;font-family:var(--f-display);font-weight:800;font-size:24px;line-height:1;font-variant-numeric:tabular-nums}
+.stats span{font-size:12px;color:var(--muted)}
+.banner{background:var(--sky);color:var(--sky-ink);border-radius:18px;padding:14px 16px;display:grid;gap:6px;font-size:13.5px;text-align:left;border:0;width:100%}
+.banner strong{font-family:var(--f-display);font-size:16.5px}
+
+/* profil */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;display:grid;gap:12px}
+.panel h2{font-size:18px}
+.field{display:grid;gap:5px}
+.field label,.label{font-weight:600;font-size:13.5px}
+.hint{font-size:12px;color:var(--muted)}
+.input{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:11px 12px}
+textarea.input{min-height:150px;resize:vertical}
+.input:focus{outline:none;border-color:var(--lav);box-shadow:0 0 0 3px var(--lav-soft)}
+.toggles{display:flex;flex-wrap:wrap;gap:6px}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px}
+.check input{margin-top:2px;width:18px;height:18px;accent-color:var(--lav);flex:none}
+.ringrow{display:flex;align-items:center;gap:14px}
+.ring{width:66px;height:66px;flex:none}
+.ring circle{fill:none;stroke-width:8}
+.ring .bgc{stroke:var(--line)} .ring .fg{stroke:var(--lav);stroke-linecap:round;transition:stroke-dashoffset .4s}
+.ring text{fill:var(--ink);font-family:var(--f-display);font-weight:800;font-size:17px}
+
+.btn{border:0;border-radius:999px;padding:13px 18px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn-primary{background:var(--lav);color:var(--lav-ink)}
+.btn-ghost{background:transparent;border:1px solid var(--line)}
+.btn-block{width:100%}
+
+/* barre d'onglets */
+.tabbar{position:absolute;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;padding:6px 6px calc(10px + env(safe-area-inset-bottom,0px));z-index:10}
+.tabbar button{flex:1;border:0;background:transparent;display:grid;justify-items:center;gap:2px;padding:6px 0;font-size:11px;font-weight:600;color:var(--muted);position:relative}
+.tabbar button[aria-current="page"]{color:var(--lav)}
+.tabbar svg{width:23px;height:23px}
+.badge{position:absolute;top:2px;left:calc(50% + 6px);min-width:17px;height:17px;border-radius:9px;background:var(--lav);color:var(--lav-ink);font-size:10.5px;display:grid;place-items:center;padding:0 4px;font-family:var(--f-mono)}
+.badge[hidden]{display:none}
+
+/* feuille */
+.scrim{position:absolute;inset:0;background:rgba(15,13,25,.45);z-index:20;opacity:0;pointer-events:none;transition:opacity .2s}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:absolute;left:0;right:0;bottom:0;height:90%;background:var(--bg);border-radius:26px 26px 0 0;z-index:30;transform:translateY(102%);transition:transform .3s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column}
+.sheet.on{transform:none}
+.grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:9px auto 0}
+.sheet-head{display:flex;align-items:center;gap:8px;padding:8px 14px 8px 18px}
+.sheet-head .x{margin-left:auto;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--card);font-size:17px}
+.sheet-head .back{border:0;background:transparent;font-weight:600;color:var(--lav);padding:4px 0}
+.eyebrow{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.sheet-body{flex:1;overflow-y:auto;padding:6px 18px 20px;display:grid;gap:18px;align-content:start}
+.sheet-foot{padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);display:flex;gap:10px}
+.sheet-foot .btn-primary{flex:1}
+.sheet h2{font-size:25px;line-height:1.1;font-weight:800}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.facts div{background:var(--card);padding:10px 12px;display:grid;gap:1px}
+.facts span{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.facts b{font-weight:600;font-size:14px;font-variant-numeric:tabular-nums}
+.sec{display:grid;gap:8px}
+.sec h3{font-size:16.5px}
+.sec p{margin:0}
+.sec ul{margin:0;padding-left:18px;display:grid;gap:5px}
+.lookbook{background:var(--butter);color:var(--butter-ink);border-radius:16px;padding:14px 16px;display:grid;gap:6px}
+.lookbook h3{font-size:16px}
+.lookbook ul{margin:0;padding-left:18px;display:grid;gap:3px;font-size:14px}
+.steps{list-style:none;margin:0;padding:0}
+.steps li{display:grid;grid-template-columns:26px 1fr;gap:10px;position:relative;padding-bottom:12px}
+.steps li:not(:last-child)::before{content:"";position:absolute;left:12px;top:26px;bottom:0;width:2px;background:var(--line)}
+.steps .n{width:26px;height:26px;border-radius:50%;background:var(--lav-soft);color:var(--lav);display:grid;place-items:center;font-family:var(--f-mono);font-size:12px}
+.steps small{display:block;color:var(--muted);font-size:12.5px}
+.sk{font-family:var(--f-mono);font-size:12px;border-radius:999px;padding:3px 9px;border:1px solid var(--line)}
+.sk.ok{background:var(--mint);color:var(--mint-ink);border-color:transparent}
+.error{color:var(--rose-ink);font-size:13px;margin:0}
+.heart{width:50px;height:50px;border-radius:50%;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;color:var(--muted);flex:none}
+.heart[aria-pressed="true"]{background:var(--rose);border-color:var(--rose);color:var(--rose-ink)}
+.heart svg{width:20px;height:20px}
+.slots{display:grid;gap:8px}
+.slot{display:flex;justify-content:space-between;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:12px 14px;font-weight:600;text-align:left}
+.slot small{font-family:var(--f-mono);font-weight:400;font-size:12px;color:var(--muted)}
+.slot[aria-pressed="true"]{border-color:var(--lav);box-shadow:0 0 0 3px var(--lav-soft)}
+
+.toast{position:absolute;left:50%;bottom:96px;transform:translate(-50%,16px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-weight:600;font-size:13.5px;opacity:0;transition:.25s;z-index:40;pointer-events:none;width:max-content;max-width:calc(100% - 32px);text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+
+<div class="stage">
+  <div class="pitch">
+    <div class="brand"><svg width="36" height="36" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="var(--lav)"/><text x="18.5" y="27" text-anchor="middle" font-family="Bricolage Grotesque, system-ui, sans-serif" font-weight="800" font-size="20" fill="var(--lav-ink)">C</text><rect x="27" y="11" width="4" height="11" rx="2" fill="var(--butter)"/><circle cx="29" cy="27" r="2.3" fill="var(--butter)"/></svg>Créagency&nbsp;!</div>
+    <h1>Swipe ton futur <span style="white-space:nowrap"><span class="tag-h">#studio</span>.</span></h1>
+    <p>La version mobile de Créagency ! : les offres créatives arrivent une par une. À droite tu gardes, à gauche tu passes, et tu postules avec ton book en deux touches.</p>
+    <ul><li>Glisse la carte ou utilise les boutons</li><li>Touche la carte pour lire la fiche complète</li><li>Suivi des candidatures et checklist book</li></ul>
+  </div>
+
+  <div class="phone">
+    <div class="screen">
+      <div class="notch" aria-hidden="true"><span>9:41</span><i></i><span>5G</span></div>
+      <div class="views">
+
+        <section class="view" id="v-swipe">
+          <div class="top">
+            <div><h1 id="hello">Salut Inès</h1><div class="sub" id="left-count"></div></div>
+            <button type="button" class="me" data-go="profil" aria-label="Mon profil" id="me-initial">IM</button>
+          </div>
+          <div class="chips" id="chips" role="group" aria-label="Filtrer par discipline"></div>
+          <div class="deck" id="deck"></div>
+          <div class="actions" id="actions">
+            <button type="button" class="round pass" id="b-pass" aria-label="Passer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+            <button type="button" class="round info" id="b-info" aria-label="Voir la fiche"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg></button>
+            <button type="button" class="round keep" id="b-keep" aria-label="Garder"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.8 4.5c2.1 0 3.5 1.2 5.2 3 1.7-1.8 3.1-3 5.2-3 3.8 0 5.9 3.9 4.4 7.3C19.5 16.4 12 21 12 21z"/></svg></button>
+          </div>
+        </section>
+
+        <section class="view" id="v-selection" hidden>
+          <div class="top"><div><h1>Ma sélection</h1><div class="sub">Les offres que tu as gardées</div></div></div>
+          <div class="list" id="sel"></div>
+        </section>
+
+        <section class="view" id="v-suivi" hidden>
+          <div class="top"><div><h1>Suivi</h1><div class="sub">Touche une candidature pour changer son étape</div></div></div>
+          <div class="stats" id="stats"></div>
+          <div class="list" id="apps"></div>
+          <button type="button" class="banner" data-slots><strong>Revue de book gratuite</strong><span id="slot-line">20 min avec une DA, le 8 octobre à Marseille ou en visio le 13.</span></button>
+        </section>
+
+        <section class="view" id="v-profil" hidden>
+          <div class="top"><div><h1>Mon profil</h1><div class="sub">Profil d'exemple, remplace-le par le tien</div></div></div>
+          <div class="panel">
+            <div class="field"><label for="p-name">Prénom et nom</label><input class="input" id="p-name" autocomplete="name"></div>
+            <div class="field"><label for="p-school">École ou formation</label><input class="input" id="p-school"></div>
+            <div class="field"><label for="p-book">Lien vers ton book</label><input class="input" id="p-book" type="url"><span class="hint">Joint automatiquement à chaque candidature.</span></div>
+            <div class="field"><span class="label">Disciplines</span><div class="toggles" id="p-disc"></div></div>
+            <div class="field"><span class="label">Logiciels</span><div class="toggles" id="p-soft"></div></div>
+            <button type="button" class="btn btn-primary btn-block" id="p-save">Enregistrer</button>
+          </div>
+          <div class="panel">
+            <div class="ringrow"><svg class="ring" viewBox="0 0 66 66" aria-hidden="true"><circle class="bgc" cx="33" cy="33" r="27"/><circle class="fg" id="ring-fg" cx="33" cy="33" r="27" stroke-dasharray="169.6" stroke-dashoffset="169.6" transform="rotate(-90 33 33)"/><text id="ring-t" x="33" y="39" text-anchor="middle">0/6</text></svg>
+              <div><h2>Ton book est prêt ?</h2><span class="hint">La checklist de nos recruteuses.</span></div></div>
+            <div class="list" id="checklist" style="gap:12px"></div>
+          </div>
+        </section>
+      </div>
+
+      <nav class="tabbar" aria-label="Navigation">
+        <button type="button" data-go="swipe" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="6" y="3" width="12" height="17" rx="3"/><path d="M3 7v11M21 7v11"/></svg>Découvrir</button>
+        <button type="button" data-go="selection"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 20s-7-4.3-8.9-8.6C1.7 8.3 3.6 5 7 5c1.9 0 3.2 1.1 5 2.8C13.8 6.1 15.1 5 17 5c3.4 0 5.3 3.3 3.9 6.4C19 15.7 12 20 12 20z"/></svg>Sélection<span class="badge" id="b-sel" hidden></span></button>
+        <button type="button" data-go="suivi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h10M4 18h6"/></svg>Suivi<span class="badge" id="b-apps" hidden></span></button>
+        <button type="button" data-go="profil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Profil</button>
+      </nav>
+
+      <div class="scrim" id="scrim"></div>
+      <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="s-h">
+        <div class="grab" aria-hidden="true"></div>
+        <div class="sheet-head"><button type="button" class="back" id="s-back" hidden>‹ Offre</button><span class="eyebrow" id="s-eyebrow"></span><button type="button" class="x" id="s-close" aria-label="Fermer">×</button></div>
+        <div class="sheet-body" id="s-body"></div>
+        <div class="sheet-foot" id="s-foot"></div>
+      </div>
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const OFFERS=[
+ {id:1,title:"Graphiste junior identité & packaging",studio:"Atelier Grand Huit",city:"Marseille",type:"CDI",pay:"26–29 k€ brut/an",days:1,disc:["Graphisme","Print"],soft:["Illustrator","InDesign","Photoshop"],
+  desc:"Petit studio de six personnes dans le quartier de la Plaine. On dessine des identités pour des marques alimentaires et des lieux culturels du Sud, du logo jusqu'à l'étiquette imprimée.",
+  missions:["Décliner les identités sur packagings, étiquettes et PLV","Préparer les fichiers d'exécution pour l'imprimeur (BAT, fonds perdus, Pantone)","Proposer des pistes en phase de recherche avec la DA"],
+  book:["Au moins un projet de packaging, même scolaire","Des maquettes photographiées plutôt que des mockups génériques","Tes esquisses : on veut voir comment tu cherches"],
+  steps:[["Envoi du book","Réponse sous 7 jours"],["Appel de 20 min","Avec la DA"],["Test créa rémunéré","3 h, payées 150 €"],["Rencontre au studio",""]],perks:["Mutuelle 100 %","Vendredi après-midi libre"]},
+ {id:2,title:"Motion designer en alternance",studio:"Studio Pampa",city:"Lyon",type:"Alternance",pay:"Grille alternance + 15 %",days:3,disc:["Motion","Vidéo"],soft:["After Effects","Cinema 4D","Premiere"],
+  desc:"Studio d'animation qui produit des génériques, des habillages TV et des pubs sociales. Tu rejoins une équipe de quatre motion designers pour 24 mois.",
+  missions:["Animer des séquences courtes à partir de storyboards validés","Construire des templates After Effects réutilisables","Participer aux recherches de style en début de projet"],
+  book:["Une démo de 60 secondes maximum","Au moins un projet où le rythme est calé sur le son","Les fichiers bruts d'une anim, si tu les as"],
+  steps:[["Envoi de la démo",""],["Entretien visio","30 min"],["Test créa rémunéré","Animer un logo, 1 journée payée"],["Validation avec ton école",""]],perks:["Rythme 3 sem. / 1 sem.","Licence Adobe fournie"]},
+ {id:3,title:"Stage UI/UX designer (6 mois)",studio:"Maison Lumen",city:"Paris · hybride",type:"Stage",pay:"800 €/mois",days:2,disc:["UX/UI","Web"],soft:["Figma"],
+  desc:"Agence produit qui conçoit des applis pour des musées et des festivals. Tu travailles sur une vraie mise en production, avec une designer senior comme tutrice.",
+  missions:["Mener des tests utilisateurs et en tirer des recommandations","Maquetter des parcours dans Figma avec le design system existant","Préparer les specs pour l'équipe de développement"],
+  book:["Un cas d'étude complet : problème, recherche, solution","Des wireframes, pas seulement des écrans finaux","Un projet où tu as dû renoncer à une idée"],
+  steps:[["Envoi du book",""],["Entretien","45 min avec la tutrice"],["Exercice court","1 h, sur place"]],perks:["Tickets resto","2 jours de télétravail"]},
+ {id:4,title:"Illustrateur·rice pour une série éditoriale",studio:"Revue Tangente",city:"À distance",type:"Freelance",pay:"1 800 € les 6 images",days:5,disc:["Illustration"],soft:["Procreate","Photoshop"],
+  desc:"Revue trimestrielle sur la ville et le climat. On cherche une nouvelle voix pour illustrer un dossier de six articles, livraison début décembre.",
+  missions:["Lire les articles et proposer des roughs","Livrer six illustrations pleine page en CMJN","Échanger avec la direction artistique à chaque étape"],
+  book:["Une série cohérente d'au moins 4 images","Du travail éditorial ou narratif","Ta gestion de la couleur en impression"],
+  steps:[["Envoi du book",""],["Appel avec la DA","20 min"],["Roughs payés","Inclus dans le forfait"]],perks:["Crédit sur chaque page","Contrat de cession clair"]},
+ {id:5,title:"Designer 3D junior",studio:"Collectif Orbe",city:"Nantes",type:"CDD",pay:"27 k€ brut/an · 8 mois",days:6,disc:["3D","Motion"],soft:["Blender","Cinema 4D","After Effects"],
+  desc:"Collectif qui mêle 3D temps réel et scénographie pour des expositions. Le CDD couvre la production d'une grande installation au printemps.",
+  missions:["Modéliser et texturer des éléments de décor","Préparer des rendus pour les présentations clients","Aider au montage de l'installation sur place"],
+  book:["Des rendus avec éclairage travaillé","Au moins un projet de modélisation from scratch","Tes wireframes 3D ou tes breakdowns"],
+  steps:[["Envoi du book",""],["Entretien","Au collectif ou en visio"],["Test créa rémunéré","1 journée payée"]],perks:["Machine de rendu dédiée","Possible CDI ensuite"]},
+ {id:6,title:"Monteur·se vidéo réseaux sociaux",studio:"Agence Saison",city:"Toulon",type:"Alternance",pay:"Grille alternance",days:4,disc:["Vidéo","Motion"],soft:["Premiere","After Effects"],
+  desc:"Agence de communication pour des marques de tourisme varoises. Tu montes des formats courts pour Instagram et TikTok, du tournage jusqu'à la publication.",
+  missions:["Monter des vidéos verticales de 15 à 60 secondes","Ajouter sous-titres, habillage et sound design","Suivre les statistiques et proposer des ajustements"],
+  book:["Des formats verticaux publiés","Un montage où tu as raconté une histoire en moins de 30 s","Ton compte perso, si tu en as un"],
+  steps:[["Envoi des liens",""],["Entretien à l'agence","30 min"],["Montage test","2 h, rémunéré"]],perks:["Tournages en extérieur","Rythme 2 j école / 3 j agence"]},
+ {id:7,title:"Directeur·rice artistique junior",studio:"Bureau Ricochet",city:"Marseille",type:"CDI",pay:"30–33 k€ brut/an",days:8,disc:["DA","Graphisme","Web"],soft:["Figma","Illustrator","InDesign"],
+  desc:"Agence indépendante de quinze personnes qui travaille pour des institutions culturelles. Poste ouvert aux profils avec deux ans d'expérience, alternance comprise.",
+  missions:["Porter la direction visuelle de deux comptes clients","Présenter les pistes en rendez-vous","Accompagner les stagiaires sur l'exécution"],
+  book:["Des campagnes déclinées sur plusieurs supports","Un projet que tu as défendu face à un client","Une vraie cohérence entre print et digital"],
+  steps:[["Envoi du book",""],["Entretien avec l'associée","45 min"],["Test créa rémunéré","Une demi-journée, 250 €"],["Rencontre avec l'équipe",""]],perks:["Budget formation","Mutuelle famille"]},
+ {id:8,title:"Stage graphiste print & signalétique",studio:"Atelier Outremer",city:"Aix-en-Provence",type:"Stage",pay:"Gratification légale",days:2,disc:["Graphisme","Print"],soft:["InDesign","Illustrator"],
+  desc:"Atelier spécialisé en signalétique pour les parcs naturels et les musées. Tu travailles sur des panneaux, des cartes et des livrets d'interprétation.",
+  missions:["Mettre en page des panneaux et livrets","Dessiner des pictogrammes et des cartes simplifiées","Suivre une fabrication chez l'imprimeur"],
+  book:["De la mise en page avec beaucoup de texte","Des pictos ou un système d'icônes","Une grille typographique visible"],
+  steps:[["Envoi du book",""],["Entretien à l'atelier","30 min"]],perks:["Stage de 4 à 6 mois","Sorties terrain"]},
+ {id:9,title:"Assistant·e photo studio",studio:"Studio Lisière",city:"Paris",type:"CDD",pay:"2 100 € brut/mois · 6 mois",days:9,disc:["Photo"],soft:["Lightroom","Photoshop"],
+  desc:"Studio de photo produit et nature morte pour la mode et la cosmétique. Tu assistes les photographes en prise de vue et en post-production.",
+  missions:["Installer la lumière et le plateau","Faire le tethering et le tri des images","Retoucher les séries validées"],
+  book:["De la nature morte ou du produit","Une série retouchée avec l'avant/après","Ta maîtrise de la lumière artificielle"],
+  steps:[["Envoi du book",""],["Journée d'essai rémunérée","Sur un vrai shooting"]],perks:["Accès au studio le week-end","Matériel fourni"]},
+ {id:10,title:"Web designer Webflow",studio:"Agence Fil Rouge",city:"À distance",type:"Freelance",pay:"350 €/jour",days:1,disc:["Web","UX/UI"],soft:["Figma","Webflow"],
+  desc:"Petite agence qui refond des sites d'associations et de collectifs. Mission de 12 jours sur deux mois, avec possibilité de suite.",
+  missions:["Maquetter les gabarits dans Figma","Intégrer dans Webflow avec le CMS","Rédiger une courte doc pour le client"],
+  book:["Des sites en ligne, avec le lien","Un projet responsive montré sur mobile","Ce que tu as intégré toi-même"],
+  steps:[["Envoi des liens",""],["Appel","20 min"]],perks:["100 % à distance","Paiement à 15 jours"]}
+];
+const DISC=["Graphisme","Motion","UX/UI","Illustration","3D","Vidéo","Photo","DA","Print","Web"];
+const SOFT=["Figma","Illustrator","Photoshop","InDesign","After Effects","Premiere","Cinema 4D","Blender","Procreate","Webflow","Lightroom"];
+const COLORS=["c-sky","c-butter","c-mint","c-clay","c-lav","c-rose"];
+const TYPE_COLOR={Stage:"c-sky",Alternance:"c-butter",CDI:"c-mint",CDD:"c-clay",Freelance:"c-lav"};
+const STATUSES=[["envoyee","Envoyée"],["vue","Book vu"],["entretien","Entretien"],["test","Test créa"],["offre","Offre reçue"],["refus","Pas retenu·e"]];
+const CHECK=[["Entre 8 et 12 projets","Au-delà, on arrête de lire."],["Ton meilleur projet en premier","C'est souvent le seul qu'on ouvre."],["Un projet perso","Ce que tu fais quand personne ne te le demande."],["Le process visible sur 2 projets","Croquis, pistes abandonnées, grilles."],["Un lien qui marche sur mobile","Les books s'ouvrent entre deux réunions."],["Un PDF de moins de 10 Mo","Pour passer les filtres des boîtes mail."]];
+const SLOTS=[["Jeu. 8 oct.","14:00 · Marseille"],["Jeu. 8 oct.","14:30 · Marseille"],["Jeu. 8 oct.","16:00 · Marseille"],["Mar. 13 oct.","18:00 · visio"]];
+const DEFAULT={profile:{name:"Inès Moreau",school:"BTS Design graphique, Toulon",book:"behance.net/ines-moreau-exemple",dispo:"octobre 2026",disc:["Graphisme","Motion","Illustration"],soft:["Figma","Illustrator","Photoshop","After Effects","Procreate"]},
+  seen:[],keep:[1],apps:[{id:"a1",offer:3,status:"entretien",date:"22 sept.",example:true},{id:"a2",offer:8,status:"vue",date:"25 sept.",example:true}],check:[true,true,false,false,true,false],slot:null};
+
+let S;try{S=JSON.parse(localStorage.getItem("creagency-m-v1"))}catch(e){}
+if(!S||!S.profile)S=JSON.parse(JSON.stringify(DEFAULT));
+const save=()=>{try{localStorage.setItem("creagency-m-v1",JSON.stringify(S))}catch(e){}};
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const initials=s=>s.split(/\s+/).filter(w=>!/^(atelier|studio|agence|bureau|maison|collectif|revue)$/i.test(w)).map(w=>w[0]).join("").slice(0,2).toUpperCase();
+const color=o=>COLORS[o.id%COLORS.length];
+const byId=id=>OFFERS.find(o=>o.id===id);
+const match=o=>{const need=[...o.disc,...o.soft],have=new Set([...S.profile.disc,...S.profile.soft]);return Math.round(100*need.filter(x=>have.has(x)).length/need.length)};
+const appFor=id=>S.apps.find(a=>a.offer===id);
+const heart='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.8 4.5c2.1 0 3.5 1.2 5.2 3 1.7-1.8 3.1-3 5.2-3 3.8 0 5.9 3.9 4.4 7.3C19.5 16.4 12 21 12 21z"/></svg>';
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("on"),2400)}
+
+function go(v){$$(".view").forEach(s=>s.hidden=s.id!=="v-"+v);$$("[data-go]").forEach(b=>b.dataset.go===v?b.setAttribute("aria-current","page"):b.removeAttribute("aria-current"));
+  ({swipe:renderDeck,selection:renderSel,suivi:renderApps,profil:renderProfile})[v]();}
+$$("[data-go]").forEach(b=>b.addEventListener("click",()=>go(b.dataset.go)));
+function badges(){const k=S.keep.filter(id=>!appFor(id)).length;$("#b-sel").hidden=!k;$("#b-sel").textContent=k;$("#b-apps").hidden=!S.apps.length;$("#b-apps").textContent=S.apps.length;
+  const first=S.profile.name.split(" ")[0]||"toi";$("#hello").textContent="Salut "+first;$("#me-initial").textContent=initials(S.profile.name)||"?";}
+
+/* découverte */
+let filter=null;
+function renderChips(){$("#chips").innerHTML=[null,...DISC].map(d=>`<button type="button" class="chip" data-d="${d||""}" aria-pressed="${filter===d}">${d?"#"+d.toLowerCase():"#tout"}</button>`).join("")}
+$("#chips").addEventListener("click",e=>{const b=e.target.closest("[data-d]");if(!b)return;filter=b.dataset.d||null;renderChips();renderDeck()});
+function queue(){return OFFERS.filter(o=>!S.seen.includes(o.id)&&(!filter||o.disc.includes(filter))).sort((a,b)=>match(b)-match(a))}
+function renderDeck(){
+  const q=queue();$("#left-count").textContent=q.length?`${q.length} offre${q.length>1?"s":""} à découvrir`:"Tu as tout vu pour l'instant";
+  $("#actions").hidden=!q.length;
+  if(!q.length){$("#deck").innerHTML=`<div class="done"><strong>C'est tout pour aujourd'hui.</strong><span>${filter?"Essaie une autre discipline, ou ":""}revois les offres passées.</span><button type="button" class="btn btn-ghost" id="replay">Revoir les offres passées</button></div>`;
+    $("#replay").onclick=()=>{S.seen=S.seen.filter(id=>S.keep.includes(id));save();renderDeck()};return}
+  $("#deck").innerHTML=q.slice(0,3).reverse().map(o=>{const m=match(o);return `
+   <article class="swipe" data-id="${o.id}">
+     <div class="art ${color(o)}"><span class="big">${initials(o.studio)}</span>
+       ${o.disc.slice(0,2).map((d,i)=>`<span class="sticker" style="${i?"right:16px;bottom:16px;transform:rotate(4deg)":"left:16px;top:18px;transform:rotate(-5deg)"}">#${d.toLowerCase()}</span>`).join("")}
+       <span class="stamp keep">GARDÉE</span><span class="stamp pass">PASSE</span></div>
+     <div class="body">
+       <div class="row"><span class="pill ${TYPE_COLOR[o.type]}">${o.type}</span><span class="pay">${esc(o.pay)}</span></div>
+       <h2>${esc(o.title)}</h2><div class="who">${esc(o.studio)} · ${esc(o.city)}</div>
+       <div class="matchbar"><span>Affinité</span><i style="--w:${m}%"></i><span>${m} %</span></div>
+     </div></article>`}).join("");
+  bindTop();
+}
+function topCard(){const c=$$("#deck .swipe");return c[c.length-1]}
+function bindTop(){
+  const c=topCard();if(!c)return;let x0=0,y0=0,dx=0,drag=false,moved=false;
+  c.addEventListener("pointerdown",e=>{drag=true;moved=false;x0=e.clientX;y0=e.clientY;dx=0;c.setPointerCapture(e.pointerId);c.classList.add("dragging")});
+  c.addEventListener("pointermove",e=>{if(!drag)return;dx=e.clientX-x0;const dy=e.clientY-y0;if(Math.abs(dx)>6)moved=true;c.style.transform=`translate(${dx}px,${dy*.2}px) rotate(${dx/18}deg)`;
+    c.querySelector(".keep").style.opacity=Math.max(0,Math.min(1,dx/90));c.querySelector(".pass").style.opacity=Math.max(0,Math.min(1,-dx/90))});
+  const end=()=>{if(!drag)return;drag=false;c.classList.remove("dragging");
+    if(dx>100)decide(true);else if(dx<-100)decide(false);
+    else{c.style.transform="";c.querySelectorAll(".stamp").forEach(s=>s.style.opacity=0);if(!moved)openOffer(+c.dataset.id)}};
+  c.addEventListener("pointerup",end);c.addEventListener("pointercancel",end);
+}
+function decide(keep){
+  const c=topCard();if(!c)return;const id=+c.dataset.id;
+  c.querySelector(keep?".keep":".pass").style.opacity=1;
+  c.style.transform=`translate(${keep?520:-520}px,40px) rotate(${keep?24:-24}deg)`;c.style.opacity=0;
+  S.seen.push(id);if(keep&&!S.keep.includes(id))S.keep.push(id);save();badges();
+  if(keep)toast(`Gardée : ${byId(id).studio}`);
+  setTimeout(renderDeck,260);
+}
+$("#b-keep").onclick=()=>decide(true);$("#b-pass").onclick=()=>decide(false);
+$("#b-info").onclick=()=>{const c=topCard();if(c)openOffer(+c.dataset.id)};
+
+/* sélection */
+function renderSel(){
+  const list=S.keep.map(byId);
+  if(!list.length){$("#sel").innerHTML=`<div class="empty"><strong>Rien de gardé pour l'instant.</strong><span>Glisse une offre vers la droite pour la retrouver ici.</span></div>`;return}
+  $("#sel").innerHTML=list.map(o=>{const ap=appFor(o.id);return `<button type="button" class="item" data-open="${o.id}"><div class="avatar ${color(o)}">${initials(o.studio)}</div>
+    <div style="min-width:0"><h3>${esc(o.title)}</h3><div class="who">${esc(o.studio)} · ${o.type} · ${match(o)} %</div></div>
+    ${ap?`<span class="status">Envoyée</span>`:`<span class="chev">›</span>`}</button>`}).join("");
+}
+$("#sel").addEventListener("click",e=>{const b=e.target.closest("[data-open]");if(b)openOffer(+b.dataset.open)});
+
+/* suivi */
+function renderApps(){
+  const n=k=>S.apps.filter(a=>a.status!=="refus"&&STATUSES.findIndex(s=>s[0]===a.status)>=STATUSES.findIndex(s=>s[0]===k)).length;
+  $("#stats").innerHTML=`<div><b>${S.apps.length}</b><span>Envoyées</span></div><div><b>${n("entretien")}</b><span>Entretiens</span></div><div><b>${n("offre")}</b><span>Offres</span></div>`;
+  if(!S.apps.length){$("#apps").innerHTML=`<div class="empty"><strong>Aucune candidature.</strong><span>Garde une offre, ouvre-la et postule avec ton book.</span></div>`;}
+  else $("#apps").innerHTML=S.apps.map(a=>{const o=byId(a.offer),i=STATUSES.findIndex(s=>s[0]===a.status),r=a.status==="refus";
+    return `<button type="button" class="item" data-app="${a.id}"><div class="avatar ${color(o)}">${initials(o.studio)}</div>
+      <div style="min-width:0"><h3>${esc(o.title)}${a.example?'<span class="ex">exemple</span>':""}</h3><div class="who">${esc(o.studio)} · le ${esc(a.date)}</div>
+      <div class="track ${r?"refus":""}">${[0,1,2,3,4].map(k=>`<i class="${r||k<=i?"on":""}"></i>`).join("")}</div></div>
+      <span class="status">${STATUSES[i][1]}</span></button>`}).join("");
+  if(S.slot!=null)$("#slot-line").textContent=`Réservée : ${SLOTS[S.slot][0]}, ${SLOTS[S.slot][1]}. Touche pour modifier.`;
+}
+$("#apps").addEventListener("click",e=>{const b=e.target.closest("[data-app]");if(b)openApp(b.dataset.app)});
+$("[data-slots]").onclick=openSlots;
+
+/* profil */
+function renderProfile(){const p=S.profile;$("#p-name").value=p.name;$("#p-school").value=p.school;$("#p-book").value=p.book;
+  $("#p-disc").innerHTML=DISC.map(d=>`<button type="button" class="chip" data-t="${d}" aria-pressed="${p.disc.includes(d)}">#${d.toLowerCase()}</button>`).join("");
+  $("#p-soft").innerHTML=SOFT.map(d=>`<button type="button" class="chip" data-t="${d}" aria-pressed="${p.soft.includes(d)}">${d}</button>`).join("");renderCheck()}
+["#p-disc","#p-soft"].forEach(s=>$(s).addEventListener("click",e=>{const b=e.target.closest("[data-t]");if(b)b.setAttribute("aria-pressed",b.getAttribute("aria-pressed")!=="true")}));
+$("#p-save").onclick=()=>{const p=S.profile;p.name=$("#p-name").value.trim()||p.name;p.school=$("#p-school").value.trim();p.book=$("#p-book").value.trim();
+  p.disc=$$("#p-disc [aria-pressed=true]").map(b=>b.dataset.t);p.soft=$$("#p-soft [aria-pressed=true]").map(b=>b.dataset.t);save();badges();toast("Profil enregistré")};
+function renderCheck(){$("#checklist").innerHTML=CHECK.map((c,i)=>`<label class="check"><input type="checkbox" data-ck="${i}" ${S.check[i]?"checked":""}><span><b style="font-weight:600">${c[0]}</b><br><span class="hint">${c[1]}</span></span></label>`).join("");
+  const n=S.check.filter(Boolean).length;$("#ring-t").textContent=n+"/6";$("#ring-fg").style.strokeDashoffset=169.6*(1-n/6)}
+$("#checklist").addEventListener("change",e=>{const c=e.target.closest("[data-ck]");if(!c)return;S.check[+c.dataset.ck]=c.checked;save();renderCheck()});
+
+/* feuille */
+let back=null;
+function openSheet(){$("#scrim").classList.add("on");$("#sheet").classList.add("on");setTimeout(()=>$("#s-close").focus(),60)}
+function closeSheet(){$("#scrim").classList.remove("on");$("#sheet").classList.remove("on")}
+$("#scrim").onclick=closeSheet;$("#s-close").onclick=closeSheet;
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeSheet()});
+$("#s-back").onclick=()=>back&&back();
+function head(eyebrow,backFn){$("#s-eyebrow").textContent=eyebrow;back=backFn;$("#s-back").hidden=!backFn;$("#s-body").scrollTop=0}
+
+function openOffer(id){
+  const o=byId(id),have=new Set([...S.profile.disc,...S.profile.soft]),ap=appFor(id),kept=S.keep.includes(id);
+  head(o.type+" · "+o.city,null);
+  $("#s-body").innerHTML=`
+    <div style="display:flex;gap:12px;align-items:center"><div class="avatar ${color(o)}">${initials(o.studio)}</div><div><b>${esc(o.studio)}</b><div class="hint">${esc(o.city)}</div></div></div>
+    <h2 id="s-h">${esc(o.title)}</h2>
+    <div class="facts"><div><span>Rémunération</span><b>${esc(o.pay)}</b></div><div><span>Affinité</span><b>${match(o)} %</b></div></div>
+    <div class="sec"><h3>Le studio</h3><p>${esc(o.desc)}</p></div>
+    <div class="sec"><h3>Ce que tu feras</h3><ul>${o.missions.map(m=>`<li>${esc(m)}</li>`).join("")}</ul></div>
+    <div class="sec"><h3>Compétences</h3><div class="toggles">${[...o.disc,...o.soft].map(s=>`<span class="sk ${have.has(s)?"ok":""}">${have.has(s)?"✓ ":""}${s}</span>`).join("")}</div></div>
+    <div class="lookbook"><h3>Ce qu'on regarde dans ton book</h3><ul>${o.book.map(m=>`<li>${esc(m)}</li>`).join("")}</ul></div>
+    <div class="sec"><h3>Le processus</h3><ol class="steps">${o.steps.map((s,i)=>`<li><span class="n">${i+1}</span><div>${esc(s[0])}${s[1]?`<small>${esc(s[1])}</small>`:""}</div></li>`).join("")}</ol></div>
+    <div class="sec"><h3>Avantages</h3><p>${o.perks.map(esc).join(" · ")}</p></div>`;
+  $("#s-foot").innerHTML=`<button type="button" class="heart" id="s-fav" aria-pressed="${kept}" aria-label="${kept?"Retirer de ma sélection":"Garder"}">${heart}</button>`+
+    (ap?`<button type="button" class="btn btn-ghost" style="flex:1" id="s-track">Candidature envoyée · suivi</button>`:`<button type="button" class="btn btn-primary" id="s-apply">Postuler avec mon book</button>`);
+  $("#s-fav").onclick=()=>{const i=S.keep.indexOf(id);i>-1?S.keep.splice(i,1):S.keep.push(id);save();badges();openOffer(id);if(!$("#v-selection").hidden)renderSel()};
+  if(ap)$("#s-track").onclick=()=>{closeSheet();go("suivi")};else $("#s-apply").onclick=()=>applyForm(o);
+  openSheet();
+}
+function applyForm(o){
+  const p=S.profile;head("Candidature",()=>openOffer(o.id));
+  $("#s-body").innerHTML=`<h2 id="s-h">Postuler chez ${esc(o.studio)}</h2>
+   <form class="panel" id="f" novalidate style="background:transparent;border:0;padding:0">
+    <div class="field"><label for="a-book">Lien vers ton book</label><input class="input" id="a-book" value="${esc(p.book)}"><span class="hint">Vérifie qu'il s'ouvre sans compte.</span></div>
+    <div class="field"><label for="a-proj">Le projet à regarder en premier</label><input class="input" id="a-proj" placeholder="Ex. : identité du festival Les Nuits Courtes"></div>
+    <div class="field"><label for="a-msg">Ton message</label><textarea class="input" id="a-msg">Bonjour,\n\nJe m'appelle ${esc(p.name)}, en ${esc(p.school)}. Votre offre m'intéresse parce que … \n\nDisponible à partir de ${esc(p.dispo||"maintenant")}.\n${esc(p.name)}</textarea><span class="hint">Remplace les « … » par ce qui t'attire chez eux.</span></div>
+    <label class="check"><input type="checkbox" id="a-test" checked> D'accord pour un test créa rémunéré.</label>
+    <p class="error" id="a-err" hidden></p></form>`;
+  $("#s-foot").innerHTML=`<button type="submit" form="f" class="btn btn-primary">Envoyer ma candidature</button>`;
+  $("#f").addEventListener("submit",e=>{e.preventDefault();const err=$("#a-err");
+    if(!$("#a-book").value.trim()){err.textContent="Ajoute le lien vers ton book : c'est la première chose que le studio ouvre.";err.hidden=false;return}
+    if($("#a-msg").value.includes("…")){err.textContent="Ton message contient encore « … ». Dis en une phrase ce qui t'attire chez eux.";err.hidden=false;return}
+    S.apps.unshift({id:"a"+Date.now(),offer:o.id,status:"envoyee",date:new Date().toLocaleDateString("fr-FR",{day:"numeric",month:"short"})});
+    if(!S.keep.includes(o.id))S.keep.push(o.id);save();badges();closeSheet();toast(`Candidature envoyée à ${o.studio}`);
+    if(!$("#v-selection").hidden)renderSel();});
+}
+function openApp(aid){
+  const a=S.apps.find(x=>x.id===aid),o=byId(a.offer);head("Suivi",null);
+  $("#s-body").innerHTML=`<h2 id="s-h">${esc(o.title)}</h2><p class="hint" style="margin:0">${esc(o.studio)} · envoyée le ${esc(a.date)}</p>
+    <div class="slots" role="radiogroup" aria-label="Étape">${STATUSES.map(([k,l])=>`<button type="button" class="slot" data-st="${k}" aria-pressed="${k===a.status}"><span>${l}</span></button>`).join("")}</div>`;
+  $("#s-foot").innerHTML=`<button type="button" class="btn btn-ghost" id="s-del">Supprimer</button><button type="button" class="btn btn-primary" id="s-see">Voir l'offre</button>`;
+  $("#s-body").querySelector(".slots").onclick=e=>{const b=e.target.closest("[data-st]");if(!b)return;a.status=b.dataset.st;save();renderApps();openApp(aid);
+    toast({entretien:"Entretien noté. Relis l'offre la veille.",test:"Test créa noté. Il doit être rémunéré.",offre:"Bravo ! Prends 48 h pour répondre.",refus:"Noté. Demande un retour sur ton book."}[a.status]||"Étape mise à jour")};
+  $("#s-del").onclick=()=>{S.apps=S.apps.filter(x=>x.id!==aid);save();badges();renderApps();closeSheet();toast("Candidature supprimée")};
+  $("#s-see").onclick=()=>openOffer(o.id);openSheet();
+}
+function openSlots(){let pick=S.slot;head("Revue de book",null);
+  const draw=()=>{$("#s-body").innerHTML=`<h2 id="s-h">20 min avec une DA</h2><p style="margin:0" class="hint">Gratuit, sans engagement. Prépare 3 projets.</p><div class="slots">${SLOTS.map((s,i)=>`<button type="button" class="slot" data-i="${i}" aria-pressed="${pick===i}"><span>${s[0]}</span><small>${s[1]}</small></button>`).join("")}</div>`;
+    $("#s-body .slots").onclick=e=>{const b=e.target.closest("[data-i]");if(b){pick=+b.dataset.i;draw()}};
+    $("#s-foot").innerHTML=`<button type="button" class="btn btn-primary" id="s-ok" ${pick==null?"disabled style=\"opacity:.5\"":""}>Réserver ce créneau</button>`;
+    $("#s-ok").onclick=()=>{if(pick==null)return;S.slot=pick;save();closeSheet();renderApps();toast(`Réservé : ${SLOTS[pick][0]}, ${SLOTS[pick][1]}`)}};
+  draw();openSheet()}
+
+renderChips();renderDeck();badges();
+</script>
+
+</body>
+</html>

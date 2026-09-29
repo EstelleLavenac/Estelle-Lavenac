@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Application desktop de Créagency ! : offres créatives, candidatures et suivi. Projet conceptuel d'Estelle Lavenac.">
+<meta property="og:title" content="Créagency ! · Application desktop">
+<meta property="og:description" content="Application desktop de Créagency ! : offres créatives, candidatures et suivi. Projet conceptuel d'Estelle Lavenac.">
+<meta property="og:image" content="https://estellelavenac.github.io/estelle-lavenac/creagency/cover.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.4 system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Créagency !</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout : app shell — rail de navigation à gauche (desktop) / barre d'onglets en bas (mobile), contenu en flux, fiche offre en tiroir latéral */
+:root{
+  --bg:#F5F4F0; --card:#FFFFFF; --ink:#1C1A2B; --muted:#6A6780; --line:#E4E1EC;
+  --lav:#6C4DF5; --lav-ink:#FFFFFF; --lav-soft:#ECE7FF;
+  --sky:#D6ECFF; --sky-ink:#1E5A87;
+  --butter:#FFEBA8; --butter-ink:#6E5200;
+  --mint:#D3F2DF; --mint-ink:#1C6A3E;
+  --clay:#F0DFCC; --clay-ink:#7A4B25;
+  --rose:#FFE0E0; --rose-ink:#9A2C2C;
+  --shadow:0 1px 2px rgba(28,26,43,.06),0 8px 24px -12px rgba(28,26,43,.18);
+  --f-display:"Bricolage Grotesque",ui-rounded,"Segoe UI",system-ui,sans-serif;
+  --f-body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"DM Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --r-pill:999px; --r-card:18px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#14131B; --card:#1E1C28; --ink:#F1EFF8; --muted:#A29EB8; --line:#2E2B3C;
+  --lav:#9C87FF; --lav-ink:#15121F; --lav-soft:#2A2350;
+  --sky:#1B3245; --sky-ink:#A3D3FF; --butter:#3A3015; --butter-ink:#FFD86E;
+  --mint:#16372A; --mint-ink:#8FE3B2; --clay:#382A1F; --clay-ink:#EBC6A0;
+  --rose:#3E1D22; --rose-ink:#FFABAB;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -14px rgba(0,0,0,.6);
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#14131B; --card:#1E1C28; --ink:#F1EFF8; --muted:#A29EB8; --line:#2E2B3C;
+  --lav:#9C87FF; --lav-ink:#15121F; --lav-soft:#2A2350;
+  --sky:#1B3245; --sky-ink:#A3D3FF; --butter:#3A3015; --butter-ink:#FFD86E;
+  --mint:#16372A; --mint-ink:#8FE3B2; --clay:#382A1F; --clay-ink:#EBC6A0;
+  --rose:#3E1D22; --rose-ink:#FFABAB;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -14px rgba(0,0,0,.6);
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--lav);outline-offset:2px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.02em}
+
+/* bandeau */
+.banner{background:var(--ink);color:var(--bg);font-size:13.5px;padding:10px 16px;display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;text-align:center}
+.banner b{font-weight:700}
+.banner button{background:var(--butter);color:#4A3700;border:0;border-radius:var(--r-pill);padding:4px 12px;font-weight:600;font-size:13px}
+
+.app{display:grid;grid-template-columns:248px minmax(0,1fr);max-width:1320px;margin:0 auto;min-height:calc(100vh - 44px)}
+.rail{position:sticky;top:env(safe-area-inset-top,0px);align-self:start;height:calc(100vh - 44px);padding:28px 20px;display:flex;flex-direction:column;gap:28px;border-right:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:800;font-size:22px;letter-spacing:-.03em}
+.logo svg{flex:none}
+.logo small{display:block;font-family:var(--f-mono);font-weight:400;font-size:10.5px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
+.nav{display:flex;flex-direction:column;gap:4px}
+.nav button{display:flex;align-items:center;gap:12px;padding:10px 14px;border:0;background:transparent;border-radius:12px;font-weight:600;color:var(--muted);text-align:left}
+.nav button:hover{background:var(--card);color:var(--ink)}
+.nav button[aria-current="page"]{background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
+.nav .count{margin-left:auto;font-family:var(--f-mono);font-size:12px;background:var(--lav-soft);color:var(--lav);border-radius:var(--r-pill);padding:1px 8px}
+.rail-card{margin-top:auto;background:var(--sky);color:var(--sky-ink);border-radius:var(--r-card);padding:16px;font-size:13.5px;display:grid;gap:10px}
+.rail-card strong{font-family:var(--f-display);font-size:17px;line-height:1.2}
+.rail-card button{justify-self:start;background:var(--sky-ink);color:var(--sky);border:0;border-radius:var(--r-pill);padding:7px 14px;font-weight:600;font-size:13px}
+
+main{padding:36px 36px 80px;min-width:0}
+.view[hidden]{display:none}
+
+/* hero offres */
+.hero{display:grid;gap:14px;margin-bottom:28px;max-width:760px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.hero h1{font-size:clamp(34px,5vw,58px);line-height:1.02;font-weight:800}
+.tag-h{display:inline-block;background:var(--lav);color:var(--lav-ink);padding:0 .22em .04em;border-radius:.28em;transform:rotate(-2deg);margin:0 .05em}
+.hero p{color:var(--muted);font-size:17px;max-width:58ch;margin:0}
+
+.toolbar{display:grid;gap:14px;margin-bottom:22px}
+.search{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:var(--r-pill);padding:4px 6px 4px 18px;max-width:640px}
+.search input{flex:1;min-width:0;border:0;background:transparent;padding:10px 0;outline:none}
+.search select{border:0;background:var(--bg);border-radius:var(--r-pill);padding:9px 12px;font-weight:600;font-size:14px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font-family:var(--f-mono);font-size:13px;border:1px solid var(--line);background:var(--card);border-radius:var(--r-pill);padding:6px 13px;transition:background .15s,color .15s,border-color .15s}
+.chip:hover{border-color:var(--lav)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip.fav[aria-pressed="true"]{background:var(--rose);color:var(--rose-ink);border-color:var(--rose)}
+.result-line{font-size:13.5px;color:var(--muted);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.result-line select{border:1px solid var(--line);background:var(--card);border-radius:var(--r-pill);padding:4px 10px;font-size:13px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+.card{background:var(--card);border-radius:var(--r-card);padding:18px;display:flex;flex-direction:column;gap:14px;border:1px solid var(--line);cursor:pointer;transition:transform .18s,box-shadow .18s;text-align:left;min-width:0}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.card-top{display:flex;gap:12px;align-items:flex-start}
+.avatar{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:16px;flex:none}
+.c-sky{background:var(--sky);color:var(--sky-ink)} .c-butter{background:var(--butter);color:var(--butter-ink)}
+.c-mint{background:var(--mint);color:var(--mint-ink)} .c-clay{background:var(--clay);color:var(--clay-ink)}
+.c-lav{background:var(--lav-soft);color:var(--lav)} .c-rose{background:var(--rose);color:var(--rose-ink)}
+.card h3{font-size:18px;line-height:1.2;font-weight:700}
+.card .who{font-size:13.5px;color:var(--muted)}
+.heart{margin-left:auto;flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:transparent;display:grid;place-items:center;color:var(--muted)}
+.heart[aria-pressed="true"]{background:var(--rose);border-color:var(--rose);color:var(--rose-ink)}
+.heart svg{width:17px;height:17px}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-family:var(--f-mono);font-size:12px;color:var(--lav)}
+.meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:12px;border-top:1px dashed var(--line);font-size:13.5px}
+.pill{border-radius:var(--r-pill);padding:3px 10px;font-weight:600;font-size:12.5px;white-space:nowrap}
+.pay{color:var(--muted);font-variant-numeric:tabular-nums}
+.match{margin-left:auto;display:flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:12.5px;font-weight:500}
+.match i{display:block;width:34px;height:6px;border-radius:3px;background:var(--line);overflow:hidden;position:relative}
+.match i::after{content:"";position:absolute;inset:0;width:var(--w);background:var(--lav);border-radius:3px}
+.applied-flag{font-family:var(--f-mono);font-size:11.5px;color:var(--mint-ink);background:var(--mint);border-radius:var(--r-pill);padding:2px 8px}
+.empty{background:var(--card);border:1px dashed var(--line);border-radius:var(--r-card);padding:40px 20px;text-align:center;color:var(--muted);display:grid;gap:10px;justify-items:center}
+.empty strong{font-family:var(--f-display);font-size:20px;color:var(--ink)}
+
+/* boutons */
+.btn{border:0;border-radius:var(--r-pill);padding:12px 20px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn-primary{background:var(--lav);color:var(--lav-ink)}
+.btn-primary:hover{filter:brightness(1.07)}
+.btn-ghost{background:transparent;border:1px solid var(--line)}
+.btn-ghost:hover{border-color:var(--ink)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+
+/* tiroir */
+.scrim{position:fixed;inset:0;background:rgba(15,13,25,.45);z-index:40;opacity:0;pointer-events:none;transition:opacity .2s}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(560px,100%);background:var(--bg);z-index:50;transform:translateX(100%);transition:transform .28s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px)}
+.drawer.on{transform:none}
+.drawer-head{display:flex;align-items:center;gap:10px;padding:14px 20px;border-bottom:1px solid var(--line)}
+.drawer-head .x{margin-left:auto;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--card);font-size:18px;line-height:1}
+.drawer-body{overflow-y:auto;padding:24px 24px 32px;display:grid;gap:24px;align-content:start}
+.drawer-foot{padding:14px 20px calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);display:flex;gap:10px;background:var(--bg)}
+.drawer-foot .btn-primary{flex:1}
+.d-title{display:grid;gap:10px}
+.d-title h2{font-size:30px;line-height:1.08;font-weight:800}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+.facts div{background:var(--card);padding:12px 14px;display:grid;gap:2px}
+.facts span{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.facts b{font-weight:600;font-variant-numeric:tabular-nums}
+.sec{display:grid;gap:10px}
+.sec h3{font-size:18px}
+.sec p{margin:0;color:var(--ink)}
+.sec ul{margin:0;padding-left:18px;display:grid;gap:6px}
+.lookbook{background:var(--butter);color:var(--butter-ink);border-radius:var(--r-card);padding:16px 18px;display:grid;gap:8px}
+.lookbook h3{font-size:17px}
+.lookbook ul{margin:0;padding-left:18px;display:grid;gap:4px}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.steps li{display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;position:relative;padding-bottom:14px}
+.steps li:not(:last-child)::before{content:"";position:absolute;left:13px;top:28px;bottom:0;width:2px;background:var(--line)}
+.steps .n{width:28px;height:28px;border-radius:50%;background:var(--lav-soft);color:var(--lav);display:grid;place-items:center;font-family:var(--f-mono);font-size:13px;font-weight:500}
+.steps small{display:block;color:var(--muted);font-size:13px}
+.skillrow{display:flex;flex-wrap:wrap;gap:6px}
+.sk{font-family:var(--f-mono);font-size:12.5px;border-radius:var(--r-pill);padding:4px 10px;border:1px solid var(--line)}
+.sk.ok{background:var(--mint);color:var(--mint-ink);border-color:transparent}
+
+/* formulaire */
+.form{display:grid;gap:16px}
+.field{display:grid;gap:6px}
+.field label,.label{font-weight:600;font-size:14px}
+.field .hint{font-size:12.5px;color:var(--muted)}
+.input,textarea.input,select.input{width:100%;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px}
+textarea.input{min-height:130px;resize:vertical}
+.input:focus{border-color:var(--lav);outline:none;box-shadow:0 0 0 3px var(--lav-soft)}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px}
+.check input{margin-top:3px;accent-color:var(--lav);width:17px;height:17px;flex:none}
+.error{color:var(--rose-ink);font-size:13px}
+
+/* vues secondaires */
+.page-head{display:grid;gap:8px;margin-bottom:24px}
+.page-head h1{font-size:clamp(30px,4vw,44px);font-weight:800;line-height:1.05}
+.page-head p{margin:0;color:var(--muted);max-width:60ch}
+.funnel{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:24px}
+.funnel div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:grid;gap:2px}
+.funnel b{font-family:var(--f-display);font-size:28px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1}
+.funnel span{font-size:12.5px;color:var(--muted)}
+.apps{display:grid;gap:10px}
+.app-row{background:var(--card);border:1px solid var(--line);border-radius:var(--r-card);padding:14px 16px;display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:14px;align-items:center}
+.app-row h3{font-size:16.5px;font-weight:700;line-height:1.25}
+.app-row .who{font-size:13px;color:var(--muted)}
+.track{display:flex;gap:4px;margin-top:8px}
+.track i{height:5px;flex:1;border-radius:3px;background:var(--line);max-width:46px}
+.track i.on{background:var(--lav)}
+.track.refus i.on{background:var(--rose-ink)}
+.app-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.app-actions select{border:1px solid var(--line);background:var(--bg);border-radius:var(--r-pill);padding:7px 10px;font-size:13.5px;font-weight:600}
+.icon-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--muted);display:grid;place-items:center}
+.icon-btn:hover{color:var(--rose-ink);border-color:var(--rose-ink)}
+.ex{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:var(--r-pill);padding:1px 7px;margin-left:6px;vertical-align:2px}
+
+.profile{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:20px;align-items:start}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r-card);padding:22px;display:grid;gap:18px}
+.panel h2{font-size:21px}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.toggles{display:flex;flex-wrap:wrap;gap:7px}
+.ring-wrap{display:flex;align-items:center;gap:16px}
+.ring{width:84px;height:84px;flex:none}
+.ring circle{fill:none;stroke-width:9}
+.ring .bgc{stroke:var(--line)}
+.ring .fg{stroke:var(--lav);stroke-linecap:round;transition:stroke-dashoffset .4s}
+.ring text{fill:var(--ink);font-family:var(--f-display);font-weight:800;font-size:22px}
+.notice{background:var(--lav-soft);color:var(--ink);border-radius:12px;padding:10px 14px;font-size:13.5px}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:16px}
+.modal[hidden]{display:none}
+.modal-box{background:var(--bg);border-radius:22px;padding:24px;width:min(440px,100%);display:grid;gap:16px;box-shadow:var(--shadow);position:relative;z-index:1}
+.modal-box h2{font-size:24px}
+.slots{display:grid;gap:8px}
+.slot{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:12px 14px;font-weight:600;text-align:left}
+.slot[aria-pressed="true"]{border-color:var(--lav);box-shadow:0 0 0 3px var(--lav-soft)}
+.slot small{font-family:var(--f-mono);font-weight:400;font-size:12px;color:var(--muted)}
+.modal .scrim-m{position:absolute;inset:0;background:rgba(15,13,25,.45)}
+
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:var(--r-pill);font-weight:600;font-size:14px;opacity:0;transition:.25s;z-index:80;pointer-events:none;max-width:calc(100% - 32px)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+.tabbar{display:none}
+
+@media (max-width:1080px){.profile{grid-template-columns:1fr}.funnel{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:860px){
+  .app{grid-template-columns:1fr}
+  .rail{display:none}
+  main{padding:22px 16px calc(96px + env(safe-area-inset-bottom,0px))}
+  .mobile-logo{display:flex!important;margin-bottom:18px}
+  .tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--card);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px))}
+  .tabbar button{flex:1;border:0;background:transparent;display:grid;justify-items:center;gap:2px;padding:6px 0;font-size:11.5px;font-weight:600;color:var(--muted)}
+  .tabbar button[aria-current="page"]{color:var(--lav)}
+  .tabbar svg{width:22px;height:22px}
+  .drawer{top:auto;height:92%;width:100%;border-radius:22px 22px 0 0;transform:translateY(100%)}
+  .app-row{grid-template-columns:40px minmax(0,1fr)}
+  .app-actions{grid-column:1/-1;justify-content:flex-start}
+  .two{grid-template-columns:1fr}
+}
+@media (max-width:480px){.funnel{grid-template-columns:repeat(2,minmax(0,1fr))}.facts{grid-template-columns:1fr}.grid{grid-template-columns:1fr}}
+.mobile-logo{display:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+
+<div class="banner"><span><b>Revue de book gratuite</b> · jeudi 8 octobre, Marseille, 20 min en tête-à-tête avec une DA</span><button type="button" data-open-slots id="banner-btn">Réserver</button></div>
+
+<div class="app">
+  <aside class="rail">
+    <div class="logo" aria-label="Créagency !">
+      <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="var(--lav)"/><text x="18.5" y="27" text-anchor="middle" font-family="Bricolage Grotesque, system-ui, sans-serif" font-weight="800" font-size="20" fill="var(--lav-ink)">C</text><rect x="27" y="11" width="4" height="11" rx="2" fill="var(--butter)"/><circle cx="29" cy="27" r="2.3" fill="var(--butter)"/></svg>
+      <div>Créagency&nbsp;!<small>Talents créatifs</small></div>
+    </div>
+    <nav class="nav" aria-label="Navigation">
+      <button type="button" data-go="offres" aria-current="page">Offres <span class="count" id="n-offres">10</span></button>
+      <button type="button" data-go="candidatures">Candidatures <span class="count" id="n-apps">0</span></button>
+      <button type="button" data-go="profil">Mon profil</button>
+    </nav>
+    <div class="rail-card">
+      <strong>Ton book mérite un deuxième regard.</strong>
+      <span id="rail-slot">20 min avec une directrice artistique, gratuit, sans engagement.</span>
+      <button type="button" data-open-slots>Choisir un créneau</button>
+    </div>
+  </aside>
+
+  <main>
+    <div class="logo mobile-logo" aria-label="Créagency !">
+      <svg width="34" height="34" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="var(--lav)"/><text x="18.5" y="27" text-anchor="middle" font-family="Bricolage Grotesque, system-ui, sans-serif" font-weight="800" font-size="20" fill="var(--lav-ink)">C</text><rect x="27" y="11" width="4" height="11" rx="2" fill="var(--butter)"/><circle cx="29" cy="27" r="2.3" fill="var(--butter)"/></svg>
+      <div>Créagency&nbsp;!<small>Talents créatifs</small></div>
+    </div>
+
+    <!-- OFFRES -->
+    <section class="view" id="v-offres">
+      <div class="hero">
+        <span class="eyebrow">Stages · alternances · premiers CDI</span>
+        <h1>Ton premier <span style="white-space:nowrap"><span class="tag-h">#job créa</span>,</span> sans détour.</h1>
+        <p>On sélectionne des studios et des agences qui recrutent des profils juniors. Tu envoies ton book, on s'occupe du reste, et chaque test créa est rémunéré.</p>
+      </div>
+      <div class="toolbar">
+        <div class="search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="q" type="search" placeholder="Motion, Figma, Marseille…" aria-label="Rechercher une offre">
+          <select id="type" aria-label="Type de contrat">
+            <option value="">Tous contrats</option><option>Stage</option><option>Alternance</option><option>CDI</option><option>CDD</option><option>Freelance</option>
+          </select>
+        </div>
+        <div class="chips" id="disc-chips" role="group" aria-label="Filtrer par discipline"></div>
+        <div class="result-line"><span id="result-count"></span>
+          <label>Trier par <select id="sort"><option value="match">Affinité avec mon profil</option><option value="recent">Plus récentes</option></select></label></div>
+      </div>
+      <div class="grid" id="grid"></div>
+    </section>
+
+    <!-- CANDIDATURES -->
+    <section class="view" id="v-candidatures" hidden>
+      <div class="page-head">
+        <span class="eyebrow">Suivi</span>
+        <h1>Mes candidatures</h1>
+        <p>Mets à jour l'étape quand un studio te répond. Les deux lignes marquées « exemple » montrent à quoi ressemble le suivi : supprime-les quand tu veux.</p>
+      </div>
+      <div class="funnel" id="funnel"></div>
+      <div class="apps" id="apps"></div>
+    </section>
+
+    <!-- PROFIL -->
+    <section class="view" id="v-profil" hidden>
+      <div class="page-head">
+        <span class="eyebrow">Profil candidat</span>
+        <h1>Ce que les studios voient</h1>
+        <p>Tes disciplines et tes logiciels calculent l'affinité affichée sur chaque offre. Le profil ci-dessous est un exemple, remplace-le par le tien.</p>
+      </div>
+      <div class="profile">
+        <div class="panel">
+          <h2>Infos</h2>
+          <div class="two">
+            <div class="field"><label for="p-name">Prénom et nom</label><input class="input" id="p-name" autocomplete="name"></div>
+            <div class="field"><label for="p-school">École ou formation</label><input class="input" id="p-school"></div>
+            <div class="field"><label for="p-city">Ville</label><input class="input" id="p-city"></div>
+            <div class="field"><label for="p-dispo">Disponible à partir de</label><input class="input" id="p-dispo"></div>
+          </div>
+          <div class="field"><label for="p-book">Lien vers ton book</label><input class="input" id="p-book" type="url" placeholder="behance.net/…"><span class="hint">Behance, site perso ou PDF en ligne. Il est joint automatiquement à chaque candidature.</span></div>
+          <div class="field"><span class="label">Disciplines</span><div class="toggles" id="p-disc"></div></div>
+          <div class="field"><span class="label">Logiciels maîtrisés</span><div class="toggles" id="p-soft"></div></div>
+          <div><button type="button" class="btn btn-primary" id="save-profile">Enregistrer le profil</button></div>
+        </div>
+        <div class="panel">
+          <h2>Ton book est prêt ?</h2>
+          <div class="ring-wrap">
+            <svg class="ring" viewBox="0 0 84 84" aria-hidden="true"><circle class="bgc" cx="42" cy="42" r="36"/><circle class="fg" id="ring-fg" cx="42" cy="42" r="36" stroke-dasharray="226.2" stroke-dashoffset="226.2" transform="rotate(-90 42 42)"/><text id="ring-t" x="42" y="50" text-anchor="middle">0/6</text></svg>
+            <p style="margin:0;color:var(--muted);font-size:14px">La checklist que nos recruteuses appliquent en 30 secondes, avant même d'ouvrir un projet.</p>
+          </div>
+          <div class="form" id="checklist"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<nav class="tabbar" aria-label="Navigation">
+  <button type="button" data-go="offres" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Offres</button>
+  <button type="button" data-go="candidatures"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h6"/></svg>Suivi</button>
+  <button type="button" data-go="profil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Profil</button>
+</nav>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="d-h">
+  <div class="drawer-head"><button type="button" class="btn btn-ghost" id="d-back" hidden style="padding:8px 14px">← Offre</button><span class="eyebrow" id="d-eyebrow">Offre</span><button type="button" class="x" id="d-close" aria-label="Fermer">×</button></div>
+  <div class="drawer-body" id="d-body"></div>
+  <div class="drawer-foot" id="d-foot"></div>
+</aside>
+
+<div class="modal" id="slots-modal" hidden role="dialog" aria-modal="true" aria-labelledby="slots-h">
+  <div class="scrim-m" data-close-slots></div>
+  <div class="modal-box">
+    <h2 id="slots-h">Revue de book</h2>
+    <p style="margin:0;color:var(--muted)">20 minutes avec une directrice artistique de l'agence. Prépare 3 projets, on regarde ensemble ce qui accroche et ce qui décroche.</p>
+    <div class="slots" id="slots"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap"><button type="button" class="btn btn-ghost" data-close-slots>Plus tard</button><button type="button" class="btn btn-primary" id="slot-ok">Réserver ce créneau</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const DISC=["Graphisme","Motion","UX/UI","Illustration","3D","Vidéo","Photo","DA","Print","Web"];
+const SOFT=["Figma","Illustrator","Photoshop","InDesign","After Effects","Premiere","Cinema 4D","Blender","Procreate","Webflow","Lightroom"];
+const COLORS=["c-sky","c-butter","c-mint","c-clay","c-lav","c-rose"];
+const TYPE_COLOR={Stage:"c-sky",Alternance:"c-butter",CDI:"c-mint",CDD:"c-clay",Freelance:"c-lav"};
+const STATUSES=[["envoyee","Envoyée"],["vue","Book vu"],["entretien","Entretien"],["test","Test créa"],["offre","Offre reçue"],["refus","Pas retenu·e"]];
+
+const OFFERS=[
+ {id:1,title:"Graphiste junior identité & packaging",studio:"Atelier Grand Huit",city:"Marseille",type:"CDI",pay:"26–29 k€ brut/an",days:1,disc:["Graphisme","Print"],soft:["Illustrator","InDesign","Photoshop"],
+  desc:"Petit studio de six personnes dans le quartier de la Plaine. On dessine des identités pour des marques alimentaires et des lieux culturels du Sud, du logo jusqu'à l'étiquette imprimée.",
+  missions:["Décliner les identités sur packagings, étiquettes et PLV","Préparer les fichiers d'exécution pour l'imprimeur (BAT, fonds perdus, Pantone)","Proposer des pistes en phase de recherche avec la DA"],
+  book:["Au moins un projet de packaging, même scolaire","Des maquettes photographiées plutôt que des mockups génériques","Tes esquisses : on veut voir comment tu cherches"],
+  steps:[["Envoi du book","Réponse sous 7 jours"],["Appel de 20 min","Avec la DA"],["Test créa rémunéré","3 h, payées 150 €"],["Rencontre au studio",""]],perks:["Mutuelle 100 %","Vendredi après-midi libre"]},
+ {id:2,title:"Motion designer en alternance",studio:"Studio Pampa",city:"Lyon",type:"Alternance",pay:"Grille alternance + 15 %",days:3,disc:["Motion","Vidéo"],soft:["After Effects","Cinema 4D","Premiere"],
+  desc:"Studio d'animation qui produit des génériques, des habillages TV et des pubs sociales. Tu rejoins une équipe de quatre motion designers pour 24 mois.",
+  missions:["Animer des séquences courtes à partir de storyboards validés","Construire des templates After Effects réutilisables","Participer aux recherches de style en début de projet"],
+  book:["Une démo de 60 secondes maximum","Au moins un projet où le rythme est calé sur le son","Les fichiers bruts d'une anim, si tu les as"],
+  steps:[["Envoi de la démo",""],["Entretien visio","30 min"],["Test créa rémunéré","Animer un logo, 1 journée payée"],["Validation avec ton école",""]],perks:["Rythme 3 sem. / 1 sem.","Licence Adobe fournie"]},
+ {id:3,title:"Stage UI/UX designer (6 mois)",studio:"Maison Lumen",city:"Paris · hybride",type:"Stage",pay:"800 €/mois",days:2,disc:["UX/UI","Web"],soft:["Figma"],
+  desc:"Agence produit qui conçoit des applis pour des musées et des festivals. Tu travailles sur une vraie mise en production, avec une designer senior comme tutrice.",
+  missions:["Mener des tests utilisateurs et en tirer des recommandations","Maquetter des parcours dans Figma avec le design system existant","Préparer les specs pour l'équipe de développement"],
+  book:["Un cas d'étude complet : problème, recherche, solution","Des wireframes, pas seulement des écrans finaux","Un projet où tu as dû renoncer à une idée"],
+  steps:[["Envoi du book",""],["Entretien","45 min avec la tutrice"],["Exercice court","1 h, sur place"]],perks:["Tickets resto","2 jours de télétravail"]},
+ {id:4,title:"Illustrateur·rice pour une série éditoriale",studio:"Revue Tangente",city:"À distance",type:"Freelance",pay:"1 800 € les 6 images",days:5,disc:["Illustration"],soft:["Procreate","Photoshop"],
+  desc:"Revue trimestrielle sur la ville et le climat. On cherche une nouvelle voix pour illustrer un dossier de six articles, livraison début décembre.",
+  missions:["Lire les articles et proposer des roughs","Livrer six illustrations pleine page en CMJN","Échanger avec la direction artistique à chaque étape"],
+  book:["Une série cohérente d'au moins 4 images","Du travail éditorial ou narratif","Ta gestion de la couleur en impression"],
+  steps:[["Envoi du book",""],["Appel avec la DA","20 min"],["Roughs payés","Inclus dans le forfait"]],perks:["Crédit sur chaque page","Contrat de cession clair"]},
+ {id:5,title:"Designer 3D junior",studio:"Collectif Orbe",city:"Nantes",type:"CDD",pay:"27 k€ brut/an · 8 mois",days:6,disc:["3D","Motion"],soft:["Blender","Cinema 4D","After Effects"],
+  desc:"Collectif qui mêle 3D temps réel et scénographie pour des expositions. Le CDD couvre la production d'une grande installation au printemps.",
+  missions:["Modéliser et texturer des éléments de décor","Préparer des rendus pour les présentations clients","Aider au montage de l'installation sur place"],
+  book:["Des rendus avec éclairage travaillé","Au moins un projet de modélisation from scratch","Tes wireframes 3D ou tes breakdowns"],
+  steps:[["Envoi du book",""],["Entretien","Au collectif ou en visio"],["Test créa rémunéré","1 journée payée"]],perks:["Machine de rendu dédiée","Possible CDI ensuite"]},
+ {id:6,title:"Monteur·se vidéo réseaux sociaux",studio:"Agence Saison",city:"Toulon",type:"Alternance",pay:"Grille alternance",days:4,disc:["Vidéo","Motion"],soft:["Premiere","After Effects"],
+  desc:"Agence de communication pour des marques de tourisme varoises. Tu montes des formats courts pour Instagram et TikTok, du tournage jusqu'à la publication.",
+  missions:["Monter des vidéos verticales de 15 à 60 secondes","Ajouter sous-titres, habillage et sound design","Suivre les statistiques et proposer des ajustements"],
+  book:["Des formats verticaux publiés","Un montage où tu as raconté une histoire en moins de 30 s","Ton compte perso, si tu en as un"],
+  steps:[["Envoi des liens",""],["Entretien à l'agence","30 min"],["Montage test","2 h, rémunéré"]],perks:["Tournages en extérieur","Rythme 2 j école / 3 j agence"]},
+ {id:7,title:"Directeur·rice artistique junior",studio:"Bureau Ricochet",city:"Marseille",type:"CDI",pay:"30–33 k€ brut/an",days:8,disc:["DA","Graphisme","Web"],soft:["Figma","Illustrator","InDesign"],
+  desc:"Agence indépendante de quinze personnes qui travaille pour des institutions culturelles. Poste ouvert aux profils avec deux ans d'expérience, alternance comprise.",
+  missions:["Porter la direction visuelle de deux comptes clients","Présenter les pistes en rendez-vous","Accompagner les stagiaires sur l'exécution"],
+  book:["Des campagnes déclinées sur plusieurs supports","Un projet que tu as défendu face à un client","Une vraie cohérence entre print et digital"],
+  steps:[["Envoi du book",""],["Entretien avec l'associée","45 min"],["Test créa rémunéré","Une demi-journée, 250 €"],["Rencontre avec l'équipe",""]],perks:["Budget formation","Mutuelle famille"]},
+ {id:8,title:"Stage graphiste print & signalétique",studio:"Atelier Outremer",city:"Aix-en-Provence",type:"Stage",pay:"Gratification légale",days:2,disc:["Graphisme","Print"],soft:["InDesign","Illustrator"],
+  desc:"Atelier spécialisé en signalétique pour les parcs naturels et les musées. Tu travailles sur des panneaux, des cartes et des livrets d'interprétation.",
+  missions:["Mettre en page des panneaux et livrets","Dessiner des pictogrammes et des cartes simplifiées","Suivre une fabrication chez l'imprimeur"],
+  book:["De la mise en page avec beaucoup de texte","Des pictos ou un système d'icônes","Une grille typographique visible"],
+  steps:[["Envoi du book",""],["Entretien à l'atelier","30 min"]],perks:["Stage de 4 à 6 mois","Sorties terrain"]},
+ {id:9,title:"Assistant·e photo studio",studio:"Studio Lisière",city:"Paris",type:"CDD",pay:"2 100 € brut/mois · 6 mois",days:9,disc:["Photo"],soft:["Lightroom","Photoshop"],
+  desc:"Studio de photo produit et nature morte pour la mode et la cosmétique. Tu assistes les photographes en prise de vue et en post-production.",
+  missions:["Installer la lumière et le plateau","Faire le tethering et le tri des images","Retoucher les séries validées"],
+  book:["De la nature morte ou du produit","Une série retouchée avec l'avant/après","Ta maîtrise de la lumière artificielle"],
+  steps:[["Envoi du book",""],["Journée d'essai rémunérée","Sur un vrai shooting"]],perks:["Accès au studio le week-end","Matériel fourni"]},
+ {id:10,title:"Web designer Webflow",studio:"Agence Fil Rouge",city:"À distance",type:"Freelance",pay:"350 €/jour",days:1,disc:["Web","UX/UI"],soft:["Figma","Webflow"],
+  desc:"Petite agence qui refond des sites d'associations et de collectifs. Mission de 12 jours sur deux mois, avec possibilité de suite.",
+  missions:["Maquetter les gabarits dans Figma","Intégrer dans Webflow avec le CMS","Rédiger une courte doc pour le client"],
+  book:["Des sites en ligne, avec le lien","Un projet responsive montré sur mobile","Ce que tu as intégré toi-même"],
+  steps:[["Envoi des liens",""],["Appel","20 min"]],perks:["100 % à distance","Paiement à 15 jours"]}
+];
+
+const DEFAULT={
+  profile:{name:"Inès Moreau",school:"BTS Design graphique, Toulon",city:"Toulon",dispo:"Octobre 2026",book:"behance.net/ines-moreau-exemple",disc:["Graphisme","Motion","Illustration"],soft:["Figma","Illustrator","Photoshop","After Effects","Procreate"]},
+  favs:[1,6],
+  apps:[{id:"a1",offer:3,status:"entretien",date:"22 sept.",example:true},{id:"a2",offer:8,status:"vue",date:"25 sept.",example:true}],
+  check:[true,true,false,false,true,false],
+  slot:null
+};
+const CHECK=[
+  ["Entre 8 et 12 projets, pas plus","Au-delà, on arrête de lire."],
+  ["Ton meilleur projet en premier","C'est souvent le seul qu'on ouvre."],
+  ["Un projet perso ou auto-initié","Il montre ce que tu fais quand personne ne te le demande."],
+  ["Le process visible sur au moins 2 projets","Croquis, pistes abandonnées, grilles."],
+  ["Un lien en ligne qui marche sur mobile","Beaucoup de books sont ouverts entre deux réunions."],
+  ["Une version PDF de moins de 10 Mo","Pour passer les filtres des boîtes mail."]
+];
+const SLOTS=[["Jeu. 8 oct.","14:00 · Marseille"],["Jeu. 8 oct.","14:30 · Marseille"],["Jeu. 8 oct.","16:00 · Marseille"],["Mar. 13 oct.","18:00 · visio"]];
+
+let S;
+try{S=JSON.parse(localStorage.getItem("creagency-v1"))}catch(e){}
+if(!S||!S.profile)S=JSON.parse(JSON.stringify(DEFAULT));
+function save(){try{localStorage.setItem("creagency-v1",JSON.stringify(S))}catch(e){}}
+
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const initials=s=>s.split(/\s+/).filter(w=>!/^(atelier|studio|agence|bureau|maison|collectif|revue)$/i.test(w)).map(w=>w[0]).join("").slice(0,2).toUpperCase()||s.slice(0,2).toUpperCase();
+const color=o=>COLORS[o.id%COLORS.length];
+const ago=d=>d<=1?"aujourd'hui":`il y a ${d} j`;
+function match(o){const need=[...o.disc,...o.soft];const have=new Set([...S.profile.disc,...S.profile.soft]);return Math.round(100*need.filter(x=>have.has(x)).length/need.length)}
+const appFor=id=>S.apps.find(a=>a.offer===id);
+const heartSvg='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.8 4.5c2.1 0 3.5 1.2 5.2 3 1.7-1.8 3.1-3 5.2-3 3.8 0 5.9 3.9 4.4 7.3C19.5 16.4 12 21 12 21z"/></svg>';
+
+function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("on");clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove("on"),2600)}
+
+/* navigation */
+function go(v){
+  $$(".view").forEach(s=>s.hidden=s.id!=="v-"+v);
+  $$("[data-go]").forEach(b=>b.getAttribute("data-go")===v?b.setAttribute("aria-current","page"):b.removeAttribute("aria-current"));
+  if(v==="candidatures")renderApps(); if(v==="profil")renderProfile(); if(v==="offres")renderOffers();
+  window.scrollTo({top:0});
+}
+$$("[data-go]").forEach(b=>b.addEventListener("click",()=>go(b.dataset.go)));
+
+/* filtres */
+const F={q:"",type:"",disc:new Set(),fav:false,sort:"match"};
+function renderChips(){
+  $("#disc-chips").innerHTML=`<button type="button" class="chip fav" data-fav aria-pressed="${F.fav}">♥ Mes favoris</button>`+DISC.map(d=>`<button type="button" class="chip" data-disc="${d}" aria-pressed="${F.disc.has(d)}">#${d.toLowerCase()}</button>`).join("");
+}
+$("#disc-chips").addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b)return;
+  if(b.hasAttribute("data-fav"))F.fav=!F.fav; else {const d=b.dataset.disc;F.disc.has(d)?F.disc.delete(d):F.disc.add(d)}
+  renderChips();renderOffers();
+});
+$("#q").addEventListener("input",e=>{F.q=e.target.value.trim().toLowerCase();renderOffers()});
+$("#type").addEventListener("change",e=>{F.type=e.target.value;renderOffers()});
+$("#sort").addEventListener("change",e=>{F.sort=e.target.value;renderOffers()});
+
+function renderOffers(){
+  let list=OFFERS.filter(o=>{
+    if(F.type&&o.type!==F.type)return false;
+    if(F.fav&&!S.favs.includes(o.id))return false;
+    if(F.disc.size&&!o.disc.some(d=>F.disc.has(d)))return false;
+    if(F.q){const hay=[o.title,o.studio,o.city,o.type,...o.disc,...o.soft].join(" ").toLowerCase();if(!hay.includes(F.q))return false}
+    return true});
+  list.sort(F.sort==="match"?(a,b)=>match(b)-match(a)||a.days-b.days:(a,b)=>a.days-b.days);
+  $("#result-count").textContent=`${list.length} offre${list.length>1?"s":""} ouverte${list.length>1?"s":""}`;
+  $("#n-offres").textContent=OFFERS.length;
+  if(!list.length){$("#grid").innerHTML=`<div class="empty" style="grid-column:1/-1"><strong>Rien pour ces filtres.</strong><span>${F.fav?"Ajoute des offres en favori avec le cœur.":"Essaie une autre discipline ou un autre type de contrat."}</span><button type="button" class="btn btn-ghost" id="reset">Tout afficher</button></div>`;
+    $("#reset").onclick=()=>{F.q="";F.type="";F.disc.clear();F.fav=false;$("#q").value="";$("#type").value="";renderChips();renderOffers()};return}
+  $("#grid").innerHTML=list.map(o=>{const m=match(o),fav=S.favs.includes(o.id),ap=appFor(o.id);return `
+  <article class="card" data-open="${o.id}" tabindex="0" aria-label="${esc(o.title)}, ${esc(o.studio)}">
+    <div class="card-top">
+      <div class="avatar ${color(o)}" aria-hidden="true">${initials(o.studio)}</div>
+      <div style="min-width:0"><h3>${esc(o.title)}</h3><div class="who">${esc(o.studio)} · ${esc(o.city)}</div></div>
+      <button type="button" class="heart" data-fav-id="${o.id}" aria-pressed="${fav}" aria-label="${fav?"Retirer des favoris":"Ajouter aux favoris"}">${heartSvg}</button>
+    </div>
+    <div class="tags">${o.disc.map(d=>`<span class="tag">#${d.toLowerCase()}</span>`).join("")}${o.soft.map(d=>`<span class="tag" style="color:var(--muted)">${d}</span>`).join("")}</div>
+    <div class="meta"><span class="pill ${TYPE_COLOR[o.type]}">${o.type}</span><span class="pay">${esc(o.pay)}</span>
+      ${ap?`<span class="applied-flag" style="margin-left:auto">Candidature envoyée</span>`:`<span class="match" title="Affinité avec ton profil"><i style="--w:${m}%"></i>${m} %</span>`}</div>
+  </article>`}).join("");
+}
+$("#grid").addEventListener("click",e=>{
+  const h=e.target.closest("[data-fav-id]");
+  if(h){e.stopPropagation();toggleFav(+h.dataset.favId);return}
+  const c=e.target.closest("[data-open]");if(c)openOffer(+c.dataset.open);
+});
+$("#grid").addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.matches("[data-open]")){e.preventDefault();openOffer(+e.target.dataset.open)}});
+function toggleFav(id){const i=S.favs.indexOf(id);i>-1?S.favs.splice(i,1):S.favs.push(id);save();renderOffers();toast(i>-1?"Retiré des favoris":"Ajouté aux favoris")}
+
+/* tiroir offre */
+let lastFocus=null,current=null;
+function openDrawer(){lastFocus=document.activeElement;$("#scrim").classList.add("on");$("#drawer").classList.add("on");document.body.style.overflow="hidden";setTimeout(()=>$("#d-close").focus(),50)}
+function closeDrawer(){$("#scrim").classList.remove("on");$("#drawer").classList.remove("on");document.body.style.overflow="";lastFocus&&lastFocus.focus&&lastFocus.focus()}
+$("#d-close").onclick=closeDrawer;$("#scrim").onclick=closeDrawer;
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(!$("#slots-modal").hidden)closeSlots();else closeDrawer()}});
+$("#d-back").onclick=()=>openOffer(current,true);
+
+function openOffer(id,keep){
+  const o=OFFERS.find(x=>x.id===id);current=id;const have=new Set([...S.profile.disc,...S.profile.soft]);const ap=appFor(id);const fav=S.favs.includes(id);
+  $("#d-back").hidden=true;$("#d-eyebrow").textContent=`Publiée ${ago(o.days)}`;
+  $("#d-body").innerHTML=`
+   <div class="d-title"><div style="display:flex;gap:12px;align-items:center"><div class="avatar ${color(o)}">${initials(o.studio)}</div><div><b>${esc(o.studio)}</b><div style="color:var(--muted);font-size:14px">${esc(o.city)}</div></div></div>
+     <h2 id="d-h">${esc(o.title)}</h2></div>
+   <div class="facts"><div><span>Contrat</span><b>${o.type}</b></div><div><span>Rémunération</span><b>${esc(o.pay)}</b></div><div><span>Affinité</span><b>${match(o)} % avec ton profil</b></div><div><span>Avantages</span><b>${o.perks.join(" · ")}</b></div></div>
+   <div class="sec"><h3>Le studio</h3><p>${esc(o.desc)}</p></div>
+   <div class="sec"><h3>Ce que tu feras</h3><ul>${o.missions.map(m=>`<li>${esc(m)}</li>`).join("")}</ul></div>
+   <div class="sec"><h3>Compétences demandées</h3><div class="skillrow">${[...o.disc,...o.soft].map(s=>`<span class="sk ${have.has(s)?"ok":""}">${have.has(s)?"✓ ":""}${s}</span>`).join("")}</div></div>
+   <div class="lookbook"><h3>Ce qu'on regarde dans ton book</h3><ul>${o.book.map(m=>`<li>${esc(m)}</li>`).join("")}</ul></div>
+   <div class="sec"><h3>Le processus</h3><ol class="steps">${o.steps.map((s,i)=>`<li><span class="n">${i+1}</span><div>${esc(s[0])}${s[1]?`<small>${esc(s[1])}</small>`:""}</div></li>`).join("")}</ol></div>`;
+  $("#d-foot").innerHTML=`<button type="button" class="heart" id="d-fav" aria-pressed="${fav}" aria-label="Favori" style="width:46px;height:46px">${heartSvg}</button>`+
+   (ap?`<button type="button" class="btn btn-ghost" style="flex:1" id="d-track">Candidature envoyée · voir le suivi</button>`:`<button type="button" class="btn btn-primary" id="d-apply">Postuler avec mon book</button>`);
+  $("#d-fav").onclick=()=>{toggleFav(id);openOffer(id,true)};
+  if(ap)$("#d-track").onclick=()=>{closeDrawer();go("candidatures")}; else $("#d-apply").onclick=()=>applyForm(o);
+  $("#d-body").scrollTop=0;
+  if(!keep||!$("#drawer").classList.contains("on"))openDrawer();
+}
+
+function applyForm(o){
+  const p=S.profile;
+  $("#d-back").hidden=false;$("#d-eyebrow").textContent="Candidature";
+  $("#d-body").innerHTML=`
+   <div class="d-title"><h2 id="d-h">Postuler chez ${esc(o.studio)}</h2><p style="margin:0;color:var(--muted)">${esc(o.title)} · ${o.type}</p></div>
+   <form class="form" id="apply-form" novalidate>
+     <div class="field"><label for="a-book">Lien vers ton book</label><input class="input" id="a-book" type="text" value="${esc(p.book)}" required><span class="hint">Repris de ton profil. Vérifie qu'il s'ouvre sans compte.</span></div>
+     <div class="field"><label for="a-project">Le projet à regarder en premier</label><input class="input" id="a-project" type="text" placeholder="Ex. : identité du festival Les Nuits Courtes"><span class="hint">Les recruteurs n'ouvrent souvent qu'un projet. Choisis-le pour eux.</span></div>
+     <div class="field"><label for="a-msg">Ton message</label><textarea class="input" id="a-msg">Bonjour,\n\nJe m'appelle ${esc(p.name)}, en ${esc(p.school)}. Votre offre « ${esc(o.title)} » m'intéresse parce que … \n\nJe suis disponible à partir de ${esc(p.dispo).toLowerCase()}.\n\nMerci pour votre temps,\n${esc(p.name)}</textarea><span class="hint">Trois phrases suffisent. Remplace les « … » par ce qui t'attire vraiment chez eux.</span></div>
+     <label class="check"><input type="checkbox" id="a-test" checked> Je suis d'accord pour faire un test créa rémunéré si le studio en propose un.</label>
+     <p class="error" id="a-err" hidden></p>
+   </form>`;
+  $("#d-foot").innerHTML=`<button type="button" class="btn btn-ghost" id="a-cancel">Annuler</button><button type="submit" form="apply-form" class="btn btn-primary">Envoyer ma candidature</button>`;
+  $("#a-cancel").onclick=()=>openOffer(o.id,true);
+  $("#apply-form").addEventListener("submit",e=>{
+    e.preventDefault();
+    const book=$("#a-book").value.trim(),msg=$("#a-msg").value;
+    const err=$("#a-err");
+    if(!book){err.textContent="Ajoute le lien vers ton book : c'est la première chose que le studio ouvre.";err.hidden=false;$("#a-book").focus();return}
+    if(msg.includes("…")){err.textContent="Ton message contient encore « … ». Dis en une phrase ce qui t'attire chez eux.";err.hidden=false;$("#a-msg").focus();return}
+    const d=new Date();const date=d.toLocaleDateString("fr-FR",{day:"numeric",month:"short"});
+    S.apps.unshift({id:"a"+Date.now(),offer:o.id,status:"envoyee",date,project:$("#a-project").value.trim()});
+    save();updateCounts();renderOffers();openOffer(o.id,true);toast(`Candidature envoyée à ${o.studio}`);
+  });
+  $("#d-body").scrollTop=0;
+}
+
+/* candidatures */
+function updateCounts(){$("#n-apps").textContent=S.apps.length}
+function renderApps(){
+  const counts=STATUSES.slice(0,5).map(([k,l])=>[l,S.apps.filter(a=>STATUSES.findIndex(s=>s[0]===a.status)>=STATUSES.findIndex(s=>s[0]===k)&&a.status!=="refus").length]);
+  $("#funnel").innerHTML=counts.map(([l,n])=>`<div><b>${n}</b><span>${l}</span></div>`).join("");
+  if(!S.apps.length){$("#apps").innerHTML=`<div class="empty"><strong>Aucune candidature pour l'instant.</strong><span>Ouvre une offre et clique sur « Postuler avec mon book ».</span><button type="button" class="btn btn-primary" data-go-offres>Voir les offres</button></div>`;$("[data-go-offres]").onclick=()=>go("offres");return}
+  $("#apps").innerHTML=S.apps.map(a=>{const o=OFFERS.find(x=>x.id===a.offer);const idx=STATUSES.findIndex(s=>s[0]===a.status);const refus=a.status==="refus";
+    return `<div class="app-row">
+      <div class="avatar ${color(o)}" aria-hidden="true">${initials(o.studio)}</div>
+      <div style="min-width:0"><h3>${esc(o.title)}${a.example?'<span class="ex">exemple</span>':""}</h3><div class="who">${esc(o.studio)} · envoyée le ${esc(a.date)}${a.project?` · projet phare : ${esc(a.project)}`:""}</div>
+        <div class="track ${refus?"refus":""}" aria-hidden="true">${[0,1,2,3,4].map(i=>`<i class="${(refus||i<=idx)?"on":""}"></i>`).join("")}</div></div>
+      <div class="app-actions"><label class="sr" style="position:absolute;left:-9999px" for="st-${a.id}">Étape</label>
+        <select id="st-${a.id}" data-status="${a.id}">${STATUSES.map(([k,l])=>`<option value="${k}" ${k===a.status?"selected":""}>${l}</option>`).join("")}</select>
+        <button type="button" class="btn btn-ghost" data-see="${o.id}" style="padding:7px 14px;font-size:13.5px">Offre</button>
+        <button type="button" class="icon-btn" data-del="${a.id}" aria-label="Supprimer cette candidature">×</button></div>
+    </div>`}).join("");
+}
+$("#apps").addEventListener("change",e=>{const s=e.target.closest("[data-status]");if(!s)return;const a=S.apps.find(x=>x.id===s.dataset.status);a.status=s.value;save();renderApps();
+  const msgs={entretien:"Entretien noté. Relis l'offre la veille.",test:"Test créa noté. Il doit être rémunéré : demande le montant si ce n'est pas précisé.",offre:"Bravo ! Prends 48 h pour répondre si tu en as besoin.",refus:"C'est noté. Tu peux demander un retour sur ton book, les studios répondent souvent."};toast(msgs[s.value]||"Étape mise à jour")});
+$("#apps").addEventListener("click",e=>{
+  const d=e.target.closest("[data-del]");if(d){S.apps=S.apps.filter(a=>a.id!==d.dataset.del);save();updateCounts();renderApps();toast("Candidature supprimée");return}
+  const s=e.target.closest("[data-see]");if(s)openOffer(+s.dataset.see);
+});
+
+/* profil */
+function renderProfile(){
+  const p=S.profile;
+  $("#p-name").value=p.name;$("#p-school").value=p.school;$("#p-city").value=p.city;$("#p-dispo").value=p.dispo;$("#p-book").value=p.book;
+  $("#p-disc").innerHTML=DISC.map(d=>`<button type="button" class="chip" data-pd="${d}" aria-pressed="${p.disc.includes(d)}">#${d.toLowerCase()}</button>`).join("");
+  $("#p-soft").innerHTML=SOFT.map(d=>`<button type="button" class="chip" data-ps="${d}" aria-pressed="${p.soft.includes(d)}">${d}</button>`).join("");
+  renderCheck();
+}
+const draft={};
+$("#p-disc").addEventListener("click",e=>{const b=e.target.closest("[data-pd]");if(!b)return;b.setAttribute("aria-pressed",b.getAttribute("aria-pressed")!=="true")});
+$("#p-soft").addEventListener("click",e=>{const b=e.target.closest("[data-ps]");if(!b)return;b.setAttribute("aria-pressed",b.getAttribute("aria-pressed")!=="true")});
+$("#save-profile").onclick=()=>{
+  const p=S.profile;
+  p.name=$("#p-name").value.trim()||p.name;p.school=$("#p-school").value.trim();p.city=$("#p-city").value.trim();p.dispo=$("#p-dispo").value.trim();p.book=$("#p-book").value.trim();
+  p.disc=$$("#p-disc [aria-pressed=true]").map(b=>b.dataset.pd);p.soft=$$("#p-soft [aria-pressed=true]").map(b=>b.dataset.ps);
+  save();toast("Profil enregistré. Les affinités sont recalculées.");
+};
+function renderCheck(){
+  $("#checklist").innerHTML=CHECK.map((c,i)=>`<label class="check"><input type="checkbox" data-ck="${i}" ${S.check[i]?"checked":""}><span><b style="font-weight:600">${c[0]}</b><br><span style="color:var(--muted);font-size:13px">${c[1]}</span></span></label>`).join("");
+  const n=S.check.filter(Boolean).length;$("#ring-t").textContent=`${n}/6`;$("#ring-fg").style.strokeDashoffset=226.2*(1-n/6);
+}
+$("#checklist").addEventListener("change",e=>{const c=e.target.closest("[data-ck]");if(!c)return;S.check[+c.dataset.ck]=c.checked;save();renderCheck();if(S.check.every(Boolean))toast("Book validé. Tu peux postuler sereinement.")});
+
+/* créneaux */
+let pick=null;
+function openSlots(){pick=S.slot;renderSlots();$("#slots-modal").hidden=false;setTimeout(()=>$(".slot")&&$(".slot").focus(),30)}
+function closeSlots(){$("#slots-modal").hidden=true}
+function renderSlots(){$("#slots").innerHTML=SLOTS.map((s,i)=>`<button type="button" class="slot" data-slot="${i}" aria-pressed="${pick===i}"><span>${s[0]}</span><small>${s[1]}</small></button>`).join("");$("#slot-ok").disabled=pick===null}
+$$("[data-open-slots]").forEach(b=>b.addEventListener("click",openSlots));
+$$("[data-close-slots]").forEach(b=>b.addEventListener("click",closeSlots));
+$("#slots").addEventListener("click",e=>{const b=e.target.closest("[data-slot]");if(!b)return;pick=+b.dataset.slot;renderSlots()});
+$("#slot-ok").onclick=()=>{if(pick===null)return;S.slot=pick;save();closeSlots();reflectSlot();toast(`Créneau réservé : ${SLOTS[pick][0]}, ${SLOTS[pick][1]}`)};
+function reflectSlot(){if(S.slot!==null&&S.slot!==undefined){const s=SLOTS[S.slot];$("#rail-slot").textContent=`Réservé : ${s[0]}, ${s[1]}.`;$("#banner-btn").textContent="Modifier"}}
+
+renderChips();renderOffers();updateCounts();reflectSlot();
+</script>
+
+</body>
+</html>
