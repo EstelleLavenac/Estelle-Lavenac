@@ -295,12 +295,7 @@
   .next-block{display:flex; flex-direction:column; gap:20px; max-width:640px}
   .next-text{font-size:clamp(20px,2.6vw,26px); font-weight:700; letter-spacing:-0.01em; color:var(--ink); margin:0}
   .next-sub{font-size:14px; color:var(--grey); margin:0}
-  .next-tags{display:flex; flex-wrap:wrap; gap:10px}
-  .chip-tag{
-    border:1.5px solid #dcdcdc; border-radius:100px; padding:9px 18px;
-    font-size:13px; font-weight:700; transition:all .2s ease;
-  }
-  .chip-tag:hover{background:var(--ink); color:#fff; border-color:var(--ink); transform:translateY(-2px)}
+  .next-tags-text{font-size:14px; font-weight:600; color:var(--grey); letter-spacing:0.02em; margin:0}
   .next-actions{display:flex; gap:14px; margin-top:8px; flex-wrap:wrap}
   .exp-arrow{
     position:absolute; right:0; top:26px; opacity:0; transform:translateX(-8px);
@@ -501,7 +496,7 @@
 <section id="points-forts">
   <div class="container">
     <div class="section-header reveal">
-      <h2>Pourquoi ça matche</h2>
+      <h2>Pourquoi ça peut matcher</h2>
       <span class="eyebrow">02 — Points forts</span>
     </div>
     <div class="strengths reveal-stagger">
@@ -717,12 +712,7 @@
     <div class="next-block reveal">
       <p class="next-text">Je cherche une équipe avec laquelle créer, réfléchir et faire de belles choses.</p>
       <p class="next-sub">CDI / CDD · agence ou entreprise · sur site, hybride ou télétravail</p>
-      <div class="next-tags">
-        <span class="chip-tag">Graphisme</span>
-        <span class="chip-tag">Motion</span>
-        <span class="chip-tag">Création de contenu</span>
-        <span class="chip-tag">Web</span>
-      </div>
+      <p class="next-tags-text">Graphisme · Motion · Création de contenu · Web · IA créative</p>
       <div class="next-actions">
         <a href="mailto:estelle.lavenac@gmail.com" class="btn btn-solid">On en parle ? →</a>
         <a href="CV-Estelle-Lavenac-2026.pdf" download="CV-Estelle-Lavenac-2026.pdf" class="btn btn-ghost">Télécharger mon CV ↓</a>
@@ -882,7 +872,7 @@
     }
     ringLoop();
 
-    var hoverables = document.querySelectorAll('a, button, .btn, .card, .strength, .degree, .exp-row, .exp-row-simple, .exp-tab, .chip-tag');
+    var hoverables = document.querySelectorAll('a, button, .btn, .card, .strength, .degree, .exp-row, .exp-row-simple, .exp-tab');
     hoverables.forEach(function(el){
       el.addEventListener('mouseenter', function(){ ring.classList.add('is-active'); });
       el.addEventListener('mouseleave', function(){ ring.classList.remove('is-active'); });
