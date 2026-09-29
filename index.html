@@ -331,11 +331,6 @@
   .next-sub{font-size:14px; color:var(--grey); margin:0}
   .next-tags-text{font-size:14px; font-weight:600; color:var(--grey); letter-spacing:0.02em; margin:0}
   .next-actions{display:flex; gap:14px; margin-top:8px; flex-wrap:wrap}
-  .exp-arrow{
-    position:absolute; right:0; top:26px; opacity:0; transform:translateX(-8px);
-    transition:opacity .25s ease, transform .25s ease;
-  }
-  .exp-row:hover .exp-arrow{opacity:1; transform:translateX(0)}
 
   /* experience tabs */
   .exp-tabs{display:flex; gap:10px; margin-bottom:32px}
@@ -583,7 +578,7 @@
     </div>
 
     <div class="reveal-stagger exp-panel exp-panel-active" data-panel="design">
-      <a href="#" class="exp-row reveal" style="--i:0">
+      <div class="exp-row reveal" style="--i:0">
         <div>
           <div class="exp-name">Evoliz</div>
           <div class="exp-place">La Garde — 2022 → 2026</div>
@@ -594,9 +589,8 @@
           <div class="exp-group"><span class="exp-group-label motion">Motion</span><span class="exp-group-items">Storyboard · animation · montage son</span></div>
           <div class="exp-extra">+ slides de présentation · stratégie d'acquisition · coordination prestataires/freelances · suivi budget · évolution charte graphique</div>
         </div>
-        <span class="exp-arrow">↗</span>
-      </a>
-      <a href="#" class="exp-row reveal" style="--i:1">
+      </div>
+      <div class="exp-row reveal" style="--i:1">
         <div>
           <div class="exp-name">La Boite Immo</div>
           <div class="exp-place">Hyères — 2020 → 2022</div>
@@ -607,9 +601,8 @@
           <div class="exp-group"><span class="exp-group-label motion">Motion</span><span class="exp-group-items">Storyboard · animation · montage son</span></div>
           <div class="exp-extra">+ slides de présentation</div>
         </div>
-        <span class="exp-arrow">↗</span>
-      </a>
-      <a href="#" class="exp-row reveal" style="--i:2">
+      </div>
+      <div class="exp-row reveal" style="--i:2">
         <div>
           <div class="exp-name">Euridice Développement</div>
           <div class="exp-place">Lyon — 2018 → 2019</div>
@@ -619,9 +612,8 @@
           <div class="exp-group"><span class="exp-group-label print">Print</span><span class="exp-group-items">Panneaux publicitaires · flyers · affiches · habillage bornes · goodies · campagne d'affichage</span></div>
           <div class="exp-extra">+ gestion de projets et devis</div>
         </div>
-        <span class="exp-arrow">↗</span>
-      </a>
-      <a href="#" class="exp-row reveal" style="--i:3">
+      </div>
+      <div class="exp-row reveal" style="--i:3">
         <div>
           <div class="exp-name">Mairie</div>
           <div class="exp-place">La Farlède — 2018</div>
@@ -630,9 +622,8 @@
           <div class="exp-group"><span class="exp-group-label digital">Digital</span><span class="exp-group-items">Réseaux sociaux · bannières · retouche/montage photo</span></div>
           <div class="exp-group"><span class="exp-group-label print">Print</span><span class="exp-group-items">Brochures · flyers · affiches</span></div>
         </div>
-        <span class="exp-arrow">↗</span>
-      </a>
-      <a href="#" class="exp-row reveal" style="--i:4">
+      </div>
+      <div class="exp-row reveal" style="--i:4">
         <div>
           <div class="exp-name">Pure'Comm</div>
           <div class="exp-place">La Garde — 2017 → 2018</div>
@@ -642,8 +633,7 @@
           <div class="exp-group"><span class="exp-group-label print">Print</span><span class="exp-group-items">Flyers · affiches · brochures</span></div>
           <div class="exp-extra">+ gestion devis/facturation</div>
         </div>
-        <span class="exp-arrow">↗</span>
-      </a>
+      </div>
     </div>
 
     <div class="exp-panel" data-panel="autres" hidden>
@@ -949,7 +939,7 @@
     }
     ringLoop();
 
-    var hoverables = document.querySelectorAll('a, button, .btn, .card, .strength, .degree, .exp-row, .exp-row-simple, .exp-tab, .wa-fab');
+    var hoverables = document.querySelectorAll('a, button, .btn, .card, .strength, .degree, .exp-row-simple, .exp-tab, .wa-fab');
     hoverables.forEach(function(el){
       el.addEventListener('mouseenter', function(){ ring.classList.add('is-active'); });
       el.addEventListener('mouseleave', function(){ ring.classList.remove('is-active'); });
