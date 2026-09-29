@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Estelle Lavenac — Designer graphique senior</title>
-<meta name="description" content="Estelle Lavenac — Designer graphique senior, print, web & motion design.">
+<title>Estelle Lavenac — Designer graphique · Print, Web &amp; Motion</title>
+<meta name="description" content="Estelle Lavenac — Designer graphique, print, web & motion design. Je transforme les idées en visuels qui ont quelque chose à dire.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23c7c3ec'/%3E%3Cstop offset='55%25' stop-color='%23dcc3e6'/%3E%3Cstop offset='100%25' stop-color='%23f0c8dc'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='8' y='8' width='104' height='104' rx='30' fill='url(%23g)'/%3E%3Cg transform='rotate(-7 60 62)'%3E%3Ctext x='60' y='79' font-family='Arial' font-weight='700' font-size='54' letter-spacing='-4' fill='%23fff' text-anchor='middle'%3EEL%3C/text%3E%3C/g%3E%3Ccircle cx='93' cy='27' r='7' fill='%23fff'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -105,7 +105,7 @@
   .brand:hover .logo{transform:rotate(-10deg) scale(1.08)}
 
   .nav-links{
-    display:flex; gap:36px; font-size:14px; font-weight:600;
+    display:flex; gap:26px; font-size:14px; font-weight:600; white-space:nowrap;
     position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
   }
   .nav-links a{
@@ -177,6 +177,17 @@
   .hero-title{
     font-weight:700; font-size:clamp(48px,7vw,84px); line-height:1.02; letter-spacing:-0.03em; color:var(--ink);
   }
+  .hero-role{
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap; justify-content:center;
+    margin-top:-10px;
+  }
+  .hero-role-main{
+    font-family:'Poppins',sans-serif; font-weight:600; font-size:clamp(18px,2.2vw,24px); color:var(--ink);
+  }
+  .hero-role-tags{
+    font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#2c2c2c;
+    padding:6px 14px; border:1.5px solid rgba(17,17,17,0.25); border-radius:100px;
+  }
   .hero-sub{
     font-size:clamp(17px,2vw,22px); font-weight:500; color:#262626; max-width:600px;
   }
@@ -201,6 +212,11 @@
 
   /* competences */
   .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:24px}
+  .cards-4{grid-template-columns:repeat(4,1fr)}
+  .tools-line{
+    margin-top:36px; font-size:14px; font-weight:600; color:var(--grey);
+    letter-spacing:0.02em;
+  }
   .card{
     border:1px solid var(--line); border-radius:20px; padding:32px;
     display:flex; flex-direction:column; gap:16px;
@@ -255,6 +271,29 @@
   .exp-name{font-family:'Poppins',sans-serif; font-weight:600; font-size:18px}
   .exp-place{font-size:13px; color:var(--grey); margin-top:4px}
   .exp-desc{font-size:15px; color:var(--ink-soft); line-height:1.65}
+  .exp-groups{display:flex; flex-direction:column; gap:9px}
+  .exp-group{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap}
+  .exp-group-label{
+    flex:none; font-size:11px; font-weight:800; letter-spacing:0.06em; text-transform:uppercase;
+    color:#111111; padding:3px 10px; border-radius:100px;
+  }
+  .exp-group-label.digital{background:var(--lav)}
+  .exp-group-label.print{background:var(--pink)}
+  .exp-group-label.motion{background:var(--lav2)}
+  .exp-group-items{font-size:14.5px; color:var(--ink-soft); line-height:1.5}
+  .exp-extra{font-size:13px; color:var(--grey); margin-top:2px}
+
+  /* et maintenant */
+  .next-block{display:flex; flex-direction:column; gap:20px; max-width:640px}
+  .next-text{font-size:clamp(20px,2.6vw,26px); font-weight:700; letter-spacing:-0.01em; color:var(--ink); margin:0}
+  .next-sub{font-size:14px; color:var(--grey); margin:0}
+  .next-tags{display:flex; flex-wrap:wrap; gap:10px}
+  .chip-tag{
+    border:1.5px solid #dcdcdc; border-radius:100px; padding:9px 18px;
+    font-size:13px; font-weight:700; transition:all .2s ease;
+  }
+  .chip-tag:hover{background:var(--ink); color:#fff; border-color:var(--ink); transform:translateY(-2px)}
+  .next-actions{display:flex; gap:14px; margin-top:8px; flex-wrap:wrap}
   .exp-arrow{
     position:absolute; right:0; top:26px; opacity:0; transform:translateX(-8px);
     transition:opacity .25s ease, transform .25s ease;
@@ -332,12 +371,17 @@
     display:flex; justify-content:space-between; font-size:12px; color:#a3a3a3; flex-wrap:wrap; gap:8px;
   }
 
+  @media (max-width:1100px){
+    .cards-4{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (max-width:1080px){
+    .nav-links{display:none}
+  }
   @media (max-width:900px){
     .cards{grid-template-columns:1fr}
     .degrees{grid-template-columns:repeat(2,1fr)}
     .exp-row{grid-template-columns:1fr; gap:8px}
     .exp-row-simple{grid-template-columns:1fr; gap:4px}
-    .nav-links{display:none}
   }
   @media (max-width:560px){
     .degrees{grid-template-columns:1fr}
@@ -376,6 +420,7 @@
       <a href="#competences">Compétences</a>
       <a href="#points-forts">Points forts</a>
       <a href="#experience">Expérience</a>
+      <a href="#et-maintenant">Et maintenant</a>
       <a href="#contact">Contact</a>
     </nav>
     <a href="CV-Estelle-Lavenac-2026.pdf" download="CV-Estelle-Lavenac-2026.pdf" class="btn btn-ghost">Télécharger le CV ↓</a>
@@ -390,10 +435,14 @@
       Disponible — Pierrefeu-du-Var, 83390
     </div>
     <h1 class="hero-title reveal">Estelle Lavenac</h1>
-    <p class="hero-sub reveal">Designer graphique senior — print, web &amp; motion design. Créative, réactive et à l'écoute depuis 2017.</p>
+    <div class="hero-role reveal">
+      <span class="hero-role-main">Designer graphique</span>
+      <span class="hero-role-tags">Print · Web · Motion</span>
+    </div>
+    <p class="hero-sub reveal">Je transforme les idées en visuels qui ont quelque chose à dire.</p>
     <div class="hero-actions reveal">
-      <a href="mailto:estelle.lavenac@gmail.com" class="btn btn-solid">estelle.lavenac@gmail.com</a>
-      <a href="https://behance.net/estellelavenac" target="_blank" rel="noopener" class="btn btn-ghost">Voir le book ↗</a>
+      <a href="https://behance.net/estellelavenac" target="_blank" rel="noopener" class="btn btn-solid">Voir mon book →</a>
+      <a href="CV-Estelle-Lavenac-2026.pdf" download="CV-Estelle-Lavenac-2026.pdf" class="btn btn-ghost">Télécharger mon CV ↓</a>
     </div>
   </div>
 </div>
@@ -407,37 +456,45 @@
       <h2>Ce que je sais (vraiment) faire</h2>
       <span class="eyebrow">01 — Compétences</span>
     </div>
-    <div class="cards reveal-stagger">
+    <div class="cards cards-4 reveal-stagger">
       <div class="card reveal" style="--i:0">
         <div class="icon-box">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
         </div>
-        <div class="card-title">Graphisme &amp; Motion design</div>
-        <div class="card-body">Photoshop · Illustrator · InDesign · After Effects · Première Pro</div>
+        <div class="card-title">Identité &amp; print</div>
+        <div class="card-body">Identités visuelles · affiches · brochures · packaging · PLV · supports commerciaux</div>
       </div>
       <div class="card reveal" style="--i:1">
         <div class="icon-box">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="9" x2="8" y2="20"/></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><circle cx="7" cy="6.5" r=".6" fill="#111111"/><circle cx="9.5" cy="6.5" r=".6" fill="#111111"/></svg>
         </div>
-        <div class="card-title">UI/UX &amp; Web</div>
-        <div class="card-body">Figma · Webflow · Notion · Adobe XD</div>
+        <div class="card-title">Web &amp; social</div>
+        <div class="card-body">Réseaux sociaux · campagnes · landing pages · newsletters · bannières · contenus digitaux</div>
       </div>
       <div class="card reveal" style="--i:2">
         <div class="icon-box">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
         </div>
-        <div class="card-title">Outils &amp; Veille</div>
-        <div class="card-body">ChatGPT · Discord · Behance · Claude</div>
+        <div class="card-title">Motion</div>
+        <div class="card-body">Storyboards · animation · montage · vidéos social media · habillage</div>
+      </div>
+      <div class="card reveal" style="--i:3">
+        <div class="icon-box">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="9" x2="8" y2="20"/></svg>
+        </div>
+        <div class="card-title">UI / UX</div>
+        <div class="card-body">Maquettes · parcours · interfaces · Figma · Webflow</div>
       </div>
     </div>
+    <div class="tools-line reveal">Adobe CC · Figma · Webflow · Notion · Claude · ChatGPT…</div>
   </div>
 </section>
 
 <section id="points-forts">
   <div class="container">
     <div class="section-header reveal">
-      <h2>Ce qui fait la différence</h2>
-      <span class="eyebrow">02 — Points forts</span>
+      <h2>Pourquoi ça matche</h2>
+      <span class="eyebrow">02 — Pourquoi ça matche</span>
     </div>
     <div class="strengths reveal-stagger">
       <div class="strength reveal" style="--i:0">
@@ -445,8 +502,8 @@
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.9c.6.4 1 1.1 1 1.9v.2h6v-.2c0-.8.4-1.5 1-1.9A7 7 0 0 0 12 2z"/></svg>
         </div>
         <div>
-          <div class="strength-title">Créative et toujours en veille</div>
-          <div class="strength-sub">Tendances, outils, techniques, force de propositions</div>
+          <div class="strength-title">Créative &amp; curieuse</div>
+          <div class="strength-sub">Veille permanente, nouvelles tendances, nouveaux outils et idées qui sortent un peu du cadre</div>
         </div>
       </div>
       <div class="strength reveal" style="--i:1">
@@ -454,8 +511,8 @@
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
         </div>
         <div>
-          <div class="strength-title">Réactive et organisée</div>
-          <div class="strength-sub">Délais tenus, gestion multi-projets</div>
+          <div class="strength-title">Réactive &amp; organisée</div>
+          <div class="strength-sub">Plusieurs projets en parallèle, sans transformer le planning en scène de crime</div>
         </div>
       </div>
       <div class="strength reveal" style="--i:2">
@@ -464,7 +521,7 @@
         </div>
         <div>
           <div class="strength-title">À l'écoute</div>
-          <div class="strength-sub">Clients, équipe, utilisateurs</div>
+          <div class="strength-sub">Clients, équipes, utilisateurs : comprendre avant de créer</div>
         </div>
       </div>
       <div class="strength reveal" style="--i:3">
@@ -472,8 +529,8 @@
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
         </div>
         <div>
-          <div class="strength-title">Booster de bonne humeur</div>
-          <div class="strength-sub">Toujours prête à faire rire les copaings</div>
+          <div class="strength-title">Bonne humeur incluse</div>
+          <div class="strength-sub">Parce qu'on peut être pro, tenir ses deadlines et rigoler avec les copaings</div>
         </div>
       </div>
     </div>
@@ -497,7 +554,12 @@
           <div class="exp-name">Evoliz</div>
           <div class="exp-place">La Garde — 2022 → 2026</div>
         </div>
-        <div class="exp-desc">Visuels web (réseaux sociaux, bannières, campagnes ADS, sites partenaires, pages login, blog, mailing), visuels print (plaquettes, flyers, stands, goodies, kakémonos, cartes de visites, textile brandé), motion design (storyboard, animation, montage son), slides de présentation, participation à la stratégie d'acquisition, coordination des prestataires et freelances, suivi budget, évolution de la charte graphique.</div>
+        <div class="exp-groups">
+          <div class="exp-group"><span class="exp-group-label digital">Digital</span><span class="exp-group-items">Réseaux sociaux · bannières · campagnes ADS · sites partenaires · pages login · blog · mailing</span></div>
+          <div class="exp-group"><span class="exp-group-label print">Print</span><span class="exp-group-items">Plaquettes · flyers · stands · goodies · kakémonos · cartes de visite · textile brandé</span></div>
+          <div class="exp-group"><span class="exp-group-label motion">Motion</span><span class="exp-group-items">Storyboard · animation · montage son</span></div>
+          <div class="exp-extra">+ slides de présentation · stratégie d'acquisition · coordination prestataires/freelances · suivi budget · évolution charte graphique</div>
+        </div>
         <span class="exp-arrow">↗</span>
       </a>
       <a href="#" class="exp-row reveal" style="--i:1">
@@ -505,7 +567,12 @@
           <div class="exp-name">La Boite Immo</div>
           <div class="exp-place">Hyères — 2020 → 2022</div>
         </div>
-        <div class="exp-desc">Visuels web (réseaux sociaux, blog, mailings, retouche/montage photo), visuels print (plaquettes, flyers, goodies, kakémonos, packaging), motion (storyboard, animation, montage son), slides de présentation.</div>
+        <div class="exp-groups">
+          <div class="exp-group"><span class="exp-group-label digital">Digital</span><span class="exp-group-items">Réseaux sociaux · blog · mailings · retouche/montage photo</span></div>
+          <div class="exp-group"><span class="exp-group-label print">Print</span><span class="exp-group-items">Plaquettes · flyers · goodies · kakémonos · packaging</span></div>
+          <div class="exp-group"><span class="exp-group-label motion">Motion</span><span class="exp-group-items">Storyboard · animation · montage son</span></div>
+          <div class="exp-extra">+ slides de présentation</div>
+        </div>
         <span class="exp-arrow">↗</span>
       </a>
       <a href="#" class="exp-row reveal" style="--i:2">
@@ -513,7 +580,11 @@
           <div class="exp-name">Euridice Développement</div>
           <div class="exp-place">Lyon — 2018 → 2019</div>
         </div>
-        <div class="exp-desc">Visuels web (réseaux sociaux, bannières, retouche photo, campagnes Waze), visuels print (panneaux publicitaires, flyers, affiches, habillage bornes, goodies, campagne d'affichage), gestion de projets et devis.</div>
+        <div class="exp-groups">
+          <div class="exp-group"><span class="exp-group-label digital">Digital</span><span class="exp-group-items">Réseaux sociaux · bannières · retouche photo · campagnes Waze</span></div>
+          <div class="exp-group"><span class="exp-group-label print">Print</span><span class="exp-group-items">Panneaux publicitaires · flyers · affiches · habillage bornes · goodies · campagne d'affichage</span></div>
+          <div class="exp-extra">+ gestion de projets et devis</div>
+        </div>
         <span class="exp-arrow">↗</span>
       </a>
       <a href="#" class="exp-row reveal" style="--i:3">
@@ -521,7 +592,10 @@
           <div class="exp-name">Mairie</div>
           <div class="exp-place">La Farlède — 2018</div>
         </div>
-        <div class="exp-desc">Visuels web (réseaux sociaux, bannières, retouche/montage photo), visuels print (brochures, flyers, affiches).</div>
+        <div class="exp-groups">
+          <div class="exp-group"><span class="exp-group-label digital">Digital</span><span class="exp-group-items">Réseaux sociaux · bannières · retouche/montage photo</span></div>
+          <div class="exp-group"><span class="exp-group-label print">Print</span><span class="exp-group-items">Brochures · flyers · affiches</span></div>
+        </div>
         <span class="exp-arrow">↗</span>
       </a>
       <a href="#" class="exp-row reveal" style="--i:4">
@@ -529,7 +603,11 @@
           <div class="exp-name">Pure'Comm</div>
           <div class="exp-place">La Garde — 2017 → 2018</div>
         </div>
-        <div class="exp-desc">Visuels web (réseaux sociaux, bannières, maquettes site web, identités visuelles), visuels print (flyers, affiches, brochures), gestion devis/facturation.</div>
+        <div class="exp-groups">
+          <div class="exp-group"><span class="exp-group-label digital">Digital</span><span class="exp-group-items">Réseaux sociaux · bannières · maquettes site web · identités visuelles</span></div>
+          <div class="exp-group"><span class="exp-group-label print">Print</span><span class="exp-group-items">Flyers · affiches · brochures</span></div>
+          <div class="exp-extra">+ gestion devis/facturation</div>
+        </div>
         <span class="exp-arrow">↗</span>
       </a>
     </div>
@@ -586,7 +664,7 @@
 <section id="formation">
   <div class="container">
     <div class="section-header reveal">
-      <h2>Making-off</h2>
+      <h2>Making-of</h2>
       <span class="eyebrow">04 — Formation</span>
     </div>
     <div class="degrees reveal-stagger">
@@ -617,6 +695,29 @@
         </div>
         <div class="degree-title">Bac option marketing</div>
         <div class="degree-sub">La Colinière, Nantes — 2009</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="et-maintenant">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>Et maintenant ?</h2>
+      <span class="eyebrow">05 — Et maintenant ?</span>
+    </div>
+    <div class="next-block reveal">
+      <p class="next-text">Je cherche une équipe avec laquelle créer, réfléchir et faire de belles choses.</p>
+      <p class="next-sub">CDI / CDD · agence ou entreprise · sur site, hybride ou télétravail</p>
+      <div class="next-tags">
+        <span class="chip-tag">Graphisme</span>
+        <span class="chip-tag">Motion</span>
+        <span class="chip-tag">Création de contenu</span>
+        <span class="chip-tag">Web</span>
+      </div>
+      <div class="next-actions">
+        <a href="mailto:estelle.lavenac@gmail.com" class="btn btn-solid">On en parle ? →</a>
+        <a href="CV-Estelle-Lavenac-2026.pdf" download="CV-Estelle-Lavenac-2026.pdf" class="btn btn-ghost">Télécharger mon CV ↓</a>
       </div>
     </div>
   </div>
@@ -753,7 +854,7 @@
     }
     ringLoop();
 
-    var hoverables = document.querySelectorAll('a, button, .btn, .card, .strength, .degree, .exp-row, .exp-row-simple, .exp-tab');
+    var hoverables = document.querySelectorAll('a, button, .btn, .card, .strength, .degree, .exp-row, .exp-row-simple, .exp-tab, .chip-tag');
     hoverables.forEach(function(el){
       el.addEventListener('mouseenter', function(){ ring.classList.add('is-active'); });
       el.addEventListener('mouseleave', function(){ ring.classList.remove('is-active'); });
