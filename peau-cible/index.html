@@ -47,6 +47,7 @@ h1,h2,h3{font-weight:500;margin:0;text-wrap:balance}
 .hl{position:relative;z-index:0;white-space:nowrap}
 .hl::after{content:"";position:absolute;z-index:-1;left:-.08em;right:-.12em;bottom:.02em;height:.46em;background:var(--sun);border-radius:999px}
 section{scroll-margin-top:80px}
+html:has(#promo:not([hidden])) section{scroll-margin-top:128px}
 
 /* The one CTA shape */
 .cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:var(--cta-h);padding:0 24px;border-radius:999px;border:0;background:var(--carbon);color:var(--blanc);font-size:15px;font-weight:500;white-space:nowrap;text-decoration:none;transition:transform .18s ease, background-color .18s ease, color .18s ease}
@@ -263,7 +264,7 @@ details p{margin:0 0 18px;color:var(--ink-2);max-width:62ch}
 .tot{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--carbon);padding-top:14px;font-size:20px;font-variant-numeric:tabular-nums}
 .panel .info{font-size:13px;color:var(--ink-3);margin:0;min-height:1.3em}
 .promo{background:var(--sun);color:var(--carbon);font-size:14px}
-.promo .wrap{display:flex;align-items:center;justify-content:center;gap:12px;min-height:44px;position:relative;padding-block:6px}
+.promo .wrap{height:auto;display:flex;align-items:center;justify-content:center;gap:12px;min-height:44px;position:relative;padding-block:6px}
 .promo p{margin:0;text-align:center}
 .promo .short{display:none}
 .promo .code{display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 5px 0 12px;border:1.5px dashed var(--carbon);border-radius:999px;background:transparent;color:inherit;font-family:var(--f-mono);font-size:13px;font-weight:500;letter-spacing:.08em;cursor:pointer}
@@ -331,14 +332,14 @@ details p{margin:0 0 18px;color:var(--ink-2);max-width:62ch}
 </head>
 <body>
 <div class="concept-bar" role="note">Projet conceptuel · Estelle Lavenac<span class="cb-x"> · aucune vente réelle</span> <a href="../projects/peau-cible.html">← Retour au projet</a></div>
-<div class="promo" id="promo" role="region" aria-label="Offre de bienvenue">
-  <div class="wrap">
-    <p><span class="long">Première commande&nbsp;: −15&nbsp;% avec le code</span><span class="short">−15&nbsp;% sur la 1<sup>re</sup> commande</span></p>
-    <button type="button" class="code" id="promoCopy" aria-label="Copier le code NEW15">NEW15 <span>Copier</span></button>
-    <button type="button" class="px" id="promoClose" aria-label="Masquer l’offre">×</button>
-  </div>
-</div>
 <header class="top">
+<div class="promo" id="promo" role="region" aria-label="Offre de bienvenue">
+    <div class="wrap">
+      <p><span class="long">Première commande&nbsp;: −15&nbsp;% avec le code</span><span class="short">−15&nbsp;% sur la 1<sup>re</sup> commande</span></p>
+      <button type="button" class="code" id="promoCopy" aria-label="Copier le code NEW15">NEW15 <span>Copier</span></button>
+      <button type="button" class="px" id="promoClose" aria-label="Masquer l’offre">×</button>
+    </div>
+  </div>
   <div class="wrap">
     <a class="logo" href="#top">PEAU CIBLE.</a>
     <nav class="nav" aria-label="Navigation principale">
