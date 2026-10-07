@@ -262,6 +262,27 @@ details p{margin:0 0 18px;color:var(--ink-2);max-width:62ch}
 .done-order .note{font-size:13px;color:var(--ink-3)}
 .tot{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--carbon);padding-top:14px;font-size:20px;font-variant-numeric:tabular-nums}
 .panel .info{font-size:13px;color:var(--ink-3);margin:0;min-height:1.3em}
+.promo{background:var(--sun);color:var(--carbon);font-size:14px}
+.promo .wrap{display:flex;align-items:center;justify-content:center;gap:12px;min-height:44px;position:relative;padding-block:6px}
+.promo p{margin:0;text-align:center}
+.promo .short{display:none}
+.promo .code{display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 5px 0 12px;border:1.5px dashed var(--carbon);border-radius:999px;background:transparent;color:inherit;font-family:var(--f-mono);font-size:13px;font-weight:500;letter-spacing:.08em;cursor:pointer}
+.promo .code span{font-size:10px;letter-spacing:.06em;text-transform:uppercase;background:var(--carbon);color:var(--sun);border-radius:999px;padding:3px 8px}
+.promo .code:hover{background:color-mix(in srgb,var(--carbon) 8%,transparent)}
+.promo .px{position:absolute;right:var(--gutter);top:50%;transform:translateY(-50%);width:28px;height:28px;border:0;border-radius:50%;background:transparent;color:inherit;font-size:18px;line-height:1;cursor:pointer}
+.promo .px:hover{background:color-mix(in srgb,var(--carbon) 10%,transparent)}
+@media (max-width:600px){.promo .long{display:none}.promo .short{display:inline}.promo{font-size:13px}.promo .wrap{justify-content:flex-start;padding-right:48px}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.promo-f{display:flex;gap:8px}
+.promo-f input{flex:1;min-width:0;height:44px;border:1px solid var(--mineral);border-radius:999px;padding:0 16px;font:inherit;font-size:15px;text-transform:uppercase;letter-spacing:.06em;background:var(--blanc);color:var(--carbon)}
+.promo-f input::placeholder{text-transform:none;letter-spacing:0;color:var(--ink-3)}
+.promo-f button{height:44px;padding:0 18px;border-radius:999px;border:1.5px solid var(--carbon);background:transparent;color:var(--carbon);font:inherit;font-size:14px;font-weight:500;cursor:pointer}
+.promo-msg{margin:-6px 0 0;font-size:13px;color:var(--ink-3)}
+.promo-msg:empty{display:none}
+.promo-msg.ok{color:var(--carbon)}
+.promo-msg button{border:0;background:none;padding:0;font:inherit;text-decoration:underline;color:inherit;cursor:pointer}
+.sub{display:flex;justify-content:space-between;font-size:15px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.sub[hidden]{display:none}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:50;background:var(--carbon);color:var(--sun);border-radius:999px;padding:12px 20px;font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;animation:fade .2s ease}
 /* Sur mesure */
 .sm-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(20px,3vw,40px);align-items:start}
@@ -310,6 +331,13 @@ details p{margin:0 0 18px;color:var(--ink-2);max-width:62ch}
 </head>
 <body>
 <div class="concept-bar" role="note">Projet conceptuel · Estelle Lavenac<span class="cb-x"> · aucune vente réelle</span> <a href="../projects/peau-cible.html">← Retour au projet</a></div>
+<div class="promo" id="promo" role="region" aria-label="Offre de bienvenue">
+  <div class="wrap">
+    <p><span class="long">Première commande&nbsp;: −15&nbsp;% avec le code</span><span class="short">−15&nbsp;% sur la 1<sup>re</sup> commande</span></p>
+    <button type="button" class="code" id="promoCopy" aria-label="Copier le code NEW15">NEW15 <span>Copier</span></button>
+    <button type="button" class="px" id="promoClose" aria-label="Masquer l’offre">×</button>
+  </div>
+</div>
 <header class="top">
   <div class="wrap">
     <a class="logo" href="#top">PEAU CIBLE.</a>
@@ -509,6 +537,10 @@ details p{margin:0 0 18px;color:var(--ink-2);max-width:62ch}
 <aside class="panel" id="cart" role="dialog" aria-modal="true" aria-labelledby="cartTitle" hidden>
   <div class="hd"><h2 id="cartTitle">Panier</h2><button class="x" type="button" data-close aria-label="Fermer le panier">×</button></div>
   <div class="lines" id="lines"></div>
+  <form class="promo-f" id="promoForm" autocomplete="off"><label class="sr" for="promoIn">Code promo</label><input id="promoIn" name="code" placeholder="Code promo" maxlength="20"><button type="submit">Appliquer</button></form>
+  <p class="promo-msg" id="promoMsg" aria-live="polite"></p>
+  <div class="sub" id="subRow" hidden><span>Sous-total</span><span id="subtotal">0 €</span></div>
+  <div class="sub" id="discRow" hidden><span>Code NEW15 (−15&nbsp;%)</span><span id="discount">0 €</span></div>
   <div class="tot"><span>Total</span><span id="total">0 €</span></div>
   <button class="cta full" id="checkout" type="button">Commander</button>
   <p class="info" id="checkoutInfo" aria-live="polite"></p>
@@ -529,7 +561,7 @@ const SERUMS = [
 const FILTERS = [['tous','Tous'],['matin','Matin'],['soir','Soir'],['grasse','Peau grasse'],['seche','Peau sèche'],['sensible','Peau sensible']];
 const $ = s => document.querySelector(s);
 const byId = id => SERUMS.find(x => x.id === id);
-const euro = n => n.toLocaleString('fr-FR') + ' €';
+const euro = n => (Number.isInteger(n) ? n.toLocaleString('fr-FR') : n.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})) + ' €';
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const smooth = () => matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
 
@@ -642,9 +674,10 @@ function renderCart(){
     return `<div class="line"><span class="sw" style="${bg}">${s.num}</span><span class="nm">${esc(s.name)}<small>${euro(s.price)}</small></span>
       <span class="qty" style="height:36px"><button type="button" data-dec="${id}" aria-label="Un de moins">−</button><output>${n}</output><button type="button" data-inc="${id}" aria-label="Un de plus">+</button></span></div>`;
   }).join('') : '<p class="empty">Votre panier est vide.</p>';
-  $('#total').textContent = euro(total);
+  showTotals(total);
   $('#checkoutInfo').textContent = '';
   $('#checkout').hidden = false;
+  $('#promoForm').hidden = false;
   if(typeof save === 'function') save();
 }
 $('#lines').addEventListener('click', e => {
@@ -658,22 +691,68 @@ document.querySelectorAll('.mnav a').forEach(l => l.addEventListener('click', ()
 $('#checkout').onclick = () => {
   if(!cart.size){ $('#checkoutInfo').textContent = 'Ajoutez un sérum pour continuer.'; return; }
   const items = [...cart.entries()].map(([id,n]) => ({s: itemOf(id), n}));
-  const total = items.reduce((t,{s,n}) => t + s.price * n, 0);
+  const sub = items.reduce((t,{s,n}) => t + s.price * n, 0);
+  const disc = discountOf(sub), total = sub - disc;
   const ref = 'PC-' + String(Math.floor(1000 + Math.random() * 9000));
   $('#lines').innerHTML = `<div class="done-order">
     <span class="tag dark">Commande ${ref}</span>
     <h3>Merci, c’est noté.</h3>
     <p>Votre routine arrive sous 48 h. Un e-mail de confirmation récapitule votre commande.</p>
-    <ul>${items.map(({s,n}) => `<li><span>${n} × ${esc(s.name)}</span><span>${euro(s.price * n)}</span></li>`).join('')}</ul>
+    <ul>${items.map(({s,n}) => `<li><span>${n} × ${esc(s.name)}</span><span>${euro(s.price * n)}</span></li>`).join('')}${disc ? `<li><span>Code NEW15 (−15 %)</span><span>−${euro(disc)}</span></li>` : ''}<li><strong>Total</strong><strong>${euro(total)}</strong></li></ul>
     <p class="note">Projet concept : aucune commande réelle ni aucun paiement n’est effectué.</p>
   </div>`;
   $('#total').textContent = euro(total);
   cart.clear(); save();
+  orders++; store('pc-orders', orders);
+  if(disc){ promo = null; store('pc-promo', ''); }
+  $('#promoMsg').textContent = '';
+  $('#subRow').hidden = $('#discRow').hidden = true;
+  $('#promoForm').hidden = true;
   $('#cartCount').textContent = 0;
   $('#checkout').hidden = true;
 };
 function save(){ try { localStorage.setItem('pc-cart', JSON.stringify([...cart.entries()].filter(([k]) => typeof k === 'number'))); } catch(e){} }
 try { (JSON.parse(localStorage.getItem('pc-cart') || '[]')).forEach(([k,n]) => { if(byId(k)) cart.set(k, n); }); } catch(e){}
+/* Promo NEW15 : −15 % sur la première commande */
+const PROMO = 'NEW15', RATE = .15;
+function read(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+function store(k,v){ try { localStorage.setItem(k, v); } catch(e){} }
+var orders = +(read('pc-orders') || 0);
+var promo = read('pc-promo') === PROMO && !orders ? PROMO : null;
+function discountOf(sub){ return promo ? Math.round(sub * RATE * 100) / 100 : 0; }
+function showTotals(sub){
+  const d = sub ? discountOf(sub) : 0;
+  $('#subRow').hidden = $('#discRow').hidden = !d;
+  $('#subtotal').textContent = euro(sub);
+  $('#discount').textContent = '−' + euro(d);
+  $('#total').textContent = euro(sub - d);
+}
+function promoState(){
+  if(!promo) return;
+  const m = $('#promoMsg');
+  m.className = 'promo-msg ok';
+  m.innerHTML = 'Code NEW15 appliqué : −15 % sur votre commande. <button type="button" id="promoRemove">Retirer</button>';
+  $('#promoIn').value = '';
+}
+function applyPromo(code){
+  const c = String(code || '').trim().toUpperCase(), m = $('#promoMsg');
+  m.className = 'promo-msg';
+  if(!c){ m.textContent = 'Saisissez un code.'; return; }
+  if(c !== PROMO){ m.textContent = 'Ce code n’est pas valide.'; return; }
+  if(orders){ m.textContent = 'Ce code est réservé à la première commande.'; return; }
+  promo = PROMO; store('pc-promo', PROMO); promoState(); renderCart();
+}
+$('#promoForm').addEventListener('submit', e => { e.preventDefault(); applyPromo($('#promoIn').value); });
+$('#promoMsg').addEventListener('click', e => { if(e.target.id === 'promoRemove'){ promo = null; store('pc-promo', ''); $('#promoMsg').textContent = ''; renderCart(); } });
+$('#promoCopy').onclick = () => {
+  try { navigator.clipboard && navigator.clipboard.writeText(PROMO).catch(() => {}); } catch(e){}
+  if(!promo) $('#promoIn').value = PROMO;
+  toast('Code NEW15 copié · à saisir dans le panier');
+};
+$('#promoClose').onclick = () => { $('#promo').hidden = true; store('pc-promo-hidden', '1'); };
+if(read('pc-promo-hidden') === '1') $('#promo').hidden = true;
+promoState();
+
 let tt;
 function toast(msg){ const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(tt); tt = setTimeout(() => t.hidden = true, 1800); }
 
