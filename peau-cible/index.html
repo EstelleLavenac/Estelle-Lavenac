@@ -153,6 +153,11 @@ html:has(#promo:not([hidden])) section{scroll-margin-top:128px}
 .card:hover .stage img{transform:scale(1.03)}
 .card .nm3{display:block;font-size:21px;font-weight:500;letter-spacing:-.02em;line-height:1.15}
 .card .promise{display:block;margin:4px 0 0;opacity:.75;font-size:15px}
+.crate{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:14px;font-weight:500}
+.crate svg{width:14px;height:14px}
+.crate small{font-weight:400;opacity:.7;font-size:13px}
+.srate{color:var(--carbon);text-decoration:none}
+.srate small{text-decoration:underline;text-underline-offset:3px}
 .card .buy{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto}
 .card .price{font-size:20px;font-variant-numeric:tabular-nums}
 .v-sun{background:var(--sun)}
@@ -654,6 +659,7 @@ details p{margin:0 0 18px;color:var(--ink-2);max-width:62ch}
   <div>
     <h3 class="name" id="sName"></h3>
     <p class="promise" id="sPromise"></p>
+    <a class="crate srate" id="sRate" href="#avis" data-close></a>
     <p class="desc" id="sDesc"></p>
   </div>
   <dl class="facts" id="sFacts"></dl>
@@ -727,7 +733,7 @@ $('#cards').innerHTML = SERUMS.map(s => `
     <button class="open" type="button" data-open="${s.id}" aria-label="Voir la fiche N° ${s.num} ${esc(s.name)}">
       <span class="row"><span class="tag${s.style==='sun'?' dark':''}">N° ${s.num}</span><span class="mono" style="opacity:.7">${s.a1} ${s.p1}</span></span>
       <span class="stage">${photo(s)}</span>
-      <span><span class="nm3">${esc(s.name)}</span><span class="promise">${esc(s.promise)}</span></span>
+      <span><span class="nm3">${esc(s.name)}</span><span class="promise">${esc(s.promise)}</span><span class="crate" data-rate="${s.num}"></span></span>
     </button>
     <div class="buy">
       <span class="price">${euro(s.price)}</span>
@@ -1036,17 +1042,32 @@ const REVIEWS = [
 let mine = [];
 try { mine = JSON.parse(read('pc-reviews') || '[]'); } catch(e){ mine = []; }
 let rvFilter = 'tous', rvNote = 0;
+/* Répartition des notes par sérum [5★, 4★, 3★, 2★, 1★] (illustratif) */
+const STATS = {'01':[36,12,3,1,0], '02':[20,14,5,2,0], '03':[31,5,1,0,0], '04':[27,13,3,1,0], 'SM':[17,5,1,0,0]};
+function distOf(k){
+  const keys = k === 'tous' ? Object.keys(STATS) : [k];
+  const d = [0,0,0,0,0];
+  keys.forEach(x => STATS[x].forEach((c,i) => d[i] += c));
+  mine.filter(r => k === 'tous' || r.s === k).forEach(r => d[5 - r.n]++);
+  const n = d.reduce((a,b) => a + b, 0), sum = d.reduce((t,c,i) => t + c * (5 - i), 0);
+  return {d, n, avg: n ? sum / n : 0};
+}
+const fr1 = x => x.toLocaleString('fr-FR', {minimumFractionDigits:1, maximumFractionDigits:1});
+function paintRates(){
+  document.querySelectorAll('[data-rate]').forEach(el => { const st = distOf(el.dataset.rate); el.innerHTML = `${STAR}${fr1(st.avg)} <small>(${st.n} avis)</small>`; el.setAttribute('aria-label', `Note ${fr1(st.avg)} sur 5, ${st.n} avis`); });
+}
 const starsHTML = n => Array.from({length:5}, (_,i) => i < n ? STAR : STAR.replace('<svg', '<svg class="off"')).join('');
 const serumLabel = k => k === 'SM' ? 'Sur mesure' : 'N° ' + k;
 function renderReviews(){
   const all = [...mine, ...REVIEWS];
-  const avg = all.reduce((t,r) => t + r.n, 0) / all.length;
-  $('#rvAvg').textContent = avg.toLocaleString('fr-FR', {minimumFractionDigits:1, maximumFractionDigits:1});
+  const st = distOf(rvFilter), avg = st.avg;
+  $('#rvAvg').textContent = fr1(avg);
   $('#rvStars').innerHTML = starsHTML(Math.round(avg));
   $('#rvStars').setAttribute('aria-label', `Note moyenne ${$('#rvAvg').textContent} sur 5`);
   $('#rvStars').setAttribute('role', 'img');
-  $('#rvCount').textContent = `${all.length} avis`;
-  $('#rvBars').innerHTML = [5,4,3,2,1].map(k => { const c = all.filter(r => r.n === k).length; return `<li><span>${k}★</span><i style="--w:${all.length ? c / all.length * 100 : 0}%"></i><span>${c}</span></li>`; }).join('');
+  $('#rvCount').textContent = `${st.n} avis${rvFilter === 'tous' ? ' · toute la gamme' : ' · ' + serumLabel(rvFilter)}`;
+  $('#rvBars').innerHTML = [5,4,3,2,1].map(k => { const c = st.d[5 - k]; return `<li><span>${k}★</span><i style="--w:${st.n ? c / st.n * 100 : 0}%"></i><span>${c}</span></li>`; }).join('');
+  paintRates();
   const shown = all.filter(r => rvFilter === 'tous' || r.s === rvFilter);
   $('#rvCards').innerHTML = shown.length ? shown.map(r => `<article class="rv${r.mine ? ' mine' : ''}">
       <span class="stars" role="img" aria-label="${r.n} sur 5">${starsHTML(r.n)}</span>
@@ -1093,6 +1114,8 @@ $('#rvForm').addEventListener('submit', e => {
 });
 $('#rvText').addEventListener('input', () => { $('#rvText').removeAttribute('aria-invalid'); $('#rvTextErr').textContent = ''; });
 renderReviews();
+const _openSheet = openSheet;
+openSheet = id => { _openSheet(id); const r = $('#sRate'); r.dataset.rate = byId(id).num; paintRates(); };
 
 let tt;
 function toast(msg){ const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(tt); tt = setTimeout(() => t.hidden = true, 1800); }
