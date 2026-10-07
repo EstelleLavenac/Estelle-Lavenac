@@ -182,16 +182,36 @@ html:has(#promo:not([hidden])) section{scroll-margin-top:128px}
 .result p{margin:0;font-size:15px}
 .result .note{font-size:13px;color:var(--ink-2)}
 
-/* Routine */
-.routine-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-@media (max-width:760px){.routine-grid{grid-template-columns:1fr}}
-.rcol{border-radius:var(--r-l);padding:24px}
-.rcol h3{font-size:26px;letter-spacing:-.02em}
-.steps{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-direction:column;gap:8px;counter-reset:s}
-.steps li{display:flex;gap:12px;align-items:center;background:var(--blanc);border-radius:var(--r-m);padding:12px 14px;font-size:15px}
-.steps li::before{counter-increment:s;content:counter(s);display:grid;place-items:center;flex:none;width:28px;height:28px;border-radius:50%;background:var(--carbon);color:var(--sun);font-family:var(--f-mono);font-size:11px}
-.steps li.serum{font-weight:500}
-.steps li.serum::before{background:var(--sun);color:var(--carbon)}
+/* Routine — timeline à onglets */
+.rtabs{display:inline-flex;gap:4px;padding:4px;border-radius:999px;background:var(--brume);margin-bottom:clamp(28px,4vw,48px)}
+.rtabs button{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 22px;border:0;border-radius:999px;background:transparent;color:var(--carbon);font:inherit;font-size:15px;font-weight:500;cursor:pointer;transition:background-color .2s ease,color .2s ease}
+.rtabs button svg{width:18px;height:18px}
+.rtabs button[aria-selected="true"]{background:var(--carbon);color:var(--sun)}
+.rtabs button:focus-visible{outline:2px solid var(--carbon);outline-offset:2px}
+.tl{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;position:relative}
+.tl::before{content:"";position:absolute;top:44px;left:calc(100%/6);right:calc(100%/6);border-top:1.5px dashed var(--mineral)}
+.tl li{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;animation:tlin .45s ease both}
+.tl li:nth-child(2){animation-delay:.08s}.tl li:nth-child(3){animation-delay:.16s}
+@keyframes tlin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.tl .ic{position:relative;z-index:1;width:88px;height:88px;border-radius:50%;display:grid;place-items:center;background:var(--blanc);border:1.5px solid var(--mineral);color:var(--carbon)}
+.tl .ic svg{width:40px;height:40px}
+.tl li.key .ic{background:var(--sun);border-color:var(--sun)}
+.tl .n{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--ink-3);margin-top:6px}
+.tl h3{font-size:24px;letter-spacing:-.02em;font-weight:500;margin:0}
+.tl p{margin:0;color:var(--ink-2);font-size:15px;max-width:26ch}
+.tl .pick{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:4px}
+.tl .pick button{height:32px;padding:0 12px;border-radius:999px;border:1px solid var(--carbon);background:transparent;color:var(--carbon);font-family:var(--f-mono);font-size:12px;letter-spacing:.04em;cursor:pointer}
+.tl .pick button:hover{background:var(--carbon);color:var(--sun)}
+@media (prefers-reduced-motion:reduce){.tl li{animation:none}}
+@media (max-width:760px){
+  .rtabs{display:flex;width:100%}.rtabs button{flex:1;justify-content:center}
+  .tl{grid-template-columns:1fr;gap:28px}
+  .tl::before{top:36px;bottom:36px;left:35px;right:auto;border-top:0;border-left:1.5px dashed var(--mineral)}
+  .tl li{display:grid;grid-template-columns:72px minmax(0,1fr);column-gap:18px;row-gap:4px;text-align:left;align-items:start}
+  .tl .ic{width:72px;height:72px;grid-row:1 / span 4}.tl .ic svg{width:32px;height:32px}
+  .tl .n{margin-top:4px}.tl h3{font-size:21px}.tl p{max-width:none}
+  .tl .pick{justify-content:flex-start}
+}
 
 /* Table */
 .tbl-wrap{overflow-x:auto;border-radius:var(--r-l);border:1px solid var(--mineral)}
@@ -446,11 +466,11 @@ details p{margin:0 0 18px;color:var(--ink-2);max-width:62ch}
         <span class="label mono"><b>04</b>Routine</span>
         <h2 class="big">Matin, soir.<span class="off">Rien de plus.</span></h2>
       </div>
-      <div class="filters" role="group" aria-label="Choisir le sérum de la routine" id="rPick"></div>
-      <div class="routine-grid">
-        <div class="rcol" style="background:var(--sun)"><h3>Matin</h3><ol class="steps" id="rMorning"></ol></div>
-        <div class="rcol" style="background:var(--brume)"><h3>Soir</h3><ol class="steps" id="rEvening"></ol></div>
+      <div class="rtabs" role="tablist" aria-label="Moment de la routine">
+        <button type="button" role="tab" id="tab-matin" aria-controls="rPanel" aria-selected="true" data-moment="matin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>Matin</button>
+        <button type="button" role="tab" id="tab-soir" aria-controls="rPanel" aria-selected="false" data-moment="soir" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>Soir</button>
       </div>
+      <div id="rPanel" role="tabpanel" aria-labelledby="tab-matin"><ol class="tl" id="tl"></ol></div>
     </div>
   </section>
 
@@ -843,20 +863,46 @@ $('#smAdd').onclick = () => {
 };
 compose();
 
-/* Routine */
-$('#rPick').innerHTML = SERUMS.map(s => `<button type="button" class="chip" data-r="${s.id}" aria-pressed="${s.id===routineId}">N° ${s.num}</button>`).join('');
-$('#rPick').addEventListener('click', e => {
-  const b = e.target.closest('[data-r]'); if(!b) return;
-  routineId = +b.dataset.r;
-  document.querySelectorAll('#rPick .chip').forEach(c => c.setAttribute('aria-pressed', +c.dataset.r === routineId));
-  renderRoutine();
-});
+/* Routine — timeline Matin / Soir */
+const ICONS = {
+  clean: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 7c6 8 11 14 11 20a11 11 0 0 1-22 0c0-6 5-12 11-20z"/><path d="M19 29a5 5 0 0 0 5 5"/><circle cx="37" cy="12" r="2.5"/><circle cx="11" cy="15" r="1.8"/></svg>',
+  serum: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6h8v6h-8z"/><path d="M22 12v6h4v-6"/><rect x="15" y="18" width="18" height="24" rx="5"/><path d="M15 26h18"/><path d="M38 30c1.6 2.2 2.5 3.8 2.5 5a2.5 2.5 0 0 1-5 0c0-1.2.9-2.8 2.5-5z"/></svg>',
+  day: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="22" width="30" height="18" rx="5"/><path d="M11 22v-3a2 2 0 0 1 2-2h22a2 2 0 0 1 2 2v3"/><circle cx="24" cy="31" r="3.2"/><path d="M24 6v3M14 9l2 2.4M34 9l-2 2.4M10 15.5h3M35 15.5h3"/></svg>',
+  night: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="22" width="30" height="18" rx="5"/><path d="M11 22v-3a2 2 0 0 1 2-2h22a2 2 0 0 1 2 2v3"/><path d="M27.5 27.5a4.5 4.5 0 1 1-5.5 5.5 3.6 3.6 0 0 0 5.5-5.5z"/><path d="M33 6l.8 1.8L35.6 8.6l-1.8.8L33 11.2l-.8-1.8-1.8-.8 1.8-.8z"/></svg>'
+};
+const ROUTINE = {
+  matin: [
+    {ic:'clean', t:'Nettoyer', p:'Un nettoyant doux, à l’eau tiède.'},
+    {ic:'serum', t:'Le sérum', p:'2 à 3 gouttes sur peau sèche, en pressions.', serums:[1,4], key:true},
+    {ic:'day', t:'Protéger', p:'Crème hydratante, puis SPF 30+.'}
+  ],
+  soir: [
+    {ic:'clean', t:'Nettoyer', p:'Démaquiller, puis nettoyer sans frotter.'},
+    {ic:'serum', t:'Le sérum', p:'2 à 3 gouttes sur peau sèche, en pressions.', serums:[2,3], key:true},
+    {ic:'night', t:'Crème de nuit', p:'Une couche fine pour sceller les actifs.'}
+  ]
+};
+let moment = 'matin';
 function renderRoutine(){
-  const s = byId(routineId), am = s.when.includes('matin');
-  const li = (t, serum) => `<li${serum?' class="serum"':''}>${t}</li>`;
-  $('#rMorning').innerHTML = li('Nettoyant doux') + li(am ? `N° ${s.num} ${s.name}` : 'N° 04 Sérum Hydratant Repulpant', true) + li('Crème hydratante') + li('SPF 30+');
-  $('#rEvening').innerHTML = li('Nettoyant') + li(`N° ${s.num} ${s.name}`, true) + li('Crème de nuit');
+  $('#tl').innerHTML = ROUTINE[moment].map((s, i) => `<li${s.key ? ' class="key"' : ''}>
+      <span class="ic">${ICONS[s.ic]}</span>
+      <span class="n">0${i + 1}</span>
+      <h3>${s.t}</h3>
+      <p>${s.p}</p>
+      ${s.serums ? `<span class="pick">${s.serums.map(id => `<button type="button" data-open="${id}" aria-label="Voir la fiche ${esc(byId(id).name)}">N° ${byId(id).num}</button>`).join('')}</span>` : ''}
+    </li>`).join('');
 }
+const rTabs = [...document.querySelectorAll('.rtabs [role="tab"]')];
+function selectMoment(m, focus){
+  moment = m;
+  rTabs.forEach(b => { const on = b.dataset.moment === m; b.setAttribute('aria-selected', on); b.tabIndex = on ? 0 : -1; if(on && focus) b.focus(); });
+  $('#rPanel').setAttribute('aria-labelledby', 'tab-' + m);
+  renderRoutine();
+}
+rTabs.forEach(b => {
+  b.addEventListener('click', () => selectMoment(b.dataset.moment));
+  b.addEventListener('keydown', e => { if(e.key === 'ArrowRight' || e.key === 'ArrowLeft'){ e.preventDefault(); selectMoment(moment === 'matin' ? 'soir' : 'matin', true); } });
+});
 
 /* Table */
 $('#tbl').innerHTML = SERUMS.map(s => `<tr><td><span class="n">${s.num}</span>${esc(s.name)}</td><td>${esc(s.a1)} <b style="font-weight:500">${s.p1}</b></td><td>${esc(s.a2)} <b style="font-weight:500">${s.p2}</b></td><td>${s.ph}</td><td>${s.whenTxt}</td></tr>`).join('');
