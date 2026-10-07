@@ -221,6 +221,49 @@ th{font-family:var(--f-mono);font-weight:400;font-size:10px;letter-spacing:.1em;
 tr:last-child td{border-bottom:0}
 td .n{display:inline-grid;place-items:center;min-width:38px;height:26px;border-radius:999px;background:var(--sun);font-family:var(--f-mono);font-size:11px;font-weight:500;margin-right:10px}
 
+/* Avis clients */
+.rv-grid{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:start}
+.rv-sum{position:sticky;top:150px;display:flex;flex-direction:column;gap:16px}
+.rv-score{display:flex;align-items:baseline;gap:10px}
+.rv-score b{font-size:clamp(56px,7vw,88px);font-weight:400;letter-spacing:-.05em;line-height:.9}
+.rv-score span{font-size:15px;color:var(--ink-2)}
+.stars{display:inline-flex;gap:2px;color:var(--carbon)}
+.stars svg{width:16px;height:16px}
+.stars .off{color:var(--mineral)}
+.rv-sum .stars svg{width:22px;height:22px}
+.rv-bars{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-family:var(--f-mono);font-size:12px}
+.rv-bars li{display:grid;grid-template-columns:22px minmax(0,1fr) 24px;gap:10px;align-items:center}
+.rv-bars i{display:block;height:8px;border-radius:999px;background:var(--brume);overflow:hidden}
+.rv-bars i::before{content:"";display:block;height:100%;width:var(--w);background:var(--carbon);border-radius:inherit}
+.rv-note{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin:0}
+.rv-list{display:flex;flex-direction:column;gap:18px}
+.rv-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.rv{background:var(--brume);border-radius:var(--r-l);padding:22px;display:flex;flex-direction:column;gap:10px;animation:tlin .4s ease both}
+.rv.mine{background:var(--sun)}
+.rv h3{font-size:19px;font-weight:500;letter-spacing:-.01em;margin:0}
+.rv p{margin:0;color:var(--ink-2);font-size:15px}
+.rv.mine p{color:var(--carbon)}
+.rv .meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:6px}
+.rv .meta span{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;border:1px solid color-mix(in srgb,var(--carbon) 25%,transparent);border-radius:999px;padding:4px 9px}
+.rv .by{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px}
+.rv .by small{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.rv-empty{color:var(--ink-3);margin:0}
+.rv-form{background:var(--blanc);border:1.5px solid var(--carbon);border-radius:var(--r-l);padding:22px;display:flex;flex-direction:column;gap:14px}
+.rv-form[hidden]{display:none}
+.rv-form h3{font-size:22px;font-weight:500;margin:0}
+.rv-form textarea{min-height:110px;padding:12px 14px;border:1px solid var(--mineral);border-radius:12px;font:inherit;font-size:15px;resize:vertical;color:var(--carbon)}
+.rv-form textarea:focus{outline:none;border-color:var(--carbon);box-shadow:0 0 0 3px color-mix(in srgb,var(--sun) 70%,transparent)}
+.rate{display:flex;gap:4px;border:0;margin:0;padding:0}
+.rate legend{font-size:13px;font-weight:500;margin-bottom:6px;padding:0}
+.rate label{cursor:pointer;color:var(--mineral);display:inline-flex}
+.rate label svg{width:30px;height:30px}
+.rate input{position:absolute;opacity:0;width:1px;height:1px}
+.rate label.on{color:var(--carbon)}
+.rate input:focus-visible + svg{outline:2px solid var(--carbon);outline-offset:2px;border-radius:4px}
+.rv-acts{display:flex;gap:10px;flex-wrap:wrap}
+@media (max-width:900px){.rv-grid{grid-template-columns:1fr}.rv-sum{position:static}}
+@media (max-width:640px){.rv-cards{grid-template-columns:1fr}}
+
 /* FAQ */
 .faq{display:flex;flex-direction:column;gap:8px;max-width:860px}
 details{background:var(--brume);border-radius:var(--r-m);padding:0 20px}
@@ -400,7 +443,7 @@ details p{margin:0 0 18px;color:var(--ink-2);max-width:62ch}
   <div class="wrap">
     <a class="logo" href="#top">PEAU CIBLE.</a>
     <nav class="nav" aria-label="Navigation principale">
-      <a href="#serums">Sérums</a><a href="#diagnostic">Diagnostic</a><a href="#sur-mesure">Sur mesure</a><a href="#routine">Routine</a><a href="#faq">Questions</a>
+      <a href="#serums">Sérums</a><a href="#diagnostic">Diagnostic</a><a href="#sur-mesure">Sur mesure</a><a href="#routine">Routine</a><a href="#avis">Avis</a><a href="#faq">Questions</a>
     </nav>
     <div class="hd-actions"><button class="burger" id="menuOpen" type="button" aria-label="Ouvrir le menu" aria-haspopup="dialog"><span></span><span></span><span></span></button>
     <button class="cta alt" id="cartOpen" type="button" aria-label="Ouvrir le panier">Panier <span class="count" id="cartCount">0</span></button></div>
@@ -533,10 +576,46 @@ details p{margin:0 0 18px;color:var(--ink-2);max-width:62ch}
     </div>
   </section>
 
+  <section class="sec" id="avis" style="padding-top:0">
+    <div class="wrap">
+      <div class="head">
+        <span class="label mono"><b>06</b>Avis clients</span>
+        <h2 class="big">Des avis.<span class="off">Pas des promesses.</span></h2>
+      </div>
+      <div class="rv-grid">
+        <aside class="rv-sum" aria-label="Note moyenne">
+          <div class="rv-score"><b id="rvAvg">–</b><span>/ 5</span></div>
+          <span class="stars" id="rvStars"></span>
+          <p id="rvCount" style="margin:0;color:var(--ink-2)"></p>
+          <ul class="rv-bars" id="rvBars"></ul>
+          <button type="button" class="cta" id="rvOpen">Donner mon avis</button>
+          <p class="rv-note">Avis illustratifs · Peau Cible est une marque fictive.</p>
+        </aside>
+        <div class="rv-list">
+          <div class="filters" role="group" aria-label="Filtrer les avis" id="rvFilters"></div>
+          <form class="rv-form" id="rvForm" novalidate hidden>
+            <h3 tabindex="-1">Votre avis</h3>
+            <fieldset class="rate" id="rvRate"><legend>Votre note</legend></fieldset>
+            <p class="err" id="rvRateErr" style="font-size:12.5px;color:#8A5A00;margin:-8px 0 0"></p>
+            <div class="row2">
+              <div class="fld"><label for="rvSerum">Sérum</label><select id="rvSerum"></select></div>
+              <div class="fld"><label for="rvSkin">Type de peau</label><select id="rvSkin"><option>Peau mixte</option><option>Peau grasse</option><option>Peau sèche</option><option>Peau sensible</option><option>Peau normale</option></select></div>
+            </div>
+            <div class="fld"><label for="rvTitle">Titre</label><input id="rvTitle" maxlength="60" placeholder="En quelques mots"></div>
+            <div class="fld"><label for="rvText">Votre avis</label><textarea id="rvText" maxlength="400" placeholder="Ce qui a changé, la texture, la tolérance…"></textarea><p class="err" id="rvTextErr"></p></div>
+            <div class="fld"><label for="rvName">Prénom</label><input id="rvName" maxlength="30" autocomplete="given-name"></div>
+            <div class="rv-acts"><button type="submit" class="cta">Publier mon avis</button><button type="button" class="cta alt" id="rvCancel">Annuler</button></div>
+          </form>
+          <div class="rv-cards" id="rvCards" aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="sec" id="faq" style="padding-top:0">
     <div class="wrap">
       <div class="head">
-        <span class="label mono"><b>06</b>Questions</span>
+        <span class="label mono"><b>07</b>Questions</span>
       </div>
       <div class="faq">
         <details open><summary>Puis-je associer deux sérums ?</summary><p>Oui, un le matin et un le soir. Par exemple N° 04 le matin, N° 02 le soir.</p></details>
@@ -590,7 +669,7 @@ details p{margin:0 0 18px;color:var(--ink-2);max-width:62ch}
 
 <aside class="panel" id="menu" role="dialog" aria-modal="true" aria-labelledby="menuTitle" hidden>
   <div class="hd"><h2 id="menuTitle">Menu</h2><button class="x" type="button" data-close aria-label="Fermer le menu">×</button></div>
-  <nav class="mnav" aria-label="Navigation mobile"><a href="#serums">Sérums</a><a href="#diagnostic">Diagnostic</a><a href="#sur-mesure">Sur mesure</a><a href="#routine">Routine</a><a href="#transparence">Transparence</a><a href="#faq">Questions</a></nav>
+  <nav class="mnav" aria-label="Navigation mobile"><a href="#serums">Sérums</a><a href="#diagnostic">Diagnostic</a><a href="#sur-mesure">Sur mesure</a><a href="#routine">Routine</a><a href="#transparence">Transparence</a><a href="#avis">Avis</a><a href="#faq">Questions</a></nav>
 </aside>
 <aside class="panel" id="cart" role="dialog" aria-modal="true" aria-labelledby="cartTitle" hidden>
   <div class="hd"><h2 id="cartTitle">Panier</h2><button class="x" type="button" data-close aria-label="Fermer le panier">×</button></div>
@@ -943,6 +1022,77 @@ $('#lines').addEventListener('click', e => {
     });
   }
 });
+
+/* Avis clients (illustratifs) + avis du visiteur, gardés dans son navigateur */
+const STAR = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3.2l2.6 5.5 6 .7-4.4 4.1 1.1 5.9L12 16.5l-5.3 2.9 1.1-5.9-4.4-4.1 6-.7z"/></svg>';
+const REVIEWS = [
+  {n:5, s:'01', skin:'Peau mixte', when:'6 semaines', t:'Enfin un sérum qui ne promet pas la lune', p:'Ma zone T brille beaucoup moins en fin de journée. Texture gel, rien ne colle.', by:'Camille M.'},
+  {n:5, s:'03', skin:'Peau sensible', when:'1 mois', t:'Ma peau a arrêté de tirer', p:'Je réagis à presque tout. Pas une rougeur, et plus de tiraillements après la douche.', by:'Inès B.'},
+  {n:4, s:'02', skin:'Peau mixte', when:'8 semaines', t:'Efficace, en y allant doucement', p:'Grain de peau plus lisse. Un peu de sécheresse la première semaine : je l’ai pris un soir sur deux au début.', by:'Sophie L.'},
+  {n:5, s:'04', skin:'Peau sèche', when:'3 semaines', t:'Repulpée dès le matin', p:'Je le mets sous ma crème, la peau reste confortable toute la journée. Le flacon dure longtemps.', by:'Nadia K.'},
+  {n:4, s:'SM', skin:'Peau grasse', when:'1 mois', t:'Mon prénom sur l’étiquette, j’adore', p:'Le module sur mesure est bien pensé et la formule me convient. J’aimerais un format 15 ml pour tester.', by:'Julie R.'},
+  {n:3, s:'01', skin:'Peau sèche', when:'4 semaines', t:'Pas fait pour ma peau', p:'Pores plus discrets, mais un peu desséchant pour moi. Le service client m’a conseillé le N° 04, je vais essayer.', by:'Marc D.'}
+];
+let mine = [];
+try { mine = JSON.parse(read('pc-reviews') || '[]'); } catch(e){ mine = []; }
+let rvFilter = 'tous', rvNote = 0;
+const starsHTML = n => Array.from({length:5}, (_,i) => i < n ? STAR : STAR.replace('<svg', '<svg class="off"')).join('');
+const serumLabel = k => k === 'SM' ? 'Sur mesure' : 'N° ' + k;
+function renderReviews(){
+  const all = [...mine, ...REVIEWS];
+  const avg = all.reduce((t,r) => t + r.n, 0) / all.length;
+  $('#rvAvg').textContent = avg.toLocaleString('fr-FR', {minimumFractionDigits:1, maximumFractionDigits:1});
+  $('#rvStars').innerHTML = starsHTML(Math.round(avg));
+  $('#rvStars').setAttribute('aria-label', `Note moyenne ${$('#rvAvg').textContent} sur 5`);
+  $('#rvStars').setAttribute('role', 'img');
+  $('#rvCount').textContent = `${all.length} avis`;
+  $('#rvBars').innerHTML = [5,4,3,2,1].map(k => { const c = all.filter(r => r.n === k).length; return `<li><span>${k}★</span><i style="--w:${all.length ? c / all.length * 100 : 0}%"></i><span>${c}</span></li>`; }).join('');
+  const shown = all.filter(r => rvFilter === 'tous' || r.s === rvFilter);
+  $('#rvCards').innerHTML = shown.length ? shown.map(r => `<article class="rv${r.mine ? ' mine' : ''}">
+      <span class="stars" role="img" aria-label="${r.n} sur 5">${starsHTML(r.n)}</span>
+      <h3>${esc(r.t)}</h3>
+      <p>${esc(r.p)}</p>
+      <div class="meta"><span>${serumLabel(r.s)}</span><span>${esc(r.skin)}</span><span>${r.mine ? 'Votre avis' : 'Après ' + r.when}</span></div>
+      <div class="by"><strong style="font-weight:500">${esc(r.by)}</strong><small>${r.mine ? 'À l’instant' : ''}</small></div>
+    </article>`).join('') : '<p class="rv-empty">Pas encore d’avis pour ce sérum.</p>';
+}
+$('#rvFilters').innerHTML = [['tous','Tous'],['01','N° 01'],['02','N° 02'],['03','N° 03'],['04','N° 04'],['SM','Sur mesure']].map(([k,l]) => `<button type="button" class="chip" data-rv="${k}" aria-pressed="${k==='tous'}">${l}</button>`).join('');
+$('#rvFilters').addEventListener('click', e => {
+  const b = e.target.closest('[data-rv]'); if(!b) return;
+  rvFilter = b.dataset.rv;
+  document.querySelectorAll('#rvFilters .chip').forEach(c => c.setAttribute('aria-pressed', c.dataset.rv === rvFilter));
+  renderReviews();
+});
+$('#rvSerum').innerHTML = SERUMS.map(s => `<option value="${s.num}">N° ${s.num} · ${esc(s.name.replace('Sérum ',''))}</option>`).join('') + '<option value="SM">Sérum sur mesure</option>';
+$('#rvRate').insertAdjacentHTML('beforeend', [1,2,3,4,5].map(k => `<label data-k="${k}"><input type="radio" name="rvn" value="${k}" aria-label="${k} sur 5">${STAR}</label>`).join(''));
+const paintRate = n => $('#rvRate').querySelectorAll('label').forEach(l => l.classList.toggle('on', +l.dataset.k <= n));
+$('#rvRate').addEventListener('change', e => { rvNote = +e.target.value; paintRate(rvNote); $('#rvRateErr').textContent = ''; });
+$('#rvRate').addEventListener('mouseover', e => { const l = e.target.closest('label'); if(l) paintRate(+l.dataset.k); });
+$('#rvRate').addEventListener('mouseleave', () => paintRate(rvNote));
+$('#rvOpen').onclick = () => {
+  const f = $('#rvForm'); f.hidden = false;
+  if(account && !$('#rvName').value) $('#rvName').value = account.prenom;
+  f.querySelector('h3').focus({preventScroll:true});
+  f.scrollIntoView({behavior:'smooth', block:'center'});
+};
+$('#rvCancel').onclick = () => { $('#rvForm').hidden = true; $('#rvOpen').focus(); };
+$('#rvForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const txt = $('#rvText').value.trim();
+  let bad = null;
+  if(!rvNote){ $('#rvRateErr').textContent = 'Choisissez une note de 1 à 5.'; bad = bad || $('#rvRate input'); }
+  if(txt.length < 10){ $('#rvTextErr').textContent = 'Quelques mots de plus : 10 caractères minimum.'; $('#rvText').setAttribute('aria-invalid','true'); bad = bad || $('#rvText'); }
+  if(bad){ bad.focus(); return; }
+  const name = $('#rvName').value.trim();
+  mine.unshift({n:rvNote, s:$('#rvSerum').value, skin:$('#rvSkin').value, t:$('#rvTitle').value.trim() || 'Mon avis', p:txt, by: name ? name : 'Anonyme', mine:true});
+  store('pc-reviews', JSON.stringify(mine.slice(0, 10)));
+  e.target.reset(); rvNote = 0; paintRate(0); e.target.hidden = true;
+  rvFilter = 'tous'; document.querySelectorAll('#rvFilters .chip').forEach(c => c.setAttribute('aria-pressed', c.dataset.rv === 'tous'));
+  renderReviews(); toast('Merci ! Votre avis est publié');
+  $('#rvCards').scrollIntoView({behavior:'smooth', block:'start'});
+});
+$('#rvText').addEventListener('input', () => { $('#rvText').removeAttribute('aria-invalid'); $('#rvTextErr').textContent = ''; });
+renderReviews();
 
 let tt;
 function toast(msg){ const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(tt); tt = setTimeout(() => t.hidden = true, 1800); }
