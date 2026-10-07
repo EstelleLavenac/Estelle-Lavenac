@@ -304,6 +304,50 @@ details p{margin:0 0 18px;color:var(--ink-2);max-width:62ch}
 .promo-msg button{border:0;background:none;padding:0;font:inherit;text-decoration:underline;color:inherit;cursor:pointer}
 .sub{display:flex;justify-content:space-between;font-size:15px;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .sub[hidden]{display:none}
+/* Commande : coordonnées, compte, paiement */
+.co{display:flex;flex-direction:column;gap:16px;flex:1 0 auto}
+.panel > *{flex-shrink:0}
+.co-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.co-back{border:0;background:none;padding:0;font:inherit;font-size:14px;color:var(--carbon);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.co h3{font-size:24px;letter-spacing:-.02em;font-weight:500;margin:0;outline:none}
+.fld{display:flex;flex-direction:column;gap:6px;min-width:0}
+.fld label,.fld .flab{font-size:13px;font-weight:500}
+.fld input,.fld select{height:48px;border:1px solid var(--mineral);border-radius:12px;padding:0 14px;font:inherit;font-size:15px;color:var(--carbon);background:var(--blanc);width:100%}
+.fld select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--carbon) 50%),linear-gradient(135deg,var(--carbon) 50%,transparent 50%);background-position:calc(100% - 18px) 21px,calc(100% - 13px) 21px;background-size:5px 5px;background-repeat:no-repeat;padding-right:34px}
+.fld input:focus,.fld select:focus{outline:none;border-color:var(--carbon);box-shadow:0 0 0 3px color-mix(in srgb,var(--sun) 70%,transparent)}
+.fld input[aria-invalid="true"]{border-color:#8A5A00}
+.fld .err{font-size:12.5px;color:#8A5A00;margin:0}
+.fld .err:empty{display:none}
+.fld .hint{font-size:12.5px;color:var(--ink-3);margin:0}
+.row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.row2.cp{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}
+.acc{border-radius:var(--r-m);background:var(--brume);padding:16px;display:flex;flex-direction:column;gap:12px}
+.acc .chk{display:flex;gap:10px;align-items:flex-start;font-weight:500;cursor:pointer}
+.acc .chk input{width:20px;height:20px;margin:1px 0 0;accent-color:var(--carbon);flex:none}
+.perks{list-style:none;margin:0;padding:0 0 0 30px;display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--ink-2)}
+.perks li{display:flex;gap:8px;align-items:center}
+.perks svg{width:16px;height:16px;flex:none}
+.perks .gift{color:var(--carbon);font-weight:500}
+.acc-more{display:flex;flex-direction:column;gap:12px;padding-top:4px}
+.acc-more[hidden]{display:none}
+.acc .who{font-size:14px;margin:0}
+.recap{border:1px solid var(--mineral);border-radius:var(--r-m);padding:14px 16px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.recap .k{display:flex;justify-content:space-between;gap:10px;font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.recap p{margin:0}
+.pays{display:flex;flex-direction:column;gap:8px;border:0;margin:0;padding:0}
+.pays legend{font-size:13px;font-weight:500;margin-bottom:8px;padding:0}
+.pay-opt{display:flex;align-items:center;gap:12px;height:52px;padding:0 16px;border:1px solid var(--mineral);border-radius:12px;cursor:pointer;font-size:15px}
+.pay-opt input{accent-color:var(--carbon);width:18px;height:18px;margin:0}
+.pay-opt:has(input:checked){border-color:var(--carbon);box-shadow:inset 0 0 0 1px var(--carbon)}
+.pay-note{font-size:12.5px;color:var(--ink-3);margin:0}
+.giftbox{border-radius:var(--r-m);background:var(--sun);padding:16px;display:grid;grid-template-columns:40px minmax(0,1fr);gap:4px 14px;align-items:start}
+.giftbox svg{width:40px;height:40px;grid-row:1 / span 3}
+.giftbox strong{font-weight:500;font-size:16px}
+.giftbox p{margin:0;font-size:14px;color:var(--carbon)}
+.giftbox.soft{background:var(--brume)}
+.giftbox .acc-more{grid-column:2}
+.giftbox .lnk{justify-self:start;margin-top:6px;height:40px;padding:0 18px;border-radius:999px;border:1.5px solid var(--carbon);background:transparent;font:inherit;font-size:14px;font-weight:500;color:var(--carbon);cursor:pointer;grid-column:2}
+.giftbox .lnk.solid{background:var(--carbon);color:var(--sun)}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:50;background:var(--carbon);color:var(--sun);border-radius:999px;padding:12px 20px;font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;animation:fade .2s ease}
 /* Sur mesure */
 .sm-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(20px,3vw,40px);align-items:start}
@@ -551,6 +595,7 @@ details p{margin:0 0 18px;color:var(--ink-2);max-width:62ch}
 <aside class="panel" id="cart" role="dialog" aria-modal="true" aria-labelledby="cartTitle" hidden>
   <div class="hd"><h2 id="cartTitle">Panier</h2><button class="x" type="button" data-close aria-label="Fermer le panier">×</button></div>
   <div class="lines" id="lines"></div>
+  <div class="co" id="co" hidden></div>
   <form class="promo-f" id="promoForm" autocomplete="off"><label class="sr" for="promoIn">Code promo</label><input id="promoIn" name="code" placeholder="Code promo" maxlength="20"><button type="submit">Appliquer</button></form>
   <p class="promo-msg" id="promoMsg" aria-live="polite"></p>
   <div class="sub" id="subRow" hidden><span>Sous-total</span><span id="subtotal">0 €</span></div>
@@ -692,6 +737,7 @@ function renderCart(){
   $('#checkoutInfo').textContent = '';
   $('#checkout').hidden = false;
   $('#promoForm').hidden = false;
+  if(typeof setStep === 'function' && step !== 'cart') setStep('cart');
   if(typeof save === 'function') save();
 }
 $('#lines').addEventListener('click', e => {
@@ -704,24 +750,31 @@ $('#menuOpen').onclick = () => show($('#menu'));
 document.querySelectorAll('.mnav a').forEach(l => l.addEventListener('click', () => close()));
 $('#checkout').onclick = () => {
   if(!cart.size){ $('#checkoutInfo').textContent = 'Ajoutez un sérum pour continuer.'; return; }
+  if(step === 'cart'){ setStep('details'); return; }
+  if(step === 'details'){ if(validDetails()) setStep('pay'); return; }
   const items = [...cart.entries()].map(([id,n]) => ({s: itemOf(id), n}));
   const sub = items.reduce((t,{s,n}) => t + s.price * n, 0);
   const disc = discountOf(sub), total = sub - disc;
   const ref = 'PC-' + String(Math.floor(1000 + Math.random() * 9000));
+  const created = !account && who.acc;
+  if(created) saveAccount();
+  else if(account){ Object.assign(account, {adresse:who.adresse.trim(), cp:who.cp.trim(), ville:who.ville.trim()}); store('pc-account', JSON.stringify(account)); }
+  step = 'done'; viewCart(true); $('#promoForm').hidden = true; $('#promoMsg').hidden = true; $('#cartTitle').textContent = 'Commande confirmée';
   $('#lines').innerHTML = `<div class="done-order">
     <span class="tag dark">Commande ${ref}</span>
-    <h3>Merci, c’est noté.</h3>
-    <p>Votre routine arrive sous 48 h. Un e-mail de confirmation récapitule votre commande.</p>
+    <h3 tabindex="-1">Merci, ${esc(who.prenom.trim())}.</h3>
+    <p>Livraison sous 48 h au ${esc(who.adresse.trim())}, ${esc(who.cp.trim())} ${esc(who.ville.trim())}. Un e-mail de confirmation part à ${esc(who.email.trim())}.</p>
     <ul>${items.map(({s,n}) => `<li><span>${n} × ${esc(s.name)}</span><span>${euro(s.price * n)}</span></li>`).join('')}${disc ? `<li><span>Code NEW15 (−15 %)</span><span>−${euro(disc)}</span></li>` : ''}<li><strong>Total</strong><strong>${euro(total)}</strong></li></ul>
+    ${account ? welcomeBox(created) : inviteBox()}
     <p class="note">Projet concept : aucune commande réelle ni aucun paiement n’est effectué.</p>
   </div>`;
+  $('#lines h3').focus({preventScroll:true}); $('#cart').scrollTop = 0;
   $('#total').textContent = euro(total);
   cart.clear(); save();
   orders++; store('pc-orders', orders);
   if(disc){ promo = null; store('pc-promo', ''); }
   $('#promoMsg').textContent = '';
   $('#subRow').hidden = $('#discRow').hidden = true;
-  $('#promoForm').hidden = true;
   $('#cartCount').textContent = 0;
   $('#checkout').hidden = true;
 };
@@ -766,6 +819,130 @@ $('#promoCopy').onclick = () => {
 $('#promoClose').onclick = () => { $('#promo').hidden = true; store('pc-promo-hidden', '1'); };
 if(read('pc-promo-hidden') === '1') $('#promo').hidden = true;
 promoState();
+
+
+/* Commande en 2 étapes : coordonnées (+ compte facultatif) puis paiement simulé */
+const MOIS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+const GIFT_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="9" width="17" height="11.5" rx="2"/><path d="M2.5 9h19v-1a1 1 0 0 0-1-1h-17a1 1 0 0 0-1 1z"/><path d="M12 7v13.5"/><path d="M12 7c-1.5-3.5-5.5-3.5-5.5-1.2C6.5 7 9 7 12 7c3 0 5.5 0 5.5-1.2C17.5 3.5 13.5 3.5 12 7z"/></svg>', GIFT_BIG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="9" width="17" height="11.5" rx="2"/><path d="M2.5 9h19v-1a1 1 0 0 0-1-1h-17a1 1 0 0 0-1 1z"/><path d="M12 7v13.5"/><path d="M12 7c-1.5-3.5-5.5-3.5-5.5-1.2C6.5 7 9 7 12 7c3 0 5.5 0 5.5-1.2C17.5 3.5 13.5 3.5 12 7z"/></svg>';
+const CHECK = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5l3 3 7-7"/></svg>';
+let step = 'cart', payWith = 'carte';
+let account = null;
+try { account = JSON.parse(read('pc-account') || 'null'); } catch(e){ account = null; }
+const who = Object.assign({email:'', prenom:'', nom:'', adresse:'', cp:'', ville:'', acc:false, mdp:'', jour:'', mois:''}, account ? {email:account.email, prenom:account.prenom, nom:account.nom, adresse:account.adresse, cp:account.cp, ville:account.ville} : {});
+const bdayTxt = b => b && b.d && b.m !== '' ? `${b.d === 1 ? '1er' : b.d} ${MOIS[b.m]}` : '';
+const totalNow = () => { const sub = [...cart.entries()].reduce((t,[id,n]) => t + itemOf(id).price * n, 0); return sub - discountOf(sub); };
+const bdayFields = (j, m) => `<div class="fld"><span class="flab" id="bdLab">Mon anniversaire <span style="font-weight:400;color:var(--ink-3)">· facultatif</span></span>
+  <div class="row2"><select id="coJour" aria-labelledby="bdLab" aria-label="Jour"><option value="">Jour</option>${Array.from({length:31},(_,i)=>`<option value="${i+1}"${+j===i+1?' selected':''}>${i+1}</option>`).join('')}</select>
+  <select id="coMois" aria-label="Mois"><option value="">Mois</option>${MOIS.map((x,i)=>`<option value="${i}"${m!==''&&+m===i?' selected':''}>${x}</option>`).join('')}</select></div>
+  <p class="hint">Le jour et le mois suffisent. Une surprise vous attendra chaque année.</p></div>`;
+const fld = (id, label, type, val, ac, extra='') => `<div class="fld"><label for="co_${id}">${label}</label><input id="co_${id}" name="${id}" type="${type}" value="${esc(val)}" autocomplete="${ac}" ${extra}><p class="err" id="co_${id}_err"></p></div>`;
+
+function viewCart(on){
+  $('#lines').hidden = !on; $('#promoForm').hidden = !on; $('#promoMsg').hidden = !on;
+  $('#co').hidden = on;
+}
+function setStep(s){
+  step = s;
+  const btn = $('#checkout');
+  $('#checkoutInfo').textContent = '';
+  if(s === 'cart'){ viewCart(true); btn.textContent = 'Commander'; $('#cartTitle').textContent = 'Panier'; return; }
+  viewCart(false);
+  if(s === 'details'){ $('#cartTitle').textContent = 'Commande'; btn.textContent = 'Continuer vers le paiement'; renderDetails(); }
+  if(s === 'pay'){ btn.textContent = 'Payer ' + euro(totalNow()); renderPay(); }
+  const h = $('#co h3'); if(h) h.focus({preventScroll:true});
+  $('#cart').scrollTop = 0;
+}
+function renderDetails(){
+  const accBox = account
+    ? `<div class="acc"><p class="who">${CHECK.replace('<svg','<svg style="width:14px;height:14px;vertical-align:-2px;margin-right:6px"')}Connectée à votre compte · <strong>${esc(account.email)}</strong></p><p class="who" style="color:var(--ink-3)">${account.bday ? 'Anniversaire : ' + bdayTxt(account.bday) + ' · une surprise vous attend.' : 'Commande ajoutée à votre compte.'}</p></div>`
+    : `<div class="acc"><label class="chk"><input type="checkbox" id="coAcc"${who.acc?' checked':''}> Créer mon compte Peau Cible</label>
+        <ul class="perks"><li>${CHECK}Suivi de vos commandes</li><li>${CHECK}Votre routine sauvegardée</li><li class="gift">${GIFT_SVG}Une surprise à chaque anniversaire</li></ul>
+        <div class="acc-more" id="accMore"${who.acc?'':' hidden'}>${fld('mdp','Mot de passe','password',who.mdp,'new-password','minlength="8" aria-describedby="co_mdp_hint"').replace('<p class="err"','<p class="hint" id="co_mdp_hint">8 caractères minimum.</p><p class="err"')}${bdayFields(who.jour, who.mois)}</div></div>`;
+  $('#co').innerHTML = `<div class="co-top"><button type="button" class="co-back" data-step="cart">← Panier</button><span class="mono">Étape 1 / 2</span></div>
+    <h3 tabindex="-1">Vos coordonnées</h3>
+    <form id="coForm" novalidate style="display:flex;flex-direction:column;gap:12px">
+      ${fld('email','E-mail','email',who.email,'email','inputmode="email"')}
+      <div class="row2">${fld('prenom','Prénom','text',who.prenom,'given-name')}${fld('nom','Nom','text',who.nom,'family-name')}</div>
+      ${fld('adresse','Adresse','text',who.adresse,'street-address')}
+      <div class="row2 cp">${fld('cp','Code postal','text',who.cp,'postal-code','inputmode="numeric" maxlength="5"')}${fld('ville','Ville','text',who.ville,'address-level2')}</div>
+      ${accBox}
+      <button type="submit" hidden></button>
+    </form>`;
+  const acc = $('#coAcc');
+  if(acc) acc.addEventListener('change', () => { who.acc = acc.checked; $('#accMore').hidden = !acc.checked; if(acc.checked) $('#co_mdp').focus(); });
+  $('#coForm').addEventListener('input', e => {
+    const t = e.target; if(!t.name && !t.id) return;
+    if(t.id === 'coJour') who.jour = t.value; else if(t.id === 'coMois') who.mois = t.value; else if(t.name) who[t.name] = t.value;
+    if(t.getAttribute('aria-invalid') === 'true'){ t.removeAttribute('aria-invalid'); const er = $('#' + t.id + '_err'); if(er) er.textContent = ''; }
+  });
+  $('#coForm').addEventListener('change', e => { if(e.target.id === 'coJour') who.jour = e.target.value; if(e.target.id === 'coMois') who.mois = e.target.value; });
+  $('#coForm').addEventListener('submit', e => { e.preventDefault(); $('#checkout').click(); });
+}
+function validDetails(){
+  const rules = [
+    ['email', v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), 'Saisissez une adresse e-mail valide, par exemple camille@exemple.fr.'],
+    ['prenom', v => v.trim().length > 0, 'Indiquez votre prénom.'],
+    ['nom', v => v.trim().length > 0, 'Indiquez votre nom.'],
+    ['adresse', v => v.trim().length > 3, 'Indiquez votre adresse de livraison.'],
+    ['cp', v => /^\d{5}$/.test(v.trim()), 'Le code postal compte 5 chiffres.'],
+    ['ville', v => v.trim().length > 0, 'Indiquez votre ville.']
+  ];
+  if(!account && who.acc) rules.push(['mdp', v => v.length >= 8, 'Choisissez un mot de passe de 8 caractères minimum.']);
+  let first = null;
+  rules.forEach(([k, ok, msg]) => {
+    const el = $('#co_' + k), er = $('#co_' + k + '_err'); if(!el) return;
+    const good = ok(el.value);
+    el.toggleAttribute('aria-invalid', !good); if(!good) el.setAttribute('aria-invalid','true');
+    er.textContent = good ? '' : msg;
+    if(!good && !first) first = el;
+  });
+  if(first){ first.focus(); $('#checkoutInfo').textContent = 'Vérifiez les champs signalés.'; return false; }
+  return true;
+}
+function renderPay(){
+  $('#co').innerHTML = `<div class="co-top"><button type="button" class="co-back" data-step="details">← Coordonnées</button><span class="mono">Étape 2 / 2</span></div>
+    <h3 tabindex="-1">Paiement</h3>
+    <div class="recap"><div class="k"><span>Livraison · 48 h · offerte</span><button type="button" class="co-back" data-step="details" style="font-family:var(--f-sans);text-transform:none;letter-spacing:0;font-size:13px">Modifier</button></div>
+      <p><strong style="font-weight:500">${esc(who.prenom)} ${esc(who.nom)}</strong></p><p>${esc(who.adresse)}, ${esc(who.cp)} ${esc(who.ville)}</p><p style="color:var(--ink-3)">${esc(who.email)}</p></div>
+    <fieldset class="pays"><legend>Moyen de paiement</legend>
+      ${[['carte','Carte bancaire'],['paypal','PayPal'],['apple','Apple Pay']].map(([v,l]) => `<label class="pay-opt"><input type="radio" name="pay" value="${v}"${payWith===v?' checked':''}> ${l}</label>`).join('')}
+    </fieldset>
+    <p class="pay-note">Projet concept : aucune donnée bancaire n’est demandée, le paiement est simulé.</p>`;
+  $('#co').querySelectorAll('input[name="pay"]').forEach(r => r.addEventListener('change', () => payWith = r.value));
+}
+$('#co').addEventListener('click', e => { const b = e.target.closest('[data-step]'); if(b) setStep(b.dataset.step); });
+
+function saveAccount(){
+  const bd = who.jour && who.mois !== '' ? {d:+who.jour, m:+who.mois} : null;
+  account = {email:who.email.trim(), prenom:who.prenom.trim(), nom:who.nom.trim(), adresse:who.adresse.trim(), cp:who.cp.trim(), ville:who.ville.trim(), bday:bd};
+  store('pc-account', JSON.stringify(account));
+}
+function welcomeBox(isNew){
+  const b = account && account.bday;
+  return `<div class="giftbox">${GIFT_BIG}<strong>${isNew ? 'Bienvenue, ' + esc(account.prenom) + '.' : 'Merci, ' + esc(account.prenom) + '.'}</strong>
+    <p>${isNew ? 'Votre compte est créé. ' : ''}${b ? `Le ${bdayTxt(b)}, une surprise vous attend.` : 'Ajoutez votre anniversaire depuis votre compte pour recevoir une surprise.'}</p></div>`;
+}
+function inviteBox(){
+  return `<div class="giftbox soft" id="invite">${GIFT_BIG}<strong>Une surprise à chaque anniversaire</strong>
+    <p>Créez votre compte en un clic : vos coordonnées sont déjà enregistrées.</p>
+    <button type="button" class="lnk" id="inviteGo">Créer mon compte</button></div>`;
+}
+$('#lines').addEventListener('click', e => {
+  if(e.target.id === 'inviteGo'){
+    const box = $('#invite');
+    box.querySelector('#inviteGo').remove();
+    box.insertAdjacentHTML('beforeend', `<form class="acc-more" id="inviteForm" novalidate>${fld('mdp','Mot de passe','password','','new-password','minlength="8"')}${bdayFields('', '')}<button type="submit" class="lnk solid" style="grid-column:auto;margin-top:0">Valider</button></form>`);
+    $('#co_mdp').focus();
+    $('#inviteForm').addEventListener('submit', ev => {
+      ev.preventDefault();
+      const m = $('#co_mdp');
+      if(m.value.length < 8){ m.setAttribute('aria-invalid','true'); $('#co_mdp_err').textContent = 'Choisissez un mot de passe de 8 caractères minimum.'; m.focus(); return; }
+      who.jour = $('#coJour').value; who.mois = $('#coMois').value;
+      saveAccount();
+      box.outerHTML = welcomeBox(true);
+    });
+  }
+});
 
 let tt;
 function toast(msg){ const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(tt); tt = setTimeout(() => t.hidden = true, 1800); }
