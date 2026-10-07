@@ -270,7 +270,21 @@
     position:absolute; top:0; left:0; right:0; height:130%;
     background:linear-gradient(180deg, var(--lav) 0%, #d6c5ea 22%, #ecc9df 46%, var(--pink2) 70%, #ffffff 100%);
     will-change:transform;
+    overflow:hidden;
     z-index:0;
+  }
+  .hero-bg-spin{
+    position:absolute; top:50%; left:50%;
+    width:160%; height:160%;
+    transform:translate(-50%,-50%) rotate(0deg);
+    background:conic-gradient(from 0deg, var(--lav), var(--lav2), var(--pink), var(--pink2), var(--lav2), var(--lav));
+    opacity:0.5;
+    mix-blend-mode:soft-light;
+    animation:heroSpin 30s linear infinite;
+    pointer-events:none;
+  }
+  @keyframes heroSpin{
+    to{ transform:translate(-50%,-50%) rotate(360deg); }
   }
   .hero-bg::after{
     content:'';
@@ -580,7 +594,7 @@
 </div>
 
 <div class="top-wrap">
-<div class="hero-bg" id="heroBg"></div>
+<div class="hero-bg" id="heroBg"><div class="hero-bg-spin"></div></div>
 
 <div class="hero-wrap">
   <div class="hero-glow" id="heroGlow"></div>
