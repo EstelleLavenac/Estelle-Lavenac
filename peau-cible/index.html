@@ -84,6 +84,7 @@ html:has(#promo:not([hidden])) section{scroll-margin-top:128px}
 @media (min-width:901px){.hero-grid{min-height:clamp(480px,44vw,640px)}}
 .hero-title > span{display:block;white-space:nowrap}
 .hero-title > span:nth-child(n+3),.big .off,.big .b{font-weight:600;letter-spacing:-.05em}
+.big.flat .off{font-weight:inherit;letter-spacing:inherit}
 .hero-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(20px,3vw,48px);align-items:stretch}
 .hero h1 .l2{display:block}
 .hero p{font-size:clamp(17px,1.6vw,20px);color:var(--ink-2);margin:20px 0 0;max-width:34ch}
@@ -488,7 +489,7 @@ details p{margin:0 0 18px;color:var(--ink-2);max-width:62ch}
     <div class="wrap">
       <div class="head">
         <span class="label mono"><b>01</b>La gamme</span>
-        <h2 class="big">Quatre sérums<span class="dot">.</span><span class="off">Un besoin chacun<span class="dot">.</span></span></h2>
+        <h2 class="big flat">Quatre sérums<span class="dot">.</span><span class="off">Un besoin chacun<span class="dot">.</span></span></h2>
       </div>
       <div class="filters" role="group" aria-label="Filtrer les sérums" id="filters"></div>
       <div class="grid4" id="cards"></div>
@@ -499,7 +500,7 @@ details p{margin:0 0 18px;color:var(--ink-2);max-width:62ch}
     <div class="wrap">
       <div class="head">
         <span class="label mono" style="color:var(--sun)"><b>02</b>Diagnostic</span>
-        <h2 class="big">Trois questions<span class="dot">.</span><span class="off">Un sérum<span class="dot">.</span></span></h2>
+        <h2 class="big flat">Trois questions<span class="dot">.</span><span class="off">Un sérum<span class="dot">.</span></span></h2>
       </div>
       <div class="diag-grid">
         <form id="quiz" onsubmit="return false">
@@ -559,7 +560,7 @@ details p{margin:0 0 18px;color:var(--ink-2);max-width:62ch}
     <div class="wrap">
       <div class="head">
         <span class="label mono"><b>04</b>Routine</span>
-        <h2 class="big">Matin, soir<span class="dot">.</span><span class="off">Rien de plus<span class="dot">.</span></span></h2>
+        <h2 class="big flat">Matin, soir<span class="dot">.</span><span class="off">Rien de plus<span class="dot">.</span></span></h2>
       </div>
       <div class="rtabs" role="tablist" aria-label="Moment de la routine">
         <button type="button" role="tab" id="tab-matin" aria-controls="rPanel" aria-selected="true" data-moment="matin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>Matin</button>
@@ -573,7 +574,7 @@ details p{margin:0 0 18px;color:var(--ink-2);max-width:62ch}
     <div class="wrap">
       <div class="head">
         <span class="label mono"><b>05</b>Transparence</span>
-        <h2 class="big">Ce qu’on met<span class="dot">.</span><span class="off">Ce qu’on dose<span class="dot">.</span></span></h2>
+        <h2 class="big flat">Ce qu’on met<span class="dot">.</span><span class="off">Ce qu’on dose<span class="dot">.</span></span></h2>
       </div>
       <div class="tbl-wrap">
         <table>
