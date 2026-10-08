@@ -740,7 +740,7 @@ const cart = new Map();
 
 /* Hero shelf: each bottle opens its sheet */
 const INGR = [['Niacinamide','10 %','régule le sébum',-20,42],['Zinc PCA','1 %','affine le grain de peau',70,30],['pH 5,5','','respecte la peau',74,58],['Sans parfum ajouté','','formule courte',-26,68]];
-$('#shelf').innerHTML = `<div class="vw scrub"><div class="pic"><div class="float"><canvas id="openCv" width="496" height="1009" role="img" aria-label="Flacon N° 01 qui s’ouvre : la pipette sort et une goutte de sérum se forme"></canvas></div><span class="open-hint" id="openHint" aria-hidden="true"><i></i>Faites défiler</span><button type="button" class="hit" data-open="1" aria-label="Voir la fiche N° 01 Sérum Équilibrant : niacinamide 10 %, zinc PCA 1 %"></button></div><ul class="ingr" aria-hidden="true">${INGR.map(([n,p,r,l,t]) => `<li style="left:${l}%;top:${t}%"><b>${n}${p?`<em>${p}</em>`:''}</b><span>${r}</span></li>`).join('')}</ul></div>`;
+$('#shelf').innerHTML = `<div class="vw scrub"><div class="pic"><div class="float"><canvas id="openCv" width="496" height="1009" role="img" aria-label="Flacon N° 01 qui s’ouvre : la pipette sort et une goutte de sérum se forme"></canvas></div><span class="open-hint" id="openHint" aria-hidden="true"><i></i>Faites défiler</span><button type="button" class="hit" data-open="1" aria-label="Voir la fiche N° 01 Sérum Équilibrant : niacinamide 10 %, zinc PCA 1 %"></button></div></div>`;
 
 /* Range */
 $('#filters').innerHTML = FILTERS.map(([k,l]) => `<button type="button" class="chip" data-f="${k}" aria-pressed="${k==='tous'}">${l}</button>`).join('');
