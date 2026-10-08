@@ -230,7 +230,7 @@ html:has(#promo:not([hidden])) section{scroll-margin-top:128px}
 .open-hint i{display:block;width:1px;height:18px;background:currentColor;animation:hint 1.6s ease-in-out infinite;transform-origin:top}
 @keyframes hint{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(0);transform-origin:bottom}}
 @media (min-width:901px){
-  .hero-pin{height:calc(100vh + 110vh)}
+  .hero-pin{height:calc(100vh + 170vh)}
   .hero{position:sticky;top:var(--top-h,117px);height:calc(100vh - var(--top-h,117px));box-sizing:border-box;display:flex;align-items:center;padding-block:clamp(20px,3vh,40px)}
   .hero > .wrap{width:100%}
   .hero-grid{min-height:0!important;height:min(680px,calc(100vh - var(--top-h,117px) - 2*clamp(20px,3vh,40px)))}
@@ -1141,7 +1141,7 @@ openSheet = id => { _openSheet(id); const r = $('#sRate'); r.dataset.rate = byId
 
 /* Hero : le flacon s'ouvre au fil du scroll (séquence d'images dessinée sur un canvas) */
 (() => {
-  const N = 133, cv = $('#openCv'); if(!cv) return;
+  const N = 189, OPEN = 122, cv = $('#openCv'); if(!cv) return;
   const ctx = cv.getContext('2d'), imgs = new Array(N), pin = $('#heroPin'), hero = $('.hero'), top = $('.top');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, desk = matchMedia('(min-width:901px)');
   const src = i => `img/open/f${String(i).padStart(3,'0')}.webp`;
@@ -1153,7 +1153,7 @@ openSheet = id => { _openSheet(id); const r = $('#sRate'); r.dataset.rate = byId
     for(let d = 0; d < N && k < 0; d++){ if(ok(imgs[want - d])) k = want - d; else if(ok(imgs[want + d])) k = want + d; }
     if(k < 0 || k === cur) return;
     cur = k; ctx.clearRect(0, 0, cv.width, cv.height); ctx.drawImage(imgs[k], 0, 0, cv.width, cv.height);
-    cv.style.setProperty('--fade', (Math.min(1, k / 28) * 20).toFixed(1) + '%'); // fondu en haut quand la pipette sort du cadre
+    cv.style.setProperty('--fade', (Math.min(1, Math.min(k, N - 1 - k) / 28) * 20).toFixed(1) + '%'); // fondu en haut quand la pipette sort du cadre
   }
   function load(i, hi){
     if(i < 0 || i >= N || imgs[i]) return;
@@ -1168,7 +1168,7 @@ openSheet = id => { _openSheet(id); const r = $('#sRate'); r.dataset.rate = byId
       const r = pin.getBoundingClientRect(), range = pin.offsetHeight - hero.offsetHeight;
       return range > 0 ? Math.min(1, Math.max(0, (top.offsetHeight - r.top) / range)) : 1;
     }
-    return Math.min(1, Math.max(0, scrollY / Math.max(110, cv.offsetHeight * .28)));
+    return Math.min(1, Math.max(0, scrollY / Math.max(200, cv.offsetHeight * .5)));
   }
   function schedule(){ if(!ticking){ ticking = true; requestAnimationFrame(draw); } }
   function onScroll(){
@@ -1180,8 +1180,8 @@ openSheet = id => { _openSheet(id); const r = $('#sRate'); r.dataset.rate = byId
   setTop();
   if('ResizeObserver' in window) new ResizeObserver(() => { setTop(); onScroll(); }).observe(top);
   addEventListener('resize', () => { setTop(); onScroll(); });
-  if(reduce){ load(N - 1, true); want = N - 1; return; }
-  load(0, true); load(N - 1);
+  if(reduce){ load(OPEN, true); want = OPEN; return; }
+  load(0, true); load(OPEN);
   addEventListener('scroll', onScroll, {passive:true});
   onScroll();
   // charge le reste en fond, du début vers la fin
