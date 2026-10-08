@@ -90,7 +90,7 @@ html:has(#promo:not([hidden])) section{scroll-margin-top:128px}
 .hero p{font-size:clamp(17px,1.6vw,20px);color:var(--ink-2);margin:20px 0 0;max-width:34ch}
 .ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
 .shelf{position:relative;max-width:100%}
-@media (min-width:901px){.shelf .vw{position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%)}.shelf .vw .pic,.shelf .vw .float{height:100%}.shelf .vw img{height:100%;width:auto;max-width:none;max-height:none}}
+@media (min-width:901px){.shelf .vw{position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%)}.shelf .vw .pic,.shelf .vw .float{height:100%}.shelf .vw img,.shelf .vw canvas{height:100%;width:auto;max-width:none;max-height:none}}
 @media (max-width:900px){.shelf{display:flex;justify-content:center}}
 .vw{position:relative;display:inline-block;max-width:100%}
 .vw .pic{position:relative}
@@ -221,6 +221,22 @@ html:has(#promo:not([hidden])) section{scroll-margin-top:128px}
   .tl .n{margin-top:4px}.tl h3{font-size:21px}.tl p{max-width:none}
   .tl .pick{justify-content:flex-start}
 }
+
+/* Hero : flacon qui s'ouvre au scroll */
+.vw.scrub .float{animation:none}
+.vw.scrub .floor{display:none}
+.vw canvas{display:block;width:auto;height:100%;max-width:none;aspect-ratio:496/1009;--fade:0%;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 var(--fade));mask-image:linear-gradient(to bottom,transparent 0,#000 var(--fade))}
+.open-hint{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap;transition:opacity .3s ease;pointer-events:none}
+.open-hint i{display:block;width:1px;height:18px;background:currentColor;animation:hint 1.6s ease-in-out infinite;transform-origin:top}
+@keyframes hint{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(0);transform-origin:bottom}}
+@media (min-width:901px){
+  .hero-pin{height:calc(100vh + 110vh)}
+  .hero{position:sticky;top:var(--top-h,117px);height:calc(100vh - var(--top-h,117px));box-sizing:border-box;display:flex;align-items:center;padding-block:clamp(20px,3vh,40px)}
+  .hero > .wrap{width:100%}
+  .hero-grid{min-height:0!important;height:min(680px,calc(100vh - var(--top-h,117px) - 2*clamp(20px,3vh,40px)))}
+}
+@media (max-width:900px){.vw canvas{height:min(56vh,520px)}.open-hint{display:none}}
+@media (prefers-reduced-motion:reduce){.hero-pin{height:auto!important}.hero{position:static!important;height:auto!important}.open-hint{display:none}}
 
 /* Table */
 .tbl-wrap{overflow-x:auto;border-radius:var(--r-l);border:1px solid var(--mineral)}
@@ -460,6 +476,7 @@ details p{margin:0 0 18px;color:var(--ink-2);max-width:62ch}
 </header>
 
 <main id="top">
+  <div class="hero-pin" id="heroPin">
   <section class="hero">
     <div class="wrap hero-grid">
       <div class="hero-text">
@@ -478,6 +495,7 @@ details p{margin:0 0 18px;color:var(--ink-2);max-width:62ch}
       <div class="shelf" id="shelf" aria-label="Les quatre sérums"></div>
     </div>
   </section>
+  </div>
 
   <div class="strip on-dark">
     <div class="wrap">
@@ -722,7 +740,7 @@ const cart = new Map();
 
 /* Hero shelf: each bottle opens its sheet */
 const INGR = [['Niacinamide','10 %','régule le sébum',-20,42],['Zinc PCA','1 %','affine le grain de peau',70,30],['pH 5,5','','respecte la peau',74,58],['Sans parfum ajouté','','formule courte',-26,68]];
-$('#shelf').innerHTML = `<div class="vw"><div class="pic"><div class="float"><img src="img/hero-02-float.jpg" alt="Flacon N° 01 incliné en suspension, une goutte de sérum coule de la pipette" width="605" height="773" fetchpriority="high"></div><span class="floor" aria-hidden="true"></span><button type="button" class="hit" data-open="1" aria-label="Voir la fiche N° 01 Sérum Équilibrant : niacinamide 10 %, zinc PCA 1 %"></button></div><ul class="ingr" aria-hidden="true">${INGR.map(([n,p,r,l,t]) => `<li style="left:${l}%;top:${t}%"><b>${n}${p?`<em>${p}</em>`:''}</b><span>${r}</span></li>`).join('')}</ul></div>`;
+$('#shelf').innerHTML = `<div class="vw scrub"><div class="pic"><div class="float"><canvas id="openCv" width="496" height="1009" role="img" aria-label="Flacon N° 01 qui s’ouvre : la pipette sort et une goutte de sérum se forme"></canvas></div><span class="open-hint" id="openHint" aria-hidden="true"><i></i>Faites défiler</span><button type="button" class="hit" data-open="1" aria-label="Voir la fiche N° 01 Sérum Équilibrant : niacinamide 10 %, zinc PCA 1 %"></button></div><ul class="ingr" aria-hidden="true">${INGR.map(([n,p,r,l,t]) => `<li style="left:${l}%;top:${t}%"><b>${n}${p?`<em>${p}</em>`:''}</b><span>${r}</span></li>`).join('')}</ul></div>`;
 
 /* Range */
 $('#filters').innerHTML = FILTERS.map(([k,l]) => `<button type="button" class="chip" data-f="${k}" aria-pressed="${k==='tous'}">${l}</button>`).join('');
@@ -1120,6 +1138,55 @@ $('#rvText').addEventListener('input', () => { $('#rvText').removeAttribute('ari
 renderReviews();
 const _openSheet = openSheet;
 openSheet = id => { _openSheet(id); const r = $('#sRate'); r.dataset.rate = byId(id).num; paintRates(); };
+
+/* Hero : le flacon s'ouvre au fil du scroll (séquence d'images dessinée sur un canvas) */
+(() => {
+  const N = 133, cv = $('#openCv'); if(!cv) return;
+  const ctx = cv.getContext('2d'), imgs = new Array(N), pin = $('#heroPin'), hero = $('.hero'), top = $('.top');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, desk = matchMedia('(min-width:901px)');
+  const src = i => `img/open/f${String(i).padStart(3,'0')}.webp`;
+  let cur = -1, want = 0, ticking = false;
+  const ok = im => im && im.complete && im.naturalWidth;
+  function draw(){
+    ticking = false;
+    let k = -1;
+    for(let d = 0; d < N && k < 0; d++){ if(ok(imgs[want - d])) k = want - d; else if(ok(imgs[want + d])) k = want + d; }
+    if(k < 0 || k === cur) return;
+    cur = k; ctx.clearRect(0, 0, cv.width, cv.height); ctx.drawImage(imgs[k], 0, 0, cv.width, cv.height);
+    cv.style.setProperty('--fade', (Math.min(1, k / 28) * 20).toFixed(1) + '%'); // fondu en haut quand la pipette sort du cadre
+  }
+  function load(i, hi){
+    if(i < 0 || i >= N || imgs[i]) return;
+    const im = new Image(); if(hi) im.fetchPriority = 'high';
+    im.onload = () => { if(cur < 0 || Math.abs(i - want) < Math.abs(cur - want)) { cur = -2; schedule(); } };
+    im.src = src(i); imgs[i] = im;
+  }
+  function setTop(){ document.documentElement.style.setProperty('--top-h', top.offsetHeight + 'px'); }
+  function progress(){
+    if(reduce) return 1;
+    if(desk.matches){
+      const r = pin.getBoundingClientRect(), range = pin.offsetHeight - hero.offsetHeight;
+      return range > 0 ? Math.min(1, Math.max(0, (top.offsetHeight - r.top) / range)) : 1;
+    }
+    return Math.min(1, Math.max(0, scrollY / Math.max(110, cv.offsetHeight * .28)));
+  }
+  function schedule(){ if(!ticking){ ticking = true; requestAnimationFrame(draw); } }
+  function onScroll(){
+    const p = progress();
+    want = Math.round(p * (N - 1));
+    const h = $('#openHint'); if(h) h.style.opacity = p > .04 ? 0 : 1;
+    schedule();
+  }
+  setTop();
+  if('ResizeObserver' in window) new ResizeObserver(() => { setTop(); onScroll(); }).observe(top);
+  addEventListener('resize', () => { setTop(); onScroll(); });
+  if(reduce){ load(N - 1, true); want = N - 1; return; }
+  load(0, true); load(N - 1);
+  addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+  // charge le reste en fond, du début vers la fin
+  let i = 1; (function next(){ for(let k = 0; k < 6 && i < N - 1; k++) load(i++); if(i < N - 1) setTimeout(next, 60); })();
+})();
 
 let tt;
 function toast(msg){ const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(tt); tt = setTimeout(() => t.hidden = true, 1800); }
