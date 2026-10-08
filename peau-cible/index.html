@@ -226,17 +226,22 @@ html:has(#promo:not([hidden])) section{scroll-margin-top:128px}
 .vw.scrub .float{animation:none}
 .vw.scrub .floor{display:none}
 .vw canvas{display:block;width:auto;height:100%;max-width:none;aspect-ratio:496/1009;--fade:0%;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 var(--fade));mask-image:linear-gradient(to bottom,transparent 0,#000 var(--fade))}
+.pin-space{display:none}
 .open-hint{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap;transition:opacity .3s ease;pointer-events:none}
 .open-hint i{display:block;width:1px;height:18px;background:currentColor;animation:hint 1.6s ease-in-out infinite;transform-origin:top}
 @keyframes hint{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(0);transform-origin:bottom}}
 @media (min-width:901px){
-  .hero-pin{height:calc(100vh + 170vh)}
-  .hero{position:sticky;top:var(--top-h,117px);height:calc(100vh - var(--top-h,117px));box-sizing:border-box;display:flex;align-items:center;padding-block:clamp(20px,3vh,40px)}
+  .pin-space{display:block;height:170vh}
+  .hero{position:sticky;top:var(--top-h,117px);min-height:calc(100vh - var(--top-h,117px));box-sizing:border-box;display:flex;align-items:center;padding-block:clamp(20px,3vh,40px);background:var(--blanc);z-index:1}
+  .hero-title{font-size:clamp(40px,min(7vw,9.5vh),104px)}
   .hero > .wrap{width:100%}
-  .hero-grid{min-height:0!important;height:min(680px,calc(100vh - var(--top-h,117px) - 2*clamp(20px,3vh,40px)))}
+  .hero-grid{min-height:0!important;height:auto;align-items:center}
+  .shelf .vw.scrub{position:relative;top:auto;bottom:auto;left:auto;transform:none;display:block;width:fit-content;margin-inline:auto}
+  .shelf .vw.scrub .pic,.shelf .vw.scrub .float{height:auto}
+  .shelf .vw.scrub canvas{height:min(660px,calc(100vh - var(--top-h,117px) - 90px));min-height:320px}
 }
 @media (max-width:900px){.vw canvas{height:min(56vh,520px)}.open-hint{display:none}}
-@media (prefers-reduced-motion:reduce){.hero-pin{height:auto!important}.hero{position:static!important;height:auto!important}.open-hint{display:none}}
+@media (prefers-reduced-motion:reduce){.pin-space{display:none!important}.hero{position:static!important;height:auto!important}.open-hint{display:none}}
 
 /* Table */
 .tbl-wrap{overflow-x:auto;border-radius:var(--r-l);border:1px solid var(--mineral)}
@@ -495,6 +500,7 @@ details p{margin:0 0 18px;color:var(--ink-2);max-width:62ch}
       <div class="shelf" id="shelf" aria-label="Les quatre sérums"></div>
     </div>
   </section>
+  <div class="pin-space" aria-hidden="true"></div>
   </div>
 
   <div class="strip on-dark">
