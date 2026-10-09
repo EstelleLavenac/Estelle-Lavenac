@@ -48,8 +48,24 @@ h1,h2,h3{font-family:var(--display); font-weight:800; margin:0}
 .nav a:hover{color:var(--orange)}
 .cart-btn{min-height:48px; padding:0 6px 0 18px; border-radius:999px; border:0; background:var(--orange); color:var(--ink); font-weight:600; display:flex; align-items:center; gap:10px}
 .cart-btn b{min-width:34px; height:34px; border-radius:17px; background:var(--ink); color:var(--cream); display:inline-flex; align-items:center; justify-content:center; font-size:15px}
-@media (max-width:760px){ .nav{display:none} .cap{flex-wrap:nowrap} }
-@media (max-width:480px){ .hdr{padding:0 10px} .cap{padding-left:16px; gap:8px} .logo .word{font-size:28px} .cart-btn{padding-left:14px} .hero .wrap{padding-top:120px} }
+.cap-right{display:flex; align-items:center; gap:8px}
+.burger{display:none; width:48px; height:48px; border-radius:50%; border:0; background:var(--cream); color:var(--ink); align-items:center; justify-content:center; flex-direction:column; gap:5px; padding:0}
+.burger span{display:block; width:20px; height:2.5px; border-radius:2px; background:currentColor; transition:transform .25s ease, opacity .2s ease}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+.mmenu{position:relative; top:22px; max-width:1280px; margin:0 auto; background:var(--ink); color:var(--cream); border-radius:28px; padding:10px; display:flex; flex-direction:column; box-shadow:0 20px 40px -20px rgba(26,20,16,.6)}
+.mmenu a{display:flex; align-items:center; justify-content:space-between; min-height:56px; padding:0 18px; border-radius:18px; text-decoration:none; color:var(--cream); font:800 24px var(--display); letter-spacing:-.02em}
+.mmenu a:hover, .mmenu a:focus-visible{background:#2E241D}
+.mmenu a i{width:12px; height:12px; border-radius:50%; background:var(--orange)}
+@media (min-width:761px){ .mmenu{display:none !important} }
+@media (max-width:760px){
+  .nav{display:none} .cap{flex-wrap:nowrap} .burger{display:inline-flex}
+}
+@media (max-width:480px){
+  .hdr{padding:0 10px} .cap{padding:6px 6px 6px 16px; gap:8px} .logo .word{font-size:28px}
+  .cart-btn{min-height:48px; padding:0 6px 0 14px; gap:8px} .cart-label{display:none}
+}
 
 /* Accueil */
 .hero{background:var(--bg); color:var(--fg); transition:background-color .45s ease, color .45s ease}
@@ -187,6 +203,48 @@ footer .wrap{padding-top:72px; padding-bottom:40px; display:flex; flex-direction
 .total strong{font:800 32px var(--display)}
 .total button{min-height:58px; border-radius:999px; border:0; background:var(--ink); color:var(--cream); font:800 20px var(--display)}
 
+/* Mobile */
+@media (max-width:600px){
+  .wrap{padding-left:16px; padding-right:16px}
+  .hero .wrap{padding-top:112px; padding-bottom:56px; gap:32px}
+  .hero-txt{gap:22px}
+  .hero .lead{font-size:18px}
+  .chip, .opt{min-height:44px; padding:0 14px; font-size:15px}
+  .btn-main{min-height:52px; padding:0 22px; font-size:18px}
+  .btn-ghost{min-height:52px; padding:0 20px; font-size:16px}
+  .ctas a{flex:1 1 auto; justify-content:center}
+  .bubble{padding:16px 18px; box-shadow:4px 4px 0 var(--ink)}
+  .bubble p{font-size:21px}
+  .band{padding:12px 0} .band div{font-size:22px; gap:28px}
+  .photo{padding-top:48px} .photo img{border-radius:20px}
+  .sec{padding-top:72px}
+  .sec-head{margin-bottom:24px}
+  .sec-head p{font-size:16px}
+  .grid{grid-template-columns:1fr; gap:16px}
+  .card{padding:20px; border-radius:24px}
+  .card .vis{height:170px}
+  .card h3{font-size:26px}
+  .panel{padding:22px 18px; border-radius:24px; gap:26px}
+  .steps{gap:26px}
+  .step h3{font-size:21px}
+  .comp{gap:28px}
+  .bag-body{height:400px; padding:22px}
+  .ticket{padding:20px; transform:rotate(-1deg)}
+  .ticket .buy{flex-wrap:wrap}
+  .kit{margin-top:80px}
+  .kit .wrap{padding-top:56px; padding-bottom:56px; gap:28px}
+  .kit-txt p{font-size:17px}
+  .kit .price{font-size:30px}
+  .how{padding:80px 0}
+  .how h2{margin-bottom:24px}
+  .how-card{padding:22px; border-radius:24px}
+  .how-card h3{font-size:24px}
+  footer .wrap{padding-top:56px; gap:36px}
+  .foot-top{gap:28px}
+  .foot-bottom{flex-direction:column}
+  .drawer{padding:20px 16px}
+}
+
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
   .band div{animation:none}
@@ -205,8 +263,17 @@ footer .wrap{padding-top:72px; padding-bottom:40px; display:flex; flex-direction
       <a href="#kit">Kit de survie</a>
       <a href="#concept">Le concept</a>
     </nav>
-    <button type="button" class="cart-btn" data-act="open" aria-label="Ouvrir le panier">Panier <b id="count">0</b></button>
+    <div class="cap-right">
+      <button type="button" class="cart-btn" data-act="open" aria-label="Ouvrir le panier"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span class="cart-label">Panier</span> <b id="count">0</b></button>
+      <button type="button" class="burger" id="burger" data-act="menu" aria-expanded="false" aria-controls="mmenu" aria-label="Ouvrir le menu"><span></span><span></span><span></span></button>
+    </div>
   </div>
+  <nav class="mmenu" id="mmenu" aria-label="Menu mobile" hidden>
+    <a href="#composer" data-act="menu-link">Composer mon café <i></i></a>
+    <a href="#humeurs" data-act="menu-link">Les humeurs</a>
+    <a href="#kit" data-act="menu-link">Kit de survie</a>
+    <a href="#concept" data-act="menu-link">Le concept</a>
+  </nav>
 </header>
 
 <main id="top">
@@ -363,7 +430,13 @@ footer .wrap{padding-top:72px; padding-bottom:40px; display:flex; flex-direction
 
   var s = { mood:'lundi', strength:'Très intense', milk:'Noir', extra:'Rien', grind:'En grains', machine:'Expresso', formats:{}, name:'', cart:[], open:false, ordered:false };
 
+  var small = window.matchMedia('(max-width: 600px)');
   function $(id){ return document.getElementById(id); }
+  function setMenu(open){
+    $('mmenu').hidden = !open;
+    $('burger').setAttribute('aria-expanded', String(open));
+    $('burger').setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+  }
   function esc(t){ return String(t).replace(/[&<>"']/g, function(c){ return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]; }); }
   function fmt(n){ return n.toFixed(2).replace('.', ',') + ' €'; }
 
@@ -401,7 +474,7 @@ footer .wrap{padding-top:72px; padding-bottom:40px; display:flex; flex-direction
     $('heroChips').innerHTML = moodChips();
     $('bubbleLine').textContent = '« ' + m.line + ' »';
     $('bubbleWho').textContent = '— Marc, humeur ' + m.name.toLowerCase();
-    $('heroBang').innerHTML = bang(m.id, 330, m.bang, m.eye, true);
+    $('heroBang').innerHTML = bang(m.id, small.matches ? 210 : 330, m.bang, m.eye, true);
   }
 
   function renderShop(){
@@ -434,7 +507,7 @@ footer .wrap{padding-top:72px; padding-bottom:40px; display:flex; flex-direction
     $('nameNum').textContent = String(G.length + 2);
     var bag = $('bag');
     bag.style.setProperty('--bg', m.bg); bag.style.setProperty('--fg', m.ink);
-    $('bagBang').innerHTML = bang(m.id, 170, m.bang, m.eye, true);
+    $('bagBang').innerHTML = bang(m.id, small.matches ? 150 : 170, m.bang, m.eye, true);
     $('bagMood').textContent = 'Humeur : ' + m.name;
     renderName();
     var rows = [['Humeur', m.name], ['Café', m.cafe], ['Force', s.strength], ['Lait', s.milk], ['Petit truc en plus', s.extra], ['Format', mouture()]];
@@ -469,6 +542,8 @@ footer .wrap{padding-top:72px; padding-bottom:40px; display:flex; flex-direction
   document.addEventListener('click', function(ev){
     var t = ev.target.closest('[data-act]'); if (!t) return;
     var a = t.getAttribute('data-act');
+    if (a === 'menu') { setMenu($('mmenu').hidden); return; }
+    if (a === 'menu-link') { setMenu(false); return; }
     if (a === 'mood') {
       var m = byId[t.getAttribute('data-id')];
       s.mood = m.id; Object.keys(m.preset).forEach(function(k){ s[k] = m.preset[k]; });
@@ -485,12 +560,21 @@ footer .wrap{padding-top:72px; padding-bottom:40px; display:flex; flex-direction
       add({ title: n ? 'Le café de ' + n : 'Ton café composé', detail:[mm.name, s.strength, s.milk, s.extra !== 'Rien' ? s.extra : null, mouture()].filter(Boolean).join(' · '), price:15.9, mood:mm.id });
     } else if (a === 'add-kit') {
       add({ title:'Kit de survie', detail:'Café Lundi matin, mug, carnet, pins, marque-pages', price:49, mood:'lundi' });
-    } else if (a === 'open') { s.open = true; renderCart(); $('drawer').querySelector('[data-act="close"]').focus(); }
+    } else if (a === 'open') { setMenu(false); s.open = true; renderCart(); $('drawer').querySelector('[data-act="close"]').focus(); }
     else if (a === 'close') { s.open = false; renderCart(); }
     else if (a === 'remove') { s.cart.splice(+t.getAttribute('data-i'), 1); renderCart(); }
     else if (a === 'checkout') { s.cart = []; s.ordered = true; renderCart(); }
   });
-  document.addEventListener('keydown', function(ev){ if (ev.key === 'Escape' && s.open) { s.open = false; renderCart(); } });
+  document.addEventListener('keydown', function(ev){
+    if (ev.key !== 'Escape') return;
+    if (s.open) { s.open = false; renderCart(); }
+    if (!$('mmenu').hidden) { setMenu(false); $('burger').focus(); }
+  });
+  document.addEventListener('click', function(ev){
+    if (!$('mmenu').hidden && !ev.target.closest('.hdr')) setMenu(false);
+  });
+  var onSize = function(){ renderHero(); renderComposer(); if (!small.matches) setMenu(false); };
+  if (small.addEventListener) small.addEventListener('change', onSize); else small.addListener(onSize);
   $('prenom').addEventListener('input', function(){ s.name = this.value.slice(0, 18); renderName(); });
   $('newsForm').addEventListener('submit', function(ev){ ev.preventDefault(); this.hidden = true; $('newsOk').hidden = false; });
 
