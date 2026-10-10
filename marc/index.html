@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marc ! — ton café selon ton humeur</title>
+<meta name="description" content="Marc ! — projet conceptuel d'Estelle Lavenac : une marque de café 100 % personnalisable selon ton humeur et tes goûts.">
+<link rel="canonical" href="https://estellelavenac.github.io/Estelle-Lavenac/marc/">
+<meta property="og:title" content="Marc ! — ton café selon ton humeur">
+<meta property="og:image" content="https://estellelavenac.github.io/Estelle-Lavenac/book-assets/marc-01-cover.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23FF5A1F'/%3E%3Cg transform='rotate(10 32 32)'%3E%3Crect x='25' y='8' width='14' height='30' rx='7' fill='%231A1410'/%3E%3Ccircle cx='32' cy='49' r='8' fill='%231A1410'/%3E%3Ccircle cx='29' cy='49' r='1.6' fill='%23FFF4E2'/%3E%3Ccircle cx='35' cy='49' r='1.6' fill='%23FFF4E2'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --orange:#FF5A1F; --blue:#2D3BFF; --cream:#FFF4E2; --ink:#1A1410; --pink:#FF7AB6; --sand:#EADBC4; --soft:#54443A;
+  --display:'Bricolage Grotesque', 'Arial Black', sans-serif; --sans:'Instrument Sans', system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0; background:var(--cream); color:var(--ink); font-family:var(--sans); overflow-x:hidden}
+a{color:inherit}
+button{font:inherit; color:inherit; cursor:pointer}
+[hidden]{display:none !important}
+h1,h2,h3{font-family:var(--display); font-weight:800; margin:0}
+.wrap{max-width:1280px; margin:0 auto; padding-left:24px; padding-right:24px}
+:focus-visible{outline:3px solid var(--blue); outline-offset:3px}
+
+/* Le « ! » */
+.bang{display:inline-flex; flex-direction:column; align-items:center; transform:rotate(10deg); flex:none}
+.bang .bar{display:block}
+.bang .dot{display:flex; align-items:center; justify-content:center; border-radius:50%; transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+.bang .eye{display:block; flex:none; box-sizing:border-box; transform:translate(var(--lx,0px), var(--ly,0px)) rotate(var(--rot,0deg)) scaleY(var(--sy,1)); transition:transform .14s ease}
+.bang.blink .eye, .bang.wink .eye-l{--sy:.1}
+.bang.look-l .eye{--lx:calc(var(--d) * -0.1)}
+.bang.look-r .eye{--lx:calc(var(--d) * 0.1)}
+.bang.look-d .eye{--ly:calc(var(--d) * 0.07)}
+.bang.pop .dot{transform:scale(1.1)}
+
+/* Menu */
+.hdr{position:sticky; top:0; z-index:20; height:0; padding:0 16px}
+.cap{position:relative; top:14px; max-width:1280px; margin:0 auto; background:var(--ink); color:var(--cream); border-radius:32px; padding:8px 8px 8px 22px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px 24px}
+.logo{display:flex; align-items:flex-end; text-decoration:none; color:var(--cream); min-height:44px}
+.logo .word{font-family:var(--display); font-weight:800; font-size:34px; line-height:1; letter-spacing:-.05em}
+.nav{display:flex; flex-wrap:wrap; gap:4px 28px; font-weight:500}
+.nav a{min-height:44px; display:inline-flex; align-items:center; text-decoration:none; color:var(--cream)}
+.nav a:hover{color:var(--orange)}
+.cart-btn{min-height:48px; padding:0 6px 0 18px; border-radius:999px; border:0; background:var(--orange); color:var(--ink); font-weight:600; display:flex; align-items:center; gap:10px}
+.cart-btn b{min-width:34px; height:34px; border-radius:17px; background:var(--ink); color:var(--cream); display:inline-flex; align-items:center; justify-content:center; font-size:15px}
+.cap-right{display:flex; align-items:center; gap:8px}
+.burger{display:none; width:48px; height:48px; border-radius:50%; border:0; background:var(--cream); color:var(--ink); align-items:center; justify-content:center; flex-direction:column; gap:5px; padding:0}
+.burger span{display:block; width:20px; height:2.5px; border-radius:2px; background:currentColor; transition:transform .25s ease, opacity .2s ease}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+.mmenu{position:relative; top:22px; max-width:1280px; margin:0 auto; background:var(--ink); color:var(--cream); border-radius:28px; padding:10px; display:flex; flex-direction:column; box-shadow:0 20px 40px -20px rgba(26,20,16,.6)}
+.mmenu a{display:flex; align-items:center; justify-content:space-between; min-height:56px; padding:0 18px; border-radius:18px; text-decoration:none; color:var(--cream); font:800 24px var(--display); letter-spacing:-.02em}
+.mmenu a:hover, .mmenu a:focus-visible{background:#2E241D}
+.mmenu a i{width:12px; height:12px; border-radius:50%; background:var(--orange)}
+@media (min-width:761px){ .mmenu{display:none !important} }
+@media (max-width:760px){
+  .nav{display:none} .cap{flex-wrap:nowrap} .burger{display:inline-flex}
+}
+@media (max-width:480px){
+  .hdr{padding:0 10px} .cap{padding:6px 6px 6px 16px; gap:8px} .logo .word{font-size:28px}
+  .cart-btn{min-height:48px; padding:0 6px 0 14px; gap:8px} .cart-label{display:none}
+}
+
+/* Accueil */
+.hero{background:var(--bg); color:var(--fg); transition:background-color .45s ease, color .45s ease}
+.hero .wrap{padding-top:150px; padding-bottom:80px; display:flex; flex-wrap:wrap; align-items:center; gap:48px}
+.hero-txt{flex:1 1 520px; min-width:0; display:flex; flex-direction:column; gap:28px}
+.eyebrow{margin:0; font-size:15px; font-weight:600; letter-spacing:.1em; text-transform:uppercase}
+.hero h1{font-size:clamp(52px,7vw,104px); line-height:.98; letter-spacing:-.035em}
+.hero .lead{margin:0; font-size:20px; line-height:1.5; max-width:520px}
+.chips{display:flex; flex-wrap:wrap; gap:10px}
+.chip, .opt{min-height:46px; padding:0 18px; border-radius:999px; border:2px solid var(--ink); background:transparent; color:var(--ink); font-weight:600; font-size:16px; display:inline-flex; align-items:center; gap:8px}
+.chip i{width:12px; height:12px; border-radius:50%; border:2px solid currentColor; background:var(--dot)}
+.chip[aria-pressed="true"], .opt[aria-pressed="true"]{background:var(--ink); color:var(--cream)}
+.hero .chip{border-color:var(--fg); color:var(--fg)}
+.hero .chip[aria-pressed="true"]{background:var(--fg); color:var(--bg)}
+.ctas{display:flex; flex-wrap:wrap; gap:12px; margin-top:4px}
+.btn-main{min-height:56px; padding:0 28px; border-radius:999px; background:var(--fg); color:var(--bg); text-decoration:none; display:inline-flex; align-items:center; font:800 20px var(--display)}
+.btn-ghost{min-height:56px; padding:0 26px; border-radius:999px; border:2px solid var(--fg); color:var(--fg); text-decoration:none; display:inline-flex; align-items:center; font-weight:600; font-size:17px}
+.hero-vis{flex:1 1 360px; min-width:0; display:flex; flex-direction:column; align-items:center; gap:20px}
+.bubble{background:var(--cream); color:var(--ink); border:3px solid var(--ink); border-radius:28px; padding:20px 24px; max-width:380px; box-shadow:6px 6px 0 var(--ink)}
+.bubble p{margin:0; font:800 26px/1.1 var(--display); letter-spacing:-.02em}
+.bubble small{display:block; margin-top:8px; font-size:15px; color:var(--soft)}
+
+/* Bandeau */
+.band{background:var(--ink); color:var(--cream); overflow:hidden; padding:16px 0}
+.band div{display:flex; gap:40px; width:max-content; font:800 30px var(--display); letter-spacing:-.02em; white-space:nowrap; animation:marc-scroll 32s linear infinite}
+.band .o{color:var(--orange)} .band .p{color:var(--pink)}
+@keyframes marc-scroll{from{transform:translateX(0)} to{transform:translateX(-50%)}}
+
+/* Sections */
+.photo{padding-top:80px}
+.photo img{display:block; width:100%; height:auto; border-radius:28px; border:2px solid var(--ink)}
+.sec{padding-top:96px}
+.sec-head{display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:16px 40px; margin-bottom:36px}
+.sec-head h2{font-size:clamp(40px,5vw,72px); line-height:1.02; letter-spacing:-.028em}
+.sec-head p{margin:0; font-size:18px; line-height:1.5; color:var(--soft); max-width:440px}
+
+.grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:20px}
+.card{background:var(--bg); color:var(--fg); border:2px solid var(--ink); border-radius:28px; padding:24px; display:flex; flex-direction:column; gap:14px}
+.card .vis{height:210px; display:flex; align-items:center; justify-content:center}
+.card-top{display:flex; justify-content:space-between; align-items:baseline; gap:12px}
+.card h3{font-size:30px; letter-spacing:-.02em}
+.tag{font-size:14px; font-weight:600; letter-spacing:.06em; text-transform:uppercase}
+.card p{margin:0; font-size:16px; line-height:1.45; color:var(--sub); flex-grow:1}
+.seg{display:flex; gap:4px; padding:4px; border:2px solid var(--fg); border-radius:999px; align-self:flex-start}
+.seg button{min-height:40px; padding:0 16px; border-radius:999px; border:0; background:transparent; color:var(--fg); font-weight:600; font-size:15px}
+.seg button[aria-pressed="true"]{background:var(--fg); color:var(--bg)}
+.buy{display:flex; justify-content:space-between; align-items:center; gap:12px}
+.price{font:800 24px var(--display)}
+.add{min-height:48px; padding:0 22px; border-radius:999px; border:0; background:var(--fg); color:var(--bg); font-weight:600; font-size:16px}
+
+/* Configurateur */
+.comp{display:flex; flex-wrap:wrap; gap:32px; align-items:flex-start}
+.panel{flex:999 1 560px; min-width:0; background:#fff; border:2px solid var(--ink); border-radius:28px; padding:32px; display:flex; flex-direction:column; gap:30px}
+.steps{display:flex; flex-direction:column; gap:30px}
+.step{display:flex; flex-direction:column; gap:14px}
+.step h3{display:flex; align-items:center; gap:12px; font-size:24px; letter-spacing:-.02em}
+.num{width:34px; height:34px; border-radius:50%; background:var(--orange); display:inline-flex; align-items:center; justify-content:center; font-size:17px; flex:none}
+#prenom{min-height:52px; width:100%; max-width:360px; padding:0 18px; border-radius:14px; border:2px solid var(--ink); background:var(--cream); font:500 18px var(--sans); color:var(--ink)}
+.preview{flex:1 1 340px; min-width:0; display:flex; flex-direction:column; align-items:center; gap:24px}
+.bag{width:100%; max-width:340px; display:flex; flex-direction:column; align-items:center}
+.bag-top{width:88%; height:24px; background:var(--bg); filter:brightness(.85); border-radius:6px 6px 0 0; transition:background-color .4s}
+.bag-body{width:100%; height:450px; background:var(--bg); color:var(--fg); border:2px solid var(--ink); border-radius:4px 4px 36px 36px; padding:26px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 30px 50px -24px rgba(26,20,16,.5); transition:background-color .4s, color .4s}
+.bag-head{display:flex; justify-content:space-between; align-items:center}
+.bag-head span:first-child{font:800 36px/1 var(--display); letter-spacing:-.05em}
+.bag-head span:last-child{font-size:13px; font-weight:600}
+.bag-label{background:var(--cream); color:var(--ink); border-radius:16px; padding:14px 16px; display:flex; flex-direction:column; gap:4px}
+.bag-label small{font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--soft)}
+.bag-label strong{font:800 24px/1.05 var(--display); letter-spacing:-.02em; overflow-wrap:anywhere}
+.ticket{width:100%; max-width:360px; background:#fff; border:2px solid var(--ink); border-radius:8px; padding:24px; display:flex; flex-direction:column; gap:12px; transform:rotate(-1.5deg)}
+.ticket h3{font-size:22px; letter-spacing:-.02em}
+.dash{border-top:2px dashed var(--ink)}
+.row{display:flex; justify-content:space-between; gap:12px; font-size:15px}
+.row span:first-child{color:var(--soft)} .row span:last-child{font-weight:600; text-align:right}
+.ticket .buy .price{font-size:26px}
+.btn-dark{min-height:50px; padding:0 22px; border-radius:999px; border:0; background:var(--ink); color:var(--cream); font-weight:600; font-size:16px}
+
+/* Kit */
+.kit{margin-top:112px; background:var(--blue); color:var(--cream)}
+.kit .wrap{padding-top:80px; padding-bottom:80px; display:flex; flex-wrap:wrap; align-items:center; gap:48px}
+.kit img{flex:3 1 560px; min-width:0; width:100%; height:auto; display:block; border-radius:24px; border:2px solid var(--ink)}
+.kit-txt{flex:2 1 340px; min-width:0; display:flex; flex-direction:column; gap:20px}
+.kit-txt .eyebrow{color:var(--orange)}
+.kit h2{font-size:clamp(44px,5.4vw,80px); line-height:1; letter-spacing:-.03em}
+.kit-txt p{margin:0; font-size:19px; line-height:1.5}
+.kit .buy{justify-content:flex-start; flex-wrap:wrap; gap:16px 24px; margin-top:8px}
+.kit .price{font-size:36px}
+.btn-orange{min-height:56px; padding:0 28px; border-radius:999px; border:0; background:var(--orange); color:var(--ink); font:800 19px var(--display)}
+
+/* Concept */
+.how{padding:112px 0}
+.how h2{margin-bottom:40px; font-size:clamp(40px,5vw,72px); line-height:1.02; letter-spacing:-.028em}
+.how-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:20px}
+.how-card{border:2px solid var(--ink); border-radius:28px; padding:28px; display:flex; flex-direction:column; gap:14px}
+.how-card .n{width:56px; height:56px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font:800 26px var(--display)}
+.how-card h3{font-size:28px; line-height:1.05; letter-spacing:-.02em}
+.how-card p{margin:0; font-size:16px; line-height:1.5}
+
+/* Pied de page */
+footer{background:var(--ink); color:var(--cream)}
+footer .wrap{padding-top:72px; padding-bottom:40px; display:flex; flex-direction:column; gap:48px}
+.foot-top{display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:40px}
+.foot-logo{display:flex; align-items:flex-end}
+.foot-logo span{font:800 clamp(80px,12vw,180px)/.8 var(--display); letter-spacing:-.05em}
+.news{flex:0 1 420px; min-width:0; display:flex; flex-direction:column; gap:12px}
+.news label{font:800 24px var(--display); letter-spacing:-.02em}
+.news form{display:flex; flex-wrap:wrap; gap:10px}
+.news input{flex:1 1 200px; min-width:0; min-height:52px; padding:0 18px; border-radius:999px; border:2px solid var(--cream); background:transparent; color:var(--cream); font:500 17px var(--sans)}
+.news input::placeholder{color:#C9B9A6}
+.news button{min-height:52px; padding:0 22px; border-radius:999px; border:0; background:var(--orange); color:var(--ink); font-weight:600; font-size:16px}
+.news .ok{margin:0; font-size:18px; color:var(--orange); font-weight:600}
+.foot-bottom{border-top:1px solid #4A3A30; padding-top:24px; display:flex; flex-wrap:wrap; justify-content:space-between; gap:16px; font-size:15px}
+.foot-bottom nav{display:flex; flex-wrap:wrap; gap:8px 24px}
+.foot-bottom a{color:var(--cream)}
+.credit{color:#C9B9A6}
+
+/* Panier */
+.scrim{position:fixed; inset:0; z-index:50; border:0; padding:0; background:rgba(26,20,16,.55)}
+.drawer{position:fixed; top:0; right:0; bottom:0; z-index:51; width:440px; max-width:100%; background:var(--cream); border-left:2px solid var(--ink); padding:28px; overflow-y:auto; display:flex; flex-direction:column; gap:20px}
+.drawer-head{display:flex; justify-content:space-between; align-items:center}
+.drawer-head h2{font-size:36px; letter-spacing:-.03em}
+.btn-line{min-height:44px; padding:0 16px; border-radius:999px; border:2px solid var(--ink); background:transparent; font-weight:600; font-size:15px}
+.empty, .thanks{display:flex; flex-direction:column; align-items:center; gap:12px; text-align:center; padding:24px}
+.empty p{margin:0; font-size:18px; color:var(--soft)}
+.thanks{background:var(--orange); border:2px solid var(--ink); border-radius:24px}
+.thanks p{margin:0; font:800 26px/1.1 var(--display)}
+.item{display:flex; gap:14px; align-items:center; background:#fff; border:2px solid var(--ink); border-radius:20px; padding:12px}
+.item-vis{flex:none; width:64px; height:76px; border-radius:12px; display:flex; align-items:center; justify-content:center; overflow:hidden}
+.item-txt{flex:1 1 auto; min-width:0; display:flex; flex-direction:column; gap:4px}
+.item-txt strong{font:800 19px var(--display); letter-spacing:-.01em}
+.item-txt small{font-size:14px; line-height:1.35; color:var(--soft)}
+.item-foot{display:flex; justify-content:space-between; align-items:center; gap:8px}
+.item-foot button{min-height:44px; padding:0 8px; border:0; background:transparent; text-decoration:underline; font-size:14px}
+.total{margin-top:auto; border-top:2px dashed var(--ink); padding-top:18px; display:flex; flex-direction:column; gap:14px}
+.total div{display:flex; justify-content:space-between; align-items:baseline}
+.total strong{font:800 32px var(--display)}
+.total button{min-height:58px; border-radius:999px; border:0; background:var(--ink); color:var(--cream); font:800 20px var(--display)}
+
+/* Mobile */
+@media (max-width:600px){
+  .wrap{padding-left:16px; padding-right:16px}
+  .hero .wrap{padding-top:112px; padding-bottom:56px; gap:32px}
+  .hero-txt{gap:22px}
+  .hero .lead{font-size:18px}
+  .chip, .opt{min-height:44px; padding:0 14px; font-size:15px}
+  .btn-main{min-height:52px; padding:0 22px; font-size:18px}
+  .btn-ghost{min-height:52px; padding:0 20px; font-size:16px}
+  .ctas a{flex:1 1 auto; justify-content:center}
+  .bubble{padding:16px 18px; box-shadow:4px 4px 0 var(--ink)}
+  .bubble p{font-size:21px}
+  .band{padding:12px 0} .band div{font-size:22px; gap:28px}
+  .photo{padding-top:48px} .photo img{border-radius:20px}
+  .sec{padding-top:72px}
+  .sec-head{margin-bottom:24px}
+  .sec-head p{font-size:16px}
+  .grid{grid-template-columns:1fr; gap:16px}
+  .card{padding:20px; border-radius:24px}
+  .card .vis{height:170px}
+  .card h3{font-size:26px}
+  .panel{padding:22px 18px; border-radius:24px; gap:26px}
+  .steps{gap:26px}
+  .step h3{font-size:21px}
+  .comp{gap:28px}
+  .bag-body{height:400px; padding:22px}
+  .ticket{padding:20px; transform:rotate(-1deg)}
+  .ticket .buy{flex-wrap:wrap}
+  .kit{margin-top:80px}
+  .kit .wrap{padding-top:56px; padding-bottom:56px; gap:28px}
+  .kit-txt p{font-size:17px}
+  .kit .price{font-size:30px}
+  .how{padding:80px 0}
+  .how h2{margin-bottom:24px}
+  .how-card{padding:22px; border-radius:24px}
+  .how-card h3{font-size:24px}
+  footer .wrap{padding-top:56px; gap:36px}
+  .foot-top{gap:28px}
+  .foot-bottom{flex-direction:column}
+  .drawer{padding:20px 16px}
+}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .band div{animation:none}
+  .hero, .bag-top, .bag-body, .bang .eye, .bang .dot{transition:none}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="cap">
+    <a class="logo" href="#top" aria-label="Marc !, retour en haut"><span class="word">Marc</span><span id="logoBang"></span></a>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="#composer">Composer</a>
+      <a href="#humeurs">Les humeurs</a>
+      <a href="#kit">Kit de survie</a>
+      <a href="#concept">Le concept</a>
+    </nav>
+    <div class="cap-right">
+      <button type="button" class="cart-btn" data-act="open" aria-label="Ouvrir le panier"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span class="cart-label">Panier</span> <b id="count">0</b></button>
+      <button type="button" class="burger" id="burger" data-act="menu" aria-expanded="false" aria-controls="mmenu" aria-label="Ouvrir le menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <nav class="mmenu" id="mmenu" aria-label="Menu mobile" hidden>
+    <a href="#composer" data-act="menu-link">Composer mon café <i></i></a>
+    <a href="#humeurs" data-act="menu-link">Les humeurs</a>
+    <a href="#kit" data-act="menu-link">Kit de survie</a>
+    <a href="#concept" data-act="menu-link">Le concept</a>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="hero" id="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div class="hero-txt">
+        <p class="eyebrow">Café 100 % selon ton humeur</p>
+        <h1 id="hero-title">Comment tu te sens, là&nbsp;?</h1>
+        <p class="lead">Dis-le à Marc. Il compose ton café selon ton humeur et tes goûts, puis te l’envoie, à ton nom.</p>
+        <div class="chips" id="heroChips" role="group" aria-label="Choisis ton humeur"></div>
+        <div class="ctas">
+          <a class="btn-main" href="#composer">Composer mon café</a>
+          <a class="btn-ghost" href="#humeurs">Voir les 6 humeurs</a>
+        </div>
+      </div>
+      <div class="hero-vis">
+        <div class="bubble"><p id="bubbleLine"></p><small id="bubbleWho"></small></div>
+        <div id="heroBang"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="band" aria-hidden="true">
+    <div>
+      <span>Lundi matin !</span><span class="o">Tranquille !</span><span>Fantaisie !</span><span class="p">Fin de journée !</span><span>Besoin de câlin !</span><span class="o">Coup de chaud !</span>
+      <span>Lundi matin !</span><span class="o">Tranquille !</span><span>Fantaisie !</span><span class="p">Fin de journée !</span><span>Besoin de câlin !</span><span class="o">Coup de chaud !</span>
+    </div>
+  </div>
+
+  <div class="wrap photo">
+    <img src="../book-assets/marc-05-sachets.jpg" alt="Les six sachets Marc !, un par humeur, alignés sur une pierre" width="1306" height="816">
+  </div>
+
+  <section class="wrap sec" id="humeurs" aria-labelledby="humeurs-title">
+    <div class="sec-head">
+      <h2 id="humeurs-title">Les humeurs<br>de Marc</h2>
+      <p>Six cafés déjà composés par Marc, un par humeur. Sachet de 250 g, en grains ou moulu.</p>
+    </div>
+    <div class="grid" id="shop"></div>
+  </section>
+
+  <section class="wrap sec" id="composer" aria-labelledby="composer-title">
+    <div class="sec-head">
+      <h2 id="composer-title">Compose ton café<br>avec Marc</h2>
+      <p>Choisis ton humeur : Marc propose une recette. Ajuste-la à ton goût, signe-la de ton prénom.</p>
+    </div>
+    <div class="comp">
+      <div class="panel">
+        <div class="step">
+          <h3><span class="num">1</span>Ton humeur</h3>
+          <div class="chips" id="compMoods" role="group" aria-label="Ton humeur"></div>
+        </div>
+        <div class="steps" id="groups"></div>
+        <div class="step">
+          <h3><span class="num" id="nameNum">6</span><label for="prenom">Ton prénom sur le sachet</label></h3>
+          <input id="prenom" type="text" maxlength="18" placeholder="Ex. Camille" autocomplete="given-name">
+        </div>
+      </div>
+      <div class="preview">
+        <div class="bag" id="bag">
+          <div class="bag-top"></div>
+          <div class="bag-body">
+            <div class="bag-head"><span>Marc !</span><span>250 g</span></div>
+            <div style="display:flex;justify-content:center" id="bagBang"></div>
+            <div class="bag-label"><small id="bagMood"></small><strong id="bagTitle">Ton café</strong></div>
+          </div>
+        </div>
+        <div class="ticket">
+          <h3>Ta recette, signée Marc !</h3>
+          <div class="dash"></div>
+          <div id="recipe" style="display:flex;flex-direction:column;gap:8px"></div>
+          <div class="dash"></div>
+          <div class="buy"><span class="price">15,90 €</span><button type="button" class="btn-dark" data-act="add-composed">Ajouter au panier</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="kit" id="kit" aria-labelledby="kit-title">
+    <div class="wrap">
+      <img src="../book-assets/marc-06-kit.jpg" alt="Le coffret Kit de survie Marc ! ouvert : sachet de café, mug, carnet, pins et marque-pages" width="1380" height="752" loading="lazy">
+      <div class="kit-txt">
+        <p class="eyebrow">Le coffret à offrir</p>
+        <h2 id="kit-title">Le kit de survie</h2>
+        <p>Pour les lundis qui piquent. Un sachet Lundi matin, le mug de Marc, un carnet de notes, des pins et les marque-pages des six humeurs.</p>
+        <div class="buy"><span class="price">49,00 €</span><button type="button" class="btn-orange" data-act="add-kit">Ajouter au panier</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap how" id="concept" aria-labelledby="concept-title">
+    <h2 id="concept-title">Comment ça marche&nbsp;?</h2>
+    <div class="how-grid">
+      <div class="how-card" style="background:#fff">
+        <span class="n" style="background:var(--orange)">1</span>
+        <h3>Tu dis à Marc comment tu te sens</h3>
+        <p style="color:var(--soft)">Six humeurs, de « Lundi matin » à « Coup de chaud ». Marc ne juge pas.</p>
+      </div>
+      <div class="how-card" style="background:var(--pink)">
+        <span class="n" style="background:var(--ink);color:var(--cream)">2</span>
+        <h3>Marc compose ton café</h3>
+        <p style="color:#3A2418">Force, lait, arôme, grains ou moulu : il propose, tu ajustes selon tes goûts.</p>
+      </div>
+      <div class="how-card" style="background:var(--ink);color:var(--cream)">
+        <span class="n" style="background:var(--orange);color:var(--ink)">3</span>
+        <h3>Il arrive chez toi, à ton nom</h3>
+        <p style="color:#E8DCCB">Un sachet signé de ton prénom, avec ta recette et un mot de Marc.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-logo"><span>Marc</span><span id="footBang"></span></div>
+      <div class="news">
+        <label for="email">Reçois l’humeur de Marc chaque lundi</label>
+        <form id="newsForm"><input id="email" type="email" placeholder="ton@email.fr" required><button type="submit">Je m’inscris</button></form>
+        <p class="ok" id="newsOk" hidden>C’est noté. Marc t’écrira lundi, avant ton café.</p>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <nav aria-label="Liens utiles"><a href="#concept">Livraison</a><a href="#concept">Abonnement</a><a href="#top">Contact</a><a href="#top">Mentions légales</a></nav>
+      <span class="credit">Projet concept · <a href="../projects/marc.html" target="_top" style="color:inherit">Identité et design : Estelle Lavenac</a></span>
+    </div>
+  </div>
+</footer>
+
+<button type="button" class="scrim" id="scrim" data-act="close" aria-label="Fermer le panier" hidden></button>
+<aside class="drawer" id="drawer" aria-label="Panier" hidden>
+  <div class="drawer-head"><h2>Ton panier</h2><button type="button" class="btn-line" data-act="close">Fermer</button></div>
+  <div id="cartBody"></div>
+</aside>
+
+<script>
+(function(){
+  var MOODS = [
+    { id:'lundi', name:'Lundi matin', cafe:'Corsé', bg:'#FF5A1F', ink:'#1A1410', soft:'#3A2418', bang:'#1A1410', eye:'#FFF4E2', desc:'Torréfaction foncée, notes de cacao amer. Il ne plaisante pas.', line:'Pas de réunion avant la 2e tasse. C’est un ordre.', preset:{ strength:'Très intense', milk:'Noir', extra:'Rien' } },
+    { id:'tranquille', name:'Tranquille', cafe:'Doux', bg:'#FFFFFF', ink:'#1A1410', soft:'#54443A', bang:'#FF5A1F', eye:'#1A1410', desc:'Rond et léger, notes de noisette et de miel. Le Marc du logo.', line:'On respire. Le café attend que tu t’assoies.', preset:{ strength:'Doux', milk:'Noir', extra:'Rien' } },
+    { id:'fantaisie', name:'Fantaisie', cafe:'Aromatisé', bg:'#FF7AB6', ink:'#1A1410', soft:'#3A2418', bang:'#1A1410', eye:'#FFF4E2', desc:'Un clin d’œil parfumé : vanille, cardamome ou noisette.', line:'Aujourd’hui on ose. Cardamome ? Allez.', preset:{ strength:'Équilibré', milk:'Lait', extra:'Cardamome' } },
+    { id:'fin', name:'Fin de journée', cafe:'Déca', bg:'#EADBC4', ink:'#1A1410', soft:'#4A2C1D', bang:'#FF5A1F', eye:'#1A1410', desc:'Tout le goût, sans la caféine. Il va se coucher tôt.', line:'Déca. Je veille sur ton sommeil, moi.', preset:{ strength:'Léger', milk:'Noir', extra:'Rien' } },
+    { id:'calin', name:'Besoin de câlin', cafe:'Lacté', bg:'#2D3BFF', ink:'#FFF4E2', soft:'#DCDFFF', bang:'#FF5A1F', eye:'#1A1410', desc:'Pensé pour le lait et la mousse. Les yeux plissés de bonheur.', line:'Viens là. Beaucoup de lait, un peu de douceur.', preset:{ strength:'Doux', milk:'Lait', extra:'Vanille' } },
+    { id:'chaud', name:'Coup de chaud', cafe:'Glacé', bg:'#FFFFFF', ink:'#1A1410', soft:'#54443A', bang:'#FF5A1F', eye:'#1A1410', desc:'Pour l’extraction à froid, à servir sur glaçons.', line:'Il fait chaud. On passe au froid.', preset:{ strength:'Équilibré', milk:'Végétal', extra:'Rien' } }
+  ];
+  var GROUPS = [
+    { key:'strength', label:'La force', options:['Léger','Doux','Équilibré','Intense','Très intense'] },
+    { key:'milk', label:'Avec ou sans lait', options:['Noir','Lait','Végétal'] },
+    { key:'extra', label:'Le petit truc en plus', options:['Rien','Vanille','Cardamome','Noisette','Cannelle'] },
+    { key:'grind', label:'En grains ou moulu ?', options:['En grains','Moulu'] }
+  ];
+  var MACHINE = { key:'machine', label:'Pour quelle cafetière ?', options:['Expresso','Filtre','Piston','Italienne'] };
+  var byId = {}; MOODS.forEach(function(m){ byId[m.id] = m; });
+
+  var s = { mood:'lundi', strength:'Très intense', milk:'Noir', extra:'Rien', grind:'En grains', machine:'Expresso', formats:{}, name:'', cart:[], open:false, ordered:false };
+
+  var small = window.matchMedia('(max-width: 600px)');
+  function $(id){ return document.getElementById(id); }
+  function setMenu(open){
+    $('mmenu').hidden = !open;
+    $('burger').setAttribute('aria-expanded', String(open));
+    $('burger').setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+  }
+  function esc(t){ return String(t).replace(/[&<>"']/g, function(c){ return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]; }); }
+  function fmt(n){ return n.toFixed(2).replace('.', ',') + ' €'; }
+
+  // Le « ! » : une seule forme, seuls les yeux changent
+  function bang(mood, size, color, eye, anim){
+    var k = size / 214, d = 60 * k, bw = Math.max(1.5, d * 0.05);
+    function p(n){ return (n * k).toFixed(1); }
+    function e(side, w, h, r, rot, ring, open){
+      var st = 'width:' + (d*w).toFixed(1) + 'px;height:' + (d*h).toFixed(1) + 'px;border-radius:' + r + ';--rot:' + (rot||0) + 'deg;';
+      st += ring ? 'background:transparent;border:' + bw.toFixed(1) + 'px solid ' + eye + ';' + (open ? 'border-top-width:0;' : '') : 'background:' + eye + ';';
+      return '<i class="eye eye-' + side + '" style="' + st + '"></i>';
+    }
+    var EY = {
+      lundi:      [function(s){ return e(s,.22,.09,'99px', s==='l'?20:-20); }, .15],
+      tranquille: [function(s){ return e(s,.15,.15,'50%'); }, .17],
+      fantaisie:  [function(s){ return s==='l' ? e(s,.17,.17,'50%') : e(s,.2,.07,'99px'); }, .15],
+      fin:        [function(s){ return e(s,.2,.05,'99px'); }, .15],
+      calin:      [function(s){ return e(s,.2,.12,'0 0 99px 99px',0,true,true); }, .13],
+      chaud:      [function(s){ return e(s,.23,.23,'50%',0,true); }, .12]
+    }[mood] || null;
+    return '<span class="bang' + (anim ? ' is-anim' : '') + '" data-mood="' + mood + '" aria-hidden="true" style="gap:' + p(14) + 'px;padding:' + p(12) + 'px;--d:' + d.toFixed(1) + 'px">' +
+      '<span class="bar" style="width:' + p(52) + 'px;height:' + p(140) + 'px;background:' + color + ';border-radius:' + p(26) + 'px ' + p(26) + 'px ' + p(18) + 'px ' + p(18) + 'px"></span>' +
+      '<span class="dot" style="width:' + p(60) + 'px;height:' + p(60) + 'px;background:' + color + ';gap:' + (d*EY[1]).toFixed(1) + 'px">' + EY[0]('l') + EY[0]('r') + '</span></span>';
+  }
+
+  function moodChips(scope){
+    return MOODS.map(function(x){
+      return '<button type="button" class="chip" data-act="mood" data-id="' + x.id + '" aria-pressed="' + (x.id === s.mood) + '" style="--dot:' + x.bg + '"><i></i>' + x.name + '</button>';
+    }).join('');
+  }
+
+  function renderHero(){
+    var m = byId[s.mood], h = $('hero');
+    h.style.setProperty('--bg', m.bg); h.style.setProperty('--fg', m.ink);
+    $('heroChips').innerHTML = moodChips();
+    $('bubbleLine').textContent = '« ' + m.line + ' »';
+    $('bubbleWho').textContent = '— Marc, humeur ' + m.name.toLowerCase();
+    $('heroBang').innerHTML = bang(m.id, small.matches ? 210 : 330, m.bang, m.eye, true);
+  }
+
+  function renderShop(){
+    $('shop').innerHTML = MOODS.map(function(x){
+      var f = s.formats[x.id] || 'En grains';
+      var seg = ['En grains','Moulu'].map(function(o){
+        return '<button type="button" data-act="format" data-id="' + x.id + '" data-v="' + o + '" aria-pressed="' + (o === f) + '">' + o + '</button>';
+      }).join('');
+      return '<article class="card" style="--bg:' + x.bg + ';--fg:' + x.ink + ';--sub:' + x.soft + '">' +
+        '<div class="vis">' + bang(x.id, 160, x.bang, x.eye, true) + '</div>' +
+        '<div class="card-top"><h3>' + x.name + '</h3><span class="tag">' + x.cafe + '</span></div>' +
+        '<p>' + x.desc + '</p>' +
+        '<div class="seg" role="group" aria-label="En grains ou moulu, ' + x.name + '">' + seg + '</div>' +
+        '<div class="buy"><span class="price">' + fmt(13.9) + '</span><button type="button" class="add" data-act="add-mood" data-id="' + x.id + '">Ajouter</button></div>' +
+      '</article>';
+    }).join('');
+  }
+
+  function mouture(){ return s.grind === 'Moulu' ? 'Moulu · ' + s.machine : 'En grains'; }
+
+  function renderComposer(){
+    var m = byId[s.mood];
+    $('compMoods').innerHTML = moodChips();
+    var G = s.grind === 'Moulu' ? GROUPS.concat([MACHINE]) : GROUPS;
+    $('groups').innerHTML = G.map(function(g, i){
+      return '<div class="step"><h3><span class="num">' + (i + 2) + '</span>' + g.label + '</h3><div class="chips" role="group" aria-label="' + g.label + '">' +
+        g.options.map(function(o){ return '<button type="button" class="opt" data-act="opt" data-k="' + g.key + '" data-v="' + o + '" aria-pressed="' + (s[g.key] === o) + '">' + o + '</button>'; }).join('') +
+        '</div></div>';
+    }).join('');
+    $('nameNum').textContent = String(G.length + 2);
+    var bag = $('bag');
+    bag.style.setProperty('--bg', m.bg); bag.style.setProperty('--fg', m.ink);
+    $('bagBang').innerHTML = bang(m.id, small.matches ? 150 : 170, m.bang, m.eye, true);
+    $('bagMood').textContent = 'Humeur : ' + m.name;
+    renderName();
+    var rows = [['Humeur', m.name], ['Café', m.cafe], ['Force', s.strength], ['Lait', s.milk], ['Petit truc en plus', s.extra], ['Format', mouture()]];
+    $('recipe').innerHTML = rows.map(function(r){ return '<div class="row"><span>' + r[0] + '</span><span>' + r[1] + '</span></div>'; }).join('');
+  }
+  function renderName(){
+    var n = s.name.trim();
+    $('bagTitle').textContent = n ? 'Le café de ' + n : 'Ton café';
+  }
+
+  function renderCart(){
+    $('count').textContent = s.cart.length;
+    $('scrim').hidden = !s.open; $('drawer').hidden = !s.open;
+    var html = '';
+    if (s.ordered) html += '<div class="thanks">' + bang('calin', 120, '#1A1410', '#FFF4E2') + '<p>Merci ! Marc s’occupe de tout.</p></div>';
+    if (!s.cart.length && !s.ordered) html += '<div class="empty">' + bang('fin', 110, '#FF5A1F', '#1A1410') + '<p>Ton panier est vide. Marc trouve ça un peu triste.</p></div>';
+    s.cart.forEach(function(c, i){
+      var m = byId[c.mood];
+      html += '<div class="item"><div class="item-vis" style="background:' + m.bg + '">' + bang(m.id, 56, m.bang, m.eye) + '</div>' +
+        '<div class="item-txt"><strong>' + esc(c.title) + '</strong><small>' + esc(c.detail) + '</small>' +
+        '<div class="item-foot"><span style="font-weight:600">' + fmt(c.price) + '</span><button type="button" data-act="remove" data-i="' + i + '">Retirer</button></div></div></div>';
+    });
+    if (s.cart.length) {
+      var sum = s.cart.reduce(function(a, c){ return a + c.price; }, 0);
+      html += '<div class="total"><div><span style="font-size:17px">Total</span><strong>' + fmt(sum) + '</strong></div><button type="button" data-act="checkout">Commander</button></div>';
+    }
+    $('cartBody').innerHTML = html;
+  }
+
+  function add(item){ s.cart.push(item); s.open = true; s.ordered = false; renderCart(); }
+
+  document.addEventListener('click', function(ev){
+    var t = ev.target.closest('[data-act]'); if (!t) return;
+    var a = t.getAttribute('data-act');
+    if (a === 'menu') { setMenu($('mmenu').hidden); return; }
+    if (a === 'menu-link') { setMenu(false); return; }
+    if (a === 'mood') {
+      var m = byId[t.getAttribute('data-id')];
+      s.mood = m.id; Object.keys(m.preset).forEach(function(k){ s[k] = m.preset[k]; });
+      renderHero(); renderComposer();
+    } else if (a === 'opt') {
+      s[t.getAttribute('data-k')] = t.getAttribute('data-v'); renderComposer();
+    } else if (a === 'format') {
+      s.formats[t.getAttribute('data-id')] = t.getAttribute('data-v'); renderShop();
+    } else if (a === 'add-mood') {
+      var x = byId[t.getAttribute('data-id')];
+      add({ title:'Marc ! ' + x.name, detail:'250 g · ' + x.cafe + ' · ' + (s.formats[x.id] || 'En grains'), price:13.9, mood:x.id });
+    } else if (a === 'add-composed') {
+      var mm = byId[s.mood], n = s.name.trim();
+      add({ title: n ? 'Le café de ' + n : 'Ton café composé', detail:[mm.name, s.strength, s.milk, s.extra !== 'Rien' ? s.extra : null, mouture()].filter(Boolean).join(' · '), price:15.9, mood:mm.id });
+    } else if (a === 'add-kit') {
+      add({ title:'Kit de survie', detail:'Café Lundi matin, mug, carnet, pins, marque-pages', price:49, mood:'lundi' });
+    } else if (a === 'open') { setMenu(false); s.open = true; renderCart(); $('drawer').querySelector('[data-act="close"]').focus(); }
+    else if (a === 'close') { s.open = false; renderCart(); }
+    else if (a === 'remove') { s.cart.splice(+t.getAttribute('data-i'), 1); renderCart(); }
+    else if (a === 'checkout') { s.cart = []; s.ordered = true; renderCart(); }
+  });
+  document.addEventListener('keydown', function(ev){
+    if (ev.key !== 'Escape') return;
+    if (s.open) { s.open = false; renderCart(); }
+    if (!$('mmenu').hidden) { setMenu(false); $('burger').focus(); }
+  });
+  document.addEventListener('click', function(ev){
+    if (!$('mmenu').hidden && !ev.target.closest('.hdr')) setMenu(false);
+  });
+  var onSize = function(){ renderHero(); renderComposer(); if (!small.matches) setMenu(false); };
+  if (small.addEventListener) small.addEventListener('change', onSize); else small.addListener(onSize);
+  $('prenom').addEventListener('input', function(){ s.name = this.value.slice(0, 18); renderName(); });
+  $('newsForm').addEventListener('submit', function(ev){ ev.preventDefault(); this.hidden = true; $('newsOk').hidden = false; });
+
+  $('logoBang').innerHTML = bang('tranquille', 40, '#FF5A1F', '#1A1410');
+  $('footBang').innerHTML = bang('tranquille', 150, '#FF5A1F', '#1A1410');
+  renderHero(); renderShop(); renderComposer(); renderCart();
+
+  // Les yeux s'animent : clignement, regard, sursaut
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce) setInterval(function(){
+    var els = document.querySelectorAll('.bang.is-anim'); if (!els.length) return;
+    var el = els[Math.floor(Math.random() * els.length)];
+    if (el.getAttribute('data-busy')) return;
+    var mood = el.getAttribute('data-mood'), r = Math.random(), cls = [], dur;
+    if (r < .45) { cls = [mood === 'fantaisie' ? 'wink' : 'blink']; dur = 160; }
+    else if (r < .8) { cls = [Math.random() < .5 ? 'look-l' : 'look-r']; if (mood === 'fin') cls.push('look-d'); dur = 900; }
+    else { cls = ['pop']; dur = 380; }
+    el.setAttribute('data-busy', '1');
+    cls.forEach(function(c){ el.classList.add(c); });
+    setTimeout(function(){ cls.forEach(function(c){ el.classList.remove(c); }); el.removeAttribute('data-busy'); }, dur);
+  }, 450);
+})();
+</script>
+</body>
+</html>
