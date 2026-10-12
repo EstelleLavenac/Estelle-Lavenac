@@ -365,6 +365,32 @@
   .hero-title{
     font-weight:700; font-size:clamp(48px,7vw,84px); line-height:1.02; letter-spacing:-0.03em; color:var(--ink);
   }
+  .hero-underline{
+    display:block; width:clamp(130px, 20vw, 210px); height:18px;
+    margin:-4px auto 0 auto;
+    overflow:visible;
+  }
+  .hero-underline path{
+    fill:none; stroke:var(--pink); stroke-width:7; stroke-linecap:round;
+    stroke-dasharray:420; stroke-dashoffset:420;
+    animation:drawUnderline 1s cubic-bezier(.65,0,.35,1) 1s forwards;
+  }
+  @keyframes drawUnderline{ to{ stroke-dashoffset:0; } }
+
+  /* floating pastel shapes */
+  .hero-shapes{position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:0}
+  .hero-shape{position:absolute; opacity:0.55; animation:shapeDrift ease-in-out infinite}
+  @keyframes shapeDrift{
+    0%{transform:translate(0,0) rotate(0deg)}
+    50%{transform:translate(16px,-20px) rotate(10deg)}
+    100%{transform:translate(0,0) rotate(0deg)}
+  }
+  .hero-shape-1{width:24px; height:24px; border-radius:50%; background:var(--lav); top:20%; left:11%; animation-duration:13s}
+  .hero-shape-2{width:17px; height:17px; border-radius:6px; background:var(--pink); top:66%; left:7%; animation-duration:17s; animation-delay:-5s}
+  .hero-shape-3{width:13px; height:13px; border-radius:50%; background:var(--lav2); top:26%; right:9%; animation-duration:15s; animation-delay:-8s}
+  .hero-shape-4{width:21px; height:21px; border-radius:7px; background:var(--pink2); top:68%; right:13%; animation-duration:19s; animation-delay:-2s; border:1px solid rgba(17,17,17,0.06)}
+  .hero-shape-5{width:10px; height:10px; border-radius:50%; background:var(--ink); opacity:0.12; top:42%; left:4%; animation-duration:12s; animation-delay:-6s}
+
   .hero-role{
     display:flex; align-items:center; gap:14px; flex-wrap:wrap; justify-content:center;
     margin-top:-10px;
@@ -374,10 +400,7 @@
   }
   .hero-role-tags{
     font-size:clamp(16px,1.6vw,19px); font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:#5c5c5c;
-    display:inline-block;
-    transition:opacity .35s cubic-bezier(.16,1,.3,1), transform .35s cubic-bezier(.16,1,.3,1);
   }
-  .hero-role-tags.is-swapping{opacity:0; transform:translateY(-8px)}
   .hero-sub{
     font-size:clamp(17px,2vw,22px); font-weight:500; color:#262626; max-width:600px;
     margin-top:-14px;
@@ -653,11 +676,21 @@
 
 <div class="hero-wrap">
   <div class="hero-glow" id="heroGlow"></div>
+  <div class="hero-shapes" aria-hidden="true">
+    <span class="hero-shape hero-shape-1"></span>
+    <span class="hero-shape hero-shape-2"></span>
+    <span class="hero-shape hero-shape-3"></span>
+    <span class="hero-shape hero-shape-4"></span>
+    <span class="hero-shape hero-shape-5"></span>
+  </div>
   <div class="hero-inner" id="heroInner">
     <div class="hero-role reveal">
-      <span class="hero-role-tags" id="roleCycle">Print</span>
+      <span class="hero-role-tags">Print · Web · Motion</span>
     </div>
     <h1 class="hero-title reveal">Estelle Lavenac</h1>
+    <svg class="hero-underline" viewBox="0 0 320 22" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+      <path d="M6 13 C 56 3, 100 20, 160 10 S 268 3, 314 13" />
+    </svg>
     <p class="hero-sub reveal">Je transforme les idées en visuels qui ont quelque chose à dire.</p>
     <div class="hero-actions reveal">
       <a href="book.html" class="btn btn-solid">Voir mon book →</a>
@@ -1233,25 +1266,6 @@
     });
   });
   fab.addEventListener('click', dismiss);
-})();
-</script>
-
-<script>
-(function(){
-  // Hero role tag: cycles through disciplines (fade/flip swap)
-  var el = document.getElementById('roleCycle');
-  if (!el) return;
-  var words = ['Print', 'Web', 'Motion', 'UI/UX', 'Branding'];
-  var i = 0;
-  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  setInterval(function(){
-    el.classList.add('is-swapping');
-    setTimeout(function(){
-      i = (i + 1) % words.length;
-      el.textContent = words[i];
-      el.classList.remove('is-swapping');
-    }, reduceMotion ? 0 : 350);
-  }, 2600);
 })();
 </script>
 
