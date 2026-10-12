@@ -289,9 +289,14 @@
     transition:background .2s ease;
   }
   .mobile-nav a:hover, .mobile-nav a:active{background:rgba(17,17,17,0.06)}
+  .mobile-nav a.mobile-nav-cta{
+    background:#111111; color:#fff; text-align:center; margin-bottom:8px;
+  }
+  .mobile-nav a.mobile-nav-cta:hover, .mobile-nav a.mobile-nav-cta:active{background:#2a2a2a}
 
   @media (max-width:1080px){
     .nav-burger{display:block}
+    .nav-pill > a.btn{display:none}
   }
 
   .btn{
@@ -619,6 +624,7 @@
       <span></span><span></span><span></span>
     </button>
     <nav class="mobile-nav" id="mobileNav">
+      <a href="book.html" class="mobile-nav-cta">Voir mon book →</a>
       <a href="#competences">Compétences</a>
       <a href="#points-forts">Points forts</a>
       <a href="#experience">Expérience</a>
