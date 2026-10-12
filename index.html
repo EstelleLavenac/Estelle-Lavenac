@@ -349,33 +349,22 @@
     100%{transform:translate(-50%,0) scale(1); opacity:0.85}
   }
 
-  /* breathing blob, reacts to the cursor */
+  /* soft static blob */
   .hero-blob-field{
     position:absolute; z-index:0; pointer-events:none;
     width:min(560px, 72vw); height:min(560px, 72vw);
     left:50%; top:52%;
     transform:translate(-50%,-50%);
-    will-change:transform;
   }
   .hero-blob{
-    position:absolute; inset:-6%;
+    position:absolute; inset:0;
+    border-radius:42% 58% 65% 35% / 45% 45% 55% 55%;
     background:linear-gradient(135deg, #7c5cf0 0%, #b84fd4 50%, #ef4f9e 100%);
-    filter:blur(46px);
-    opacity:0.62;
+    filter:blur(75px);
+    opacity:0.58;
     mix-blend-mode:multiply;
     mask-image:radial-gradient(circle, #000 0%, rgba(0,0,0,0) 86%);
     -webkit-mask-image:radial-gradient(circle, #000 0%, rgba(0,0,0,0) 86%);
-    animation:blobMorph 9s ease-in-out infinite, blobDrift 13s ease-in-out infinite;
-  }
-  @keyframes blobMorph{
-    0%, 100%{border-radius:42% 58% 65% 35% / 45% 45% 55% 55%}
-    25%{border-radius:60% 40% 30% 70% / 58% 68% 32% 42%}
-    50%{border-radius:68% 32% 42% 58% / 30% 58% 42% 70%}
-    75%{border-radius:32% 68% 58% 42% / 68% 30% 68% 32%}
-  }
-  @keyframes blobDrift{
-    0%, 100%{transform:translate(0,0) scale(1)}
-    50%{transform:translate(22px,-16px) scale(1.14)}
   }
 
   .hero-inner{
@@ -1264,67 +1253,6 @@
     });
   });
   fab.addEventListener('click', dismiss);
-})();
-</script>
-
-<script>
-(function(){
-  // Hero blob reacts to the cursor: it bulges and leans toward it on hover
-  var heroWrap = document.getElementById('heroWrap');
-  var blobField = document.getElementById('heroBlobField');
-  if (!heroWrap || !blobField) return;
-  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var isFinePointer = window.matchMedia && window.matchMedia('(pointer: fine)').matches;
-  if (reduceMotion || !isFinePointer) return;
-
-  var mouseX = null, mouseY = null;
-  var curDx = 0, curDy = 0, curScale = 1, curSkewX = 0, curSkewY = 0;
-  var targetDx = 0, targetDy = 0, targetScale = 1, targetSkewX = 0, targetSkewY = 0;
-
-  heroWrap.addEventListener('mousemove', function(e){
-    var rect = heroWrap.getBoundingClientRect();
-    mouseX = e.clientX - rect.left;
-    mouseY = e.clientY - rect.top;
-  });
-  heroWrap.addEventListener('mouseleave', function(){
-    mouseX = null; mouseY = null;
-  });
-
-  function tick(){
-    var rect = heroWrap.getBoundingClientRect();
-    var radius = blobField.offsetWidth * 0.5;
-
-    if (mouseX !== null && rect.width > 0) {
-      var cx = rect.width * 0.5;
-      var cy = rect.height * 0.52;
-      var dx = mouseX - cx;
-      var dy = mouseY - cy;
-      var dist = Math.sqrt(dx * dx + dy * dy);
-      var maxDist = radius + 140;
-      var influence = Math.max(0, 1 - dist / maxDist);
-      influence = influence * influence;
-      targetDx = dx * 0.12 * influence;
-      targetDy = dy * 0.12 * influence;
-      targetScale = 1 + 0.18 * influence;
-      targetSkewX = (dx / (radius || 1)) * 5 * influence;
-      targetSkewY = (dy / (radius || 1)) * 3 * influence;
-    } else {
-      targetDx = 0; targetDy = 0; targetScale = 1; targetSkewX = 0; targetSkewY = 0;
-    }
-
-    curDx += (targetDx - curDx) * 0.08;
-    curDy += (targetDy - curDy) * 0.08;
-    curScale += (targetScale - curScale) * 0.08;
-    curSkewX += (targetSkewX - curSkewX) * 0.08;
-    curSkewY += (targetSkewY - curSkewY) * 0.08;
-
-    blobField.style.transform =
-      'translate(-50%,-50%) translate3d(' + curDx.toFixed(1) + 'px,' + curDy.toFixed(1) + 'px,0) ' +
-      'scale(' + curScale.toFixed(3) + ') skew(' + curSkewX.toFixed(2) + 'deg,' + curSkewY.toFixed(2) + 'deg)';
-
-    requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
 })();
 </script>
 
