@@ -323,7 +323,7 @@
   }
   .hero-bg{
     position:absolute; top:0; left:0; right:0; height:130%;
-    background:linear-gradient(180deg, var(--lav) 0%, #d6c5ea 22%, #ecc9df 46%, var(--pink2) 70%, #ffffff 100%);
+    background:linear-gradient(180deg, var(--lav) 0%, #d6c5ea 17%, #ecc9df 36%, var(--pink2) 54%, #ffffff 70%, #ffffff 100%);
     will-change:transform;
     z-index:0;
   }
@@ -370,18 +370,6 @@
   @keyframes blobDrift{
     0%, 100%{transform:translate(-50%,-50%) scale(1)}
     50%{transform:translate(calc(-50% + 26px), calc(-50% - 18px)) scale(1.07)}
-  }
-
-  /* cursor particle trail */
-  .particle-field{position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:5}
-  .particle{
-    position:absolute; border-radius:50%;
-    transform:translate(-50%,-50%);
-    animation:particleFade .9s ease-out forwards;
-  }
-  @keyframes particleFade{
-    0%{opacity:1; transform:translate(-50%,-50%) scale(1) translateY(0)}
-    100%{opacity:0; transform:translate(-50%,-50%) scale(0.3) translateY(-26px)}
   }
 
   .hero-inner{
@@ -1268,45 +1256,6 @@
     });
   });
   fab.addEventListener('click', dismiss);
-})();
-</script>
-
-<script>
-(function(){
-  // Cursor particle trail in the hero (fine-pointer, motion-ok only)
-  var heroWrap = document.getElementById('heroWrap');
-  if (!heroWrap) return;
-  var isFinePointer = window.matchMedia && window.matchMedia('(pointer: fine)').matches;
-  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!isFinePointer || reduceMotion) return;
-
-  var field = document.createElement('div');
-  field.className = 'particle-field';
-  heroWrap.appendChild(field);
-
-  var colors = ['#7c5cf0', '#e9478f', '#b84fd4', '#f4a9c6'];
-  var lastSpawn = 0;
-
-  heroWrap.addEventListener('mousemove', function(e){
-    var now = Date.now();
-    if (now - lastSpawn < 40) return;
-    lastSpawn = now;
-    var rect = heroWrap.getBoundingClientRect();
-    var x = e.clientX - rect.left;
-    var y = e.clientY - rect.top;
-    var size = 7 + Math.random() * 7;
-    var p = document.createElement('span');
-    p.className = 'particle';
-    p.style.width = size + 'px';
-    p.style.height = size + 'px';
-    p.style.left = x + 'px';
-    p.style.top = y + 'px';
-    var c = colors[Math.floor(Math.random() * colors.length)];
-    p.style.background = c;
-    p.style.boxShadow = '0 0 10px 1px ' + c + '99';
-    field.appendChild(p);
-    setTimeout(function(){ p.remove(); }, 900);
-  });
 })();
 </script>
 
