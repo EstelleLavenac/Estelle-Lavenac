@@ -365,23 +365,6 @@
   .hero-title{
     font-weight:700; font-size:clamp(48px,7vw,84px); line-height:1.02; letter-spacing:-0.03em; color:var(--ink);
   }
-  /* floating pastel shapes */
-  .hero-shapes{position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:0}
-  .hero-shape{
-    position:absolute; opacity:0.9; animation:shapeDrift ease-in-out infinite;
-    border:2px solid rgba(255,255,255,0.8);
-    box-shadow:0 8px 18px rgba(17,17,17,0.10);
-  }
-  @keyframes shapeDrift{
-    0%{transform:translate(0,0) rotate(0deg)}
-    50%{transform:translate(18px,-24px) rotate(12deg)}
-    100%{transform:translate(0,0) rotate(0deg)}
-  }
-  .hero-shape-1{width:34px; height:34px; border-radius:50%; background:#9b8ce0; top:18%; left:10%; animation-duration:13s}
-  .hero-shape-2{width:26px; height:26px; border-radius:9px; background:#e9789a; top:64%; left:6%; animation-duration:17s; animation-delay:-5s}
-  .hero-shape-3{width:20px; height:20px; border-radius:50%; background:#d79ae6; top:24%; right:8%; animation-duration:15s; animation-delay:-8s}
-  .hero-shape-4{width:30px; height:30px; border-radius:10px; background:#f4a9c6; top:66%; right:11%; animation-duration:19s; animation-delay:-2s}
-  .hero-shape-5{width:16px; height:16px; border-radius:50%; background:#111111; opacity:0.22; top:40%; left:3%; animation-duration:12s; animation-delay:-6s; border:none; box-shadow:none}
 
   .hero-role{
     display:flex; align-items:center; gap:14px; flex-wrap:wrap; justify-content:center;
@@ -668,13 +651,6 @@
 
 <div class="hero-wrap">
   <div class="hero-glow" id="heroGlow"></div>
-  <div class="hero-shapes" aria-hidden="true">
-    <span class="hero-shape hero-shape-1"></span>
-    <span class="hero-shape hero-shape-2"></span>
-    <span class="hero-shape hero-shape-3"></span>
-    <span class="hero-shape hero-shape-4"></span>
-    <span class="hero-shape hero-shape-5"></span>
-  </div>
   <div class="hero-inner" id="heroInner">
     <div class="hero-role reveal">
       <span class="hero-role-tags">Print · Web · Motion</span>
