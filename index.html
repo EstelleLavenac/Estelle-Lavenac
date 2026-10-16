@@ -126,8 +126,8 @@
   body.cursor-ready .cursor-dot, body.cursor-ready .cursor-ring{opacity:1}
   .wa-fab{
     position:fixed; right:24px; bottom:24px; z-index:80;
-    height:52px; width:52px; padding:0; border-radius:999px;
-    background:#ffffff; color:#111111;
+    height:52px; width:52px; padding:0; border-radius:999px; border:none;
+    background:#ffffff; color:#111111; cursor:pointer;
     display:flex; align-items:center; justify-content:center;
     overflow:hidden;
     font-family:'Poppins', sans-serif; font-weight:700; font-size:14.5px;
@@ -1074,9 +1074,9 @@
   </form>
 </div>
 
-<a href="https://wa.me/33648374822?text=Bonjour%20Estelle%2C%20je%20vous%20contacte%20suite%20%C3%A0%20votre%20landing%20page%20!" target="_blank" rel="noopener" class="wa-fab" id="waFab" aria-label="Discuter sur WhatsApp">
+<button type="button" class="wa-fab" id="waFab" aria-label="Ouvrir le formulaire de contact" aria-haspopup="dialog" aria-expanded="false" aria-controls="waBubble">
   <span class="wa-fab-emoji">👋</span><span class="wa-fab-text">On discute ?</span>
-</a>
+</button>
 
 <script>
 (function(){
@@ -1264,8 +1264,19 @@
 
   function dismiss(){
     bubble.classList.remove('is-visible');
+    fab.setAttribute('aria-expanded', 'false');
     clearTimeout(hideTimer);
     try { sessionStorage.setItem(DISMISS_KEY, '1'); } catch(e){}
+  }
+
+  function open(){
+    clearTimeout(showTimer);
+    clearTimeout(hideTimer);
+    bubble.classList.add('is-visible');
+    fab.setAttribute('aria-expanded', 'true');
+    try { sessionStorage.setItem(DISMISS_KEY, '1'); } catch(e){}
+    var first = document.getElementById('waPrenom');
+    if (first) { setTimeout(function(){ first.focus(); }, 200); }
   }
 
   var alreadyDismissed = false;
@@ -1274,17 +1285,15 @@
   if (!alreadyDismissed) {
     showTimer = setTimeout(function(){
       bubble.classList.add('is-visible');
+      fab.setAttribute('aria-expanded', 'true');
       hideTimer = setTimeout(dismiss, 12000);
     }, 2500);
   }
 
   closeBtn.addEventListener('click', dismiss);
-  bubble.querySelectorAll('.wa-chip').forEach(function(chip){
-    chip.addEventListener('click', function(){
-      try { sessionStorage.setItem(DISMISS_KEY, '1'); } catch(e){}
-    });
+  fab.addEventListener('click', function(){
+    if (bubble.classList.contains('is-visible')) { dismiss(); } else { open(); }
   });
-  fab.addEventListener('click', dismiss);
 
   // Don't auto-hide the bubble while the person is filling the form
   var waForm = document.getElementById('waForm');
