@@ -207,6 +207,36 @@
     .wa-bubble{right:16px; bottom:84px; width:248px; padding:16px 16px 14px 16px}
     .wa-bubble::after{right:22px}
   }
+
+  .wa-form{display:flex; flex-direction:column; gap:8px; margin-top:2px}
+  .wa-form-row{display:flex; gap:8px}
+  .wa-form-row input{
+    flex:1; min-width:0; font:inherit; font-size:13px; font-family:'Assistant',sans-serif;
+    padding:9px 11px; border:1.5px solid #ececec; border-radius:11px; background:#fbfaf9;
+    color:var(--ink); transition:border-color .2s ease, background .2s ease;
+  }
+  .wa-form textarea{
+    display:block; width:100%; font:inherit; font-size:13px; font-family:'Assistant',sans-serif;
+    color:var(--ink); padding:10px 11px; border:1.5px solid #ececec; border-radius:13px;
+    background:#fbfaf9; resize:none; line-height:1.42;
+    transition:border-color .2s ease, background .2s ease;
+  }
+  .wa-form-row input:focus, .wa-form textarea:focus{
+    outline:none; border-color:var(--ink); background:#ffffff;
+  }
+  .wa-form-row input::placeholder{color:#a3a3a3}
+  .wa-form-submit{
+    align-self:flex-end; display:inline-flex; align-items:center; gap:6px;
+    font-family:'Poppins',sans-serif; font-weight:700; font-size:13px; color:#ffffff;
+    background:#111111; border:none; border-radius:999px; padding:9px 18px; cursor:pointer;
+    transition:transform .25s cubic-bezier(.34,1.56,.64,1), background .25s ease, box-shadow .25s ease;
+  }
+  .wa-form-submit:hover{
+    transform:translateY(-2px);
+    background:linear-gradient(135deg, #8b6cf0 0%, #c060d6 55%, #ef5ea8 100%);
+    box-shadow:0 10px 22px rgba(155,90,200,0.35);
+  }
+  .wa-form-submit:active{transform:scale(.95)}
   .cursor-ring.is-active{
     width:56px; height:56px;
     border-color:transparent;
@@ -1033,12 +1063,15 @@
 <div class="wa-bubble" id="waBubble" role="dialog" aria-label="Discuter sur WhatsApp">
   <button type="button" class="wa-bubble-close" id="waBubbleClose" aria-label="Fermer">&times;</button>
   <div class="wa-bubble-title">Envie de discuter ? 👋</div>
-  <div class="wa-bubble-sub">Choisis ton message, ou écris le tien :</div>
-  <div class="wa-bubble-chips">
-    <a class="wa-chip" href="https://wa.me/33648374822?text=Salut%20Estelle%2C%20%C3%A7a%20vous%20dit%20qu%27on%20papote%20%3F%20%E2%98%95" target="_blank" rel="noopener">☕ On papote ?</a>
-    <a class="wa-chip" href="https://wa.me/33648374822?text=Bonjour%20Estelle%2C%20j%27ai%20une%20opportunit%C3%A9%20qui%20pourrait%20vous%20int%C3%A9resser%20!" target="_blank" rel="noopener">💼 J'ai un poste pour vous</a>
-    <a class="wa-chip" href="https://wa.me/33648374822?text=Bonjour%20Estelle%2C%20j%27ai%20un%20projet%20en%20t%C3%AAte%2C%20on%20en%20discute%20%3F" target="_blank" rel="noopener">🎨 J'ai un projet en tête</a>
-  </div>
+  <div class="wa-bubble-sub">Un petit mot, et j'te réponds vite :</div>
+  <form class="wa-form" id="waForm">
+    <div class="wa-form-row">
+      <input type="text" id="waPrenom" name="prenom" placeholder="Prénom" autocomplete="given-name" required>
+      <input type="text" id="waNom" name="nom" placeholder="Nom" autocomplete="family-name" required>
+    </div>
+    <textarea id="waMessage" name="message" rows="3" required>Salut Estelle ! J'ai eu un coup de cœur pour ton book, raconte-moi tout (le café, c'est moi qui régale, version virtuelle pour l'instant) ☕✨</textarea>
+    <button type="submit" class="wa-form-submit">Envoyer →</button>
+  </form>
 </div>
 
 <a href="https://wa.me/33648374822?text=Bonjour%20Estelle%2C%20je%20vous%20contacte%20suite%20%C3%A0%20votre%20landing%20page%20!" target="_blank" rel="noopener" class="wa-fab" id="waFab" aria-label="Discuter sur WhatsApp">
@@ -1252,6 +1285,25 @@
     });
   });
   fab.addEventListener('click', dismiss);
+
+  // Don't auto-hide the bubble while the person is filling the form
+  var waForm = document.getElementById('waForm');
+  if (waForm){
+    waForm.addEventListener('focusin', function(){ clearTimeout(hideTimer); });
+    waForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      var prenom = document.getElementById('waPrenom').value.trim();
+      var nom = document.getElementById('waNom').value.trim();
+      var message = document.getElementById('waMessage').value.trim();
+      var subject = 'Message de ' + (prenom + ' ' + nom).trim() + ' via ton book';
+      var body = message + '\n\n— ' + (prenom + ' ' + nom).trim();
+      var mailto = 'mailto:estelle.lavenac@gmail.com'
+        + '?subject=' + encodeURIComponent(subject)
+        + '&body=' + encodeURIComponent(body);
+      window.location.href = mailto;
+      try { sessionStorage.setItem(DISMISS_KEY, '1'); } catch(e){}
+    });
+  }
 })();
 </script>
 
