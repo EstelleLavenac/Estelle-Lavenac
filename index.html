@@ -422,6 +422,18 @@
   .hero-title{
     font-weight:700; font-size:clamp(48px,7vw,84px); line-height:1.02; letter-spacing:-0.03em; color:var(--ink);
   }
+  .hero-title .letter{
+    display:inline-block;
+    transition:transform .3s cubic-bezier(.34,1.56,.64,1), color .25s ease;
+  }
+  @media (pointer:fine){
+    .hero-title .letter:hover{
+      transform:translateY(-6px);
+      background:linear-gradient(135deg, var(--lav) 0%, #b84fd4 50%, var(--pink) 100%);
+      -webkit-background-clip:text; background-clip:text;
+      -webkit-text-fill-color:transparent; color:transparent;
+    }
+  }
 
   .hero-role{
     display:flex; align-items:center; gap:14px; flex-wrap:wrap; justify-content:center;
@@ -1141,6 +1153,17 @@
     }
   }, { passive: true });
   onScroll();
+
+  // Split the hero title into per-letter spans for the gradient hover effect
+  var heroTitleEl = document.querySelector('.hero-title');
+  if (heroTitleEl) {
+    var titleText = heroTitleEl.textContent;
+    heroTitleEl.setAttribute('aria-label', titleText);
+    heroTitleEl.innerHTML = titleText.split('').map(function(ch){
+      if (ch === ' ') return '<span class="letter letter-space" aria-hidden="true">&nbsp;</span>';
+      return '<span class="letter" aria-hidden="true">' + ch + '</span>';
+    }).join('');
+  }
 
   // Reveal on scroll
   var revealEls = document.querySelectorAll('.reveal');
