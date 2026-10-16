@@ -422,6 +422,7 @@
   .hero-title{
     font-weight:700; font-size:clamp(48px,7vw,84px); line-height:1.02; letter-spacing:-0.03em; color:var(--ink);
   }
+  .hero-title .word{display:inline-block; white-space:nowrap}
   .hero-title .letter{
     display:inline-block;
     transition:transform .3s cubic-bezier(.34,1.56,.64,1), filter .35s ease;
@@ -445,6 +446,20 @@
   @keyframes letterShine{
     from{ background-position:160% 0, 0 0; }
     to{ background-position:-60% 0, 0 0; }
+  }
+
+  .mascot-head{
+    width:92px; height:92px; flex:none; margin:0 auto 2px;
+    background-image:url('assets/mascot-sprite.png');
+    background-repeat:no-repeat;
+    background-size:1700% 100%;
+    background-position:50% 0;
+    filter:drop-shadow(0 10px 22px rgba(124,92,240,0.35));
+    transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  }
+  .mascot-head:hover{transform:translateY(-3px) scale(1.04)}
+  @media (max-width:560px){
+    .mascot-head{width:76px; height:76px}
   }
 
   .hero-role{
@@ -736,6 +751,7 @@
     <div class="hero-blob" id="heroBlob"></div>
   </div>
   <div class="hero-inner" id="heroInner">
+    <div class="mascot-head reveal" id="mascotHead" aria-hidden="true"></div>
     <div class="hero-role reveal">
       <span class="hero-role-tags">Print · Web · Motion</span>
     </div>
@@ -1171,10 +1187,53 @@
   if (heroTitleEl) {
     var titleText = heroTitleEl.textContent;
     heroTitleEl.setAttribute('aria-label', titleText);
-    heroTitleEl.innerHTML = titleText.split('').map(function(ch){
-      if (ch === ' ') return '<span class="letter letter-space" aria-hidden="true">&nbsp;</span>';
-      return '<span class="letter" aria-hidden="true">' + ch + '</span>';
-    }).join('');
+    heroTitleEl.innerHTML = titleText.split(' ').map(function(word){
+      var letters = word.split('').map(function(ch){
+        return '<span class="letter" aria-hidden="true">' + ch + '</span>';
+      }).join('');
+      return '<span class="word">' + letters + '</span>';
+    }).join(' ');
+  }
+
+  // Mascot head: turns to follow the cursor (desktop only)
+  var mascotHead = document.getElementById('mascotHead');
+  if (mascotHead && window.matchMedia('(pointer:fine)').matches) {
+    var MASCOT_FRAMES = 17;
+    var mascotTarget = (MASCOT_FRAMES - 1) / 2;
+    var mascotCurrent = mascotTarget;
+    var mascotRaf = null;
+
+    function setMascotFrame(index){
+      var snapped = Math.round(index);
+      var pct = (snapped / (MASCOT_FRAMES - 1)) * 100;
+      mascotHead.style.backgroundPositionX = pct + '%';
+    }
+
+    function mascotTick(){
+      mascotCurrent += (mascotTarget - mascotCurrent) * 0.18;
+      setMascotFrame(mascotCurrent);
+      if (Math.abs(mascotTarget - mascotCurrent) > 0.02) {
+        mascotRaf = requestAnimationFrame(mascotTick);
+      } else {
+        mascotRaf = null;
+      }
+    }
+
+    function onMouseMoveForMascot(e){
+      var w = window.innerWidth || document.documentElement.clientWidth;
+      var ratio = Math.min(Math.max(e.clientX / w, 0), 1);
+      mascotTarget = ratio * (MASCOT_FRAMES - 1);
+      if (!mascotRaf) { mascotRaf = requestAnimationFrame(mascotTick); }
+    }
+
+    function resetMascot(){
+      mascotTarget = (MASCOT_FRAMES - 1) / 2;
+      if (!mascotRaf) { mascotRaf = requestAnimationFrame(mascotTick); }
+    }
+
+    window.addEventListener('mousemove', onMouseMoveForMascot, { passive: true });
+    document.addEventListener('mouseleave', resetMascot);
+    setMascotFrame(mascotCurrent);
   }
 
   // Reveal on scroll
