@@ -237,6 +237,17 @@
     box-shadow:0 10px 22px rgba(155,90,200,0.35);
   }
   .wa-form-submit:active{transform:scale(.95)}
+  .wa-form-submit[disabled]{opacity:.6; cursor:wait; transform:none}
+  .wa-form-submit--ghost{align-self:center; background:transparent; color:var(--ink); box-shadow:inset 0 0 0 1.5px #ddd9d3}
+  .wa-form-submit--ghost:hover{background:#111111; color:#fff; box-shadow:none}
+  .wa-form-pot{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden}
+  .wa-form-statut{display:none; font-size:12px; line-height:1.4; border-radius:10px; padding:8px 10px; background:#fdecee; color:#b3273f}
+  .wa-form-statut.on{display:block}
+  .wa-form-statut a{color:inherit; font-weight:700}
+  .wa-form-merci{display:none; text-align:center; padding:6px 2px 2px}
+  .wa-form-merci.on{display:block}
+  .wa-form-merci-emoji{font-size:30px; margin-bottom:6px}
+  .wa-form-merci .wa-bubble-sub{margin-bottom:14px}
   .cursor-ring.is-active{
     width:56px; height:56px;
     border-color:transparent;
@@ -1087,16 +1098,29 @@
 
 <div class="wa-bubble" id="waBubble" role="dialog" aria-label="Discuter sur WhatsApp">
   <button type="button" class="wa-bubble-close" id="waBubbleClose" aria-label="Fermer">&times;</button>
-  <div class="wa-bubble-title">Envie de discuter ? 👋</div>
-  <div class="wa-bubble-sub">Un petit mot, et j'te réponds vite :</div>
-  <form class="wa-form" id="waForm">
-    <div class="wa-form-row">
-      <input type="text" id="waPrenom" name="prenom" placeholder="Prénom" autocomplete="given-name" required>
-      <input type="text" id="waNom" name="nom" placeholder="Nom" autocomplete="family-name" required>
-    </div>
-    <textarea id="waMessage" name="message" rows="3" required>Salut Estelle ! J'ai eu un coup de cœur pour ton book, raconte-moi tout (le café, c'est moi qui régale, version virtuelle pour l'instant) ☕✨</textarea>
-    <button type="submit" class="wa-form-submit">Envoyer →</button>
-  </form>
+  <div id="waFormWrap">
+    <div class="wa-bubble-title">Envie de discuter ? 👋</div>
+    <div class="wa-bubble-sub">Un petit mot, et j'te réponds vite :</div>
+    <form class="wa-form" id="waForm">
+      <div class="wa-form-row">
+        <input type="text" id="waPrenom" name="prenom" placeholder="Prénom" autocomplete="given-name" required>
+        <input type="text" id="waNom" name="nom" placeholder="Nom" autocomplete="family-name" required>
+      </div>
+      <div class="wa-form-row">
+        <input type="email" id="waEmail" name="email" placeholder="Ton e-mail (pour que je te réponde)" autocomplete="email" inputmode="email" required>
+      </div>
+      <textarea id="waMessage" name="message" rows="3" required>Salut Estelle ! J'ai eu un coup de cœur pour ton book, raconte-moi tout (le café, c'est moi qui régale, version virtuelle pour l'instant) ☕✨</textarea>
+      <div class="wa-form-pot" aria-hidden="true"><label for="waSite">Ne pas remplir</label><input type="text" id="waSite" name="site" tabindex="-1" autocomplete="off"></div>
+      <div class="wa-form-statut" id="waStatut" role="alert"></div>
+      <button type="submit" class="wa-form-submit" id="waSubmit">Envoyer →</button>
+    </form>
+  </div>
+  <div class="wa-form-merci" id="waMerci">
+    <div class="wa-form-merci-emoji">💌</div>
+    <div class="wa-bubble-title">Message bien reçu !</div>
+    <div class="wa-bubble-sub">Merci ✨ je te réponds très vite, promis.</div>
+    <button type="button" class="wa-form-submit wa-form-submit--ghost" id="waMerciOk">Fermer</button>
+  </div>
 </div>
 
 <button type="button" class="wa-fab" id="waFab" aria-label="Ouvrir le formulaire de contact" aria-haspopup="dialog" aria-expanded="false" aria-controls="waBubble">
@@ -1337,19 +1361,98 @@
   var waForm = document.getElementById('waForm');
   if (waForm){
     waForm.addEventListener('focusin', function(){ clearTimeout(hideTimer); });
+
+    var ENDPOINT = 'https://formsubmit.co/ajax/estelle.lavenac@gmail.com';
+    var waFormWrap = document.getElementById('waFormWrap');
+    var waMerci = document.getElementById('waMerci');
+    var waStatut = document.getElementById('waStatut');
+    var waSubmit = document.getElementById('waSubmit');
+    var waChamps = {
+      prenom: document.getElementById('waPrenom'),
+      nom: document.getElementById('waNom'),
+      email: document.getElementById('waEmail'),
+      message: document.getElementById('waMessage')
+    };
+
+    function waMailto(){
+      var prenom = waChamps.prenom.value.trim(), nom = waChamps.nom.value.trim();
+      var subject = 'Message de ' + (prenom + ' ' + nom).trim() + ' via ton book';
+      var body = waChamps.message.value.trim() + '\n\n— ' + (prenom + ' ' + nom).trim() + (waChamps.email.value.trim() ? ' (' + waChamps.email.value.trim() + ')' : '');
+      return 'mailto:estelle.lavenac@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    }
+
+    function waEnvoiClassique(){
+      var f = document.createElement('form');
+      f.method = 'POST'; f.action = 'https://formsubmit.co/estelle.lavenac@gmail.com'; f.style.display = 'none';
+      var retour = location.href.split('#')[0].split('?')[0] + '?merci=1#contact';
+      var data = {
+        prenom: waChamps.prenom.value.trim(), nom: waChamps.nom.value.trim(),
+        email: waChamps.email.value.trim(), message: waChamps.message.value.trim(),
+        _replyto: waChamps.email.value.trim(),
+        _subject: 'Message de ' + (waChamps.prenom.value.trim() + ' ' + waChamps.nom.value.trim()).trim() + ' via ton book',
+        _template: 'table', _captcha: 'false', _next: retour
+      };
+      Object.keys(data).forEach(function(k){ var i = document.createElement('input'); i.type = 'hidden'; i.name = k; i.value = data[k]; f.appendChild(i); });
+      document.body.appendChild(f); f.submit();
+    }
+
+    function waAfficherMerci(){
+      waFormWrap.style.display = 'none';
+      waMerci.classList.add('on');
+      try { sessionStorage.setItem(DISMISS_KEY, '1'); } catch(e){}
+    }
+
     waForm.addEventListener('submit', function(e){
       e.preventDefault();
-      var prenom = document.getElementById('waPrenom').value.trim();
-      var nom = document.getElementById('waNom').value.trim();
-      var message = document.getElementById('waMessage').value.trim();
-      var subject = 'Message de ' + (prenom + ' ' + nom).trim() + ' via ton book';
-      var body = message + '\n\n— ' + (prenom + ' ' + nom).trim();
-      var mailto = 'mailto:estelle.lavenac@gmail.com'
-        + '?subject=' + encodeURIComponent(subject)
-        + '&body=' + encodeURIComponent(body);
-      window.location.href = mailto;
-      try { sessionStorage.setItem(DISMISS_KEY, '1'); } catch(e){}
+      if (document.getElementById('waSite').value) { return; } // robot
+      if (!waForm.reportValidity()) { return; }
+
+      waSubmit.disabled = true; waSubmit.textContent = 'Envoi…';
+      waStatut.classList.remove('on'); waStatut.textContent = '';
+
+      fetch(ENDPOINT, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+        body: JSON.stringify({
+          prenom: waChamps.prenom.value.trim(),
+          nom: waChamps.nom.value.trim(),
+          email: waChamps.email.value.trim(),
+          message: waChamps.message.value.trim(),
+          _replyto: waChamps.email.value.trim(),
+          _subject: 'Message de ' + (waChamps.prenom.value.trim() + ' ' + waChamps.nom.value.trim()).trim() + ' via ton book',
+          _template: 'table'
+        })
+      }).then(function(r){ return r.json().then(function(d){ return {ok: r.ok, d: d}; }); })
+        .then(function(res){
+          if (!res.ok || (res.d && (res.d.success === false || res.d.success === 'false'))) {
+            var msg = (res.d && res.d.message) || '';
+            var err = new Error(msg); err.activation = /activ/i.test(msg); throw err;
+          }
+          waAfficherMerci();
+        })
+        .catch(function(err){
+          if (!(err && err.activation) && (!err || !err.message || err.message === 'Failed to fetch' || err.name === 'TypeError') && /^https?:/.test(location.protocol)) {
+            waEnvoiClassique(); return;
+          }
+          waStatut.classList.add('on');
+          if (err && err.activation) {
+            waStatut.innerHTML = 'Formulaire pas encore activé : un e-mail d\'activation vient d\'être envoyé à estelle.lavenac@gmail.com. En attendant, tu peux <a href="' + waMailto() + '">m\'écrire directement</a>.';
+          } else {
+            waStatut.innerHTML = 'Oups, le message n\'est pas parti. Tu peux <a href="' + waMailto() + '">m\'écrire directement</a> à estelle.lavenac@gmail.com.';
+          }
+        })
+        .then(function(){ waSubmit.disabled = false; waSubmit.textContent = 'Envoyer →'; });
     });
+
+    var waMerciOk = document.getElementById('waMerciOk');
+    if (waMerciOk) { waMerciOk.addEventListener('click', dismiss); }
+
+    // Return after a classic (non-AJAX) submit fallback: show the confirmation state
+    if (/[?&]merci=1/.test(location.search)) {
+      open();
+      waAfficherMerci();
+      try { history.replaceState(null, '', location.pathname); } catch(e) {}
+    }
   }
 })();
 </script>
