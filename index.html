@@ -406,6 +406,23 @@
   @media (pointer:coarse), (prefers-reduced-motion: reduce){
     .cursor-glow{display:none}
   }
+
+  .mascot-head{
+    width:132px; height:170px;
+    margin:0 auto 6px;
+    background-image:url('assets/mascot-sprite.png');
+    background-repeat:no-repeat;
+    background-size:1700% 100%; /* 17 frames */
+    background-position:50% 0; /* frame 8 of 17 = centered/front-facing */
+    filter:drop-shadow(0 10px 22px rgba(124,92,240,0.25));
+    position:relative; z-index:1;
+  }
+  @media (pointer:coarse), (prefers-reduced-motion: reduce){
+    .mascot-head{display:none}
+  }
+  @media (max-width:640px){
+    .mascot-head{width:104px; height:134px}
+  }
   @keyframes glowDrift{
     0%{transform:translate(-50%,0) scale(1); opacity:0.85}
     50%{transform:translate(calc(-50% + 46px), 34px) scale(1.08); opacity:1}
@@ -761,6 +778,7 @@
     <div class="hero-blob" id="heroBlob"></div>
   </div>
   <div class="hero-inner" id="heroInner">
+    <div class="mascot-head" id="mascotHead" aria-hidden="true"></div>
     <div class="hero-role reveal">
       <span class="hero-role-tags">Print · Web · Motion</span>
     </div>
@@ -1155,6 +1173,48 @@
       cursorGlow.style.left = (e.clientX - r.left) + 'px';
       cursorGlow.style.top = (e.clientY - r.top) + 'px';
     });
+  }
+
+  // Mascot head: turns toward the cursor across the hero section
+  var mascotHead = document.getElementById('mascotHead');
+  if (mascotHead && matchMedia('(pointer:fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var MASCOT_FRAMES = 17;
+    var mascotTarget = (MASCOT_FRAMES - 1) / 2; // centered, front-facing
+    var mascotCurrent = mascotTarget;
+    var mascotRaf = null;
+
+    function setMascotFrame(index){
+      var rounded = Math.max(0, Math.min(MASCOT_FRAMES - 1, Math.round(index)));
+      var pct = (rounded / (MASCOT_FRAMES - 1)) * 100;
+      mascotHead.style.backgroundPositionX = pct + '%';
+    }
+
+    function mascotTick(){
+      mascotCurrent += (mascotTarget - mascotCurrent) * 0.18;
+      setMascotFrame(mascotCurrent);
+      if (Math.abs(mascotTarget - mascotCurrent) > 0.03) {
+        mascotRaf = requestAnimationFrame(mascotTick);
+      } else {
+        mascotRaf = null;
+      }
+    }
+
+    function onMouseMoveForMascot(e){
+      var r = heroWrap.getBoundingClientRect();
+      var frac = (e.clientX - r.left) / r.width; // 0..1 across the hero width
+      frac = Math.max(0, Math.min(1, frac));
+      mascotTarget = frac * (MASCOT_FRAMES - 1);
+      if (!mascotRaf) mascotRaf = requestAnimationFrame(mascotTick);
+    }
+
+    function resetMascot(){
+      mascotTarget = (MASCOT_FRAMES - 1) / 2;
+      if (!mascotRaf) mascotRaf = requestAnimationFrame(mascotTick);
+    }
+
+    setMascotFrame(mascotCurrent);
+    heroWrap.addEventListener('pointermove', onMouseMoveForMascot);
+    heroWrap.addEventListener('pointerleave', resetMascot);
   }
   var contactBg = document.getElementById('contactBg');
   var progressBar = document.getElementById('scrollProgress');
