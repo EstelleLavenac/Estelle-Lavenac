@@ -56,7 +56,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23c7c3ec'/%3E%3Cstop offset='55%25' stop-color='%23dcc3e6'/%3E%3Cstop offset='100%25' stop-color='%23f0c8dc'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='8' y='8' width='104' height='104' rx='30' fill='url(%23g)'/%3E%3Cg transform='rotate(-7 60 62)'%3E%3Ctext x='60' y='79' font-family='Arial' font-weight='700' font-size='54' letter-spacing='-4' fill='%23fff' text-anchor='middle'%3EEL%3C/text%3E%3C/g%3E%3Ccircle cx='93' cy='27' r='7' fill='%23fff'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Assistant:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,500;1,9..144,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;0,700;0,800;1,700&family=Assistant:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#111111;
@@ -390,7 +390,7 @@
   .hero-glow{
     position:absolute; width:640px; height:640px; border-radius:50%;
     background:radial-gradient(circle, rgba(255,255,255,0.55), rgba(255,255,255,0) 70%);
-    top:220px; left:28%;
+    top:140px; left:85%;
     z-index:0; pointer-events:none;
     animation:glowDrift 14s ease-in-out infinite;
   }
@@ -461,7 +461,7 @@
     position:relative; z-index:1;
     max-width:1296px; margin:0 auto;
     padding:184px 24px 0 24px;
-    display:grid; grid-template-columns:1.15fr 0.85fr; align-items:start; gap:32px;
+    display:grid; grid-template-columns:1.25fr 0.75fr; align-items:start; gap:4px;
     will-change:transform;
   }
   .hero-text{
@@ -477,11 +477,11 @@
   .hero-title{
     margin:0;
     font-family:'Poppins',sans-serif; font-weight:700;
-    font-size:clamp(36px,4.4vw,58px); line-height:1.16; letter-spacing:-0.02em; color:var(--ink);
+    font-size:clamp(40px,4.9vw,64px); line-height:1.14; letter-spacing:-0.02em; color:var(--ink);
     max-width:600px;
   }
   .hero-title .accent{
-    font-family:'Fraunces','Assistant',serif; font-style:italic; font-weight:560;
+    font-family:'Poppins',sans-serif; font-style:italic; font-weight:700;
     background-image:linear-gradient(120deg, #7c5cf0 0%, #b84fd4 50%, #ef4f9e 100%);
     -webkit-background-clip:text; background-clip:text;
     -webkit-text-fill-color:transparent; color:transparent;
@@ -773,8 +773,8 @@
   </div>
   <div class="hero-inner" id="heroInner">
     <div class="hero-text">
-      <h1 class="hero-title reveal">Je <span class="accent">transforme</span> les idées en visuels qui ont quelque chose à dire.</h1>
       <p class="hero-name reveal">Estelle Lavenac</p>
+      <h1 class="hero-title reveal">Je <span class="accent">transforme</span> les idées en visuels qui ont quelque chose à dire.</h1>
       <div class="hero-actions reveal">
         <a href="book.html" class="btn btn-solid">Voir mon book →</a>
         <a href="CV-Estelle-Lavenac-2026.pdf" download="CV-Estelle-Lavenac-2026.pdf" class="btn btn-ghost">Télécharger mon CV ↓</a>
