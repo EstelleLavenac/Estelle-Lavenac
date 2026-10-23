@@ -435,24 +435,6 @@
     .hero-avatar .eye{display:none}
   }
 
-  .avatar-chip{
-    position:absolute;
-    white-space:nowrap;
-    font-family:'Poppins',sans-serif; font-weight:700; font-size:13px; letter-spacing:0.02em;
-    color:var(--ink);
-    background:rgba(255,255,255,0.55);
-    border:1px solid rgba(255,255,255,0.75);
-    border-radius:999px;
-    padding:9px 18px;
-    backdrop-filter:blur(14px) saturate(160%);
-    -webkit-backdrop-filter:blur(14px) saturate(160%);
-    box-shadow:0 10px 26px rgba(124,92,240,0.14);
-  }
-  .chip-name{ top:44%; left:-32px; }
-  @media (max-width:900px){
-    .avatar-chip{ font-size:12px; padding:7px 14px; }
-    .chip-name{ top:42%; left:-10px; }
-  }
   @keyframes glowDrift{
     0%{transform:translate(-50%,0) scale(1); opacity:0.85}
     50%{transform:translate(calc(-50% + 46px), 34px) scale(1.08); opacity:1}
@@ -503,6 +485,12 @@
     background-image:linear-gradient(120deg, #7c5cf0 0%, #b84fd4 50%, #ef4f9e 100%);
     -webkit-background-clip:text; background-clip:text;
     -webkit-text-fill-color:transparent; color:transparent;
+  }
+
+  .hero-name{
+    font-family:'Poppins',sans-serif; font-weight:700; font-size:clamp(14px,1.5vw,16px);
+    letter-spacing:0.14em; text-transform:uppercase; color:#5c5c5c;
+    margin:0;
   }
 
   .hero-actions{display:flex; gap:14px; margin-top:8px; flex-wrap:wrap; justify-content:flex-start}
@@ -786,6 +774,7 @@
   <div class="hero-inner" id="heroInner">
     <div class="hero-text">
       <h1 class="hero-title reveal">Je <span class="accent">transforme</span> les idées en visuels qui ont quelque chose à dire.</h1>
+      <p class="hero-name reveal">Estelle Lavenac</p>
       <div class="hero-actions reveal">
         <a href="book.html" class="btn btn-solid">Voir mon book →</a>
         <a href="CV-Estelle-Lavenac-2026.pdf" download="CV-Estelle-Lavenac-2026.pdf" class="btn btn-ghost">Télécharger mon CV ↓</a>
@@ -795,7 +784,6 @@
       <img class="avatar-img" src="assets/avatar-hero.webp" alt="Estelle Lavenac" width="798" height="2198">
       <div class="eye" id="eyeLeft" aria-hidden="true"><img src="assets/avatar-eye-left.webp" alt="" draggable="false"></div>
       <div class="eye" id="eyeRight" aria-hidden="true"><img src="assets/avatar-eye-right.webp" alt="" draggable="false"></div>
-      <span class="avatar-chip chip-name">Estelle Lavenac</span>
     </div>
   </div>
 </div>
@@ -1207,7 +1195,7 @@
       var avatarRect = avatarImg.getBoundingClientRect();
       var titleCenter = titleRect.top + titleRect.height / 2;
       var avatarCenter = avatarRect.top + avatarRect.height / 2;
-      heroAvatar.style.transform = 'translateY(' + (titleCenter - avatarCenter) + 'px)';
+      heroAvatar.style.transform = 'translateY(' + (titleCenter - avatarCenter) * 0.45 + 'px)';
     }
   }
   syncAvatarHeight();
