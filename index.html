@@ -374,7 +374,7 @@
   }
   .hero-bg{
     position:absolute; top:0; left:0; right:0; height:130%;
-    background:linear-gradient(180deg, #eddcc4 0%, #eddcc4 78%, #f3e8d4 90%, #ffffff 100%);
+    background:linear-gradient(180deg, var(--lav) 0%, #d6c5ea 17%, #ecc9df 36%, var(--pink2) 54%, #ffffff 70%, #ffffff 100%);
     will-change:transform;
     z-index:0;
   }
@@ -389,8 +389,8 @@
   }
   .hero-glow{
     position:absolute; width:640px; height:640px; border-radius:50%;
-    background:radial-gradient(circle, rgba(255,255,255,0.3), rgba(255,255,255,0) 70%);
-    top:60px; left:16%;
+    background:radial-gradient(circle, rgba(255,255,255,0.55), rgba(255,255,255,0) 70%);
+    top:140px; left:85%;
     z-index:0; pointer-events:none;
     animation:glowDrift 14s ease-in-out infinite;
   }
@@ -399,7 +399,7 @@
   }
   .cursor-glow{
     position:absolute; width:520px; height:520px; border-radius:50%;
-    background:radial-gradient(circle, rgba(201,140,90,0.18), rgba(239,189,148,0.12) 45%, rgba(239,189,148,0) 72%);
+    background:radial-gradient(circle, rgba(139,92,246,0.3), rgba(239,94,168,0.16) 45%, rgba(239,94,168,0) 72%);
     left:60%; top:38%;
     z-index:0; pointer-events:none;
     mix-blend-mode:multiply;
@@ -420,7 +420,19 @@
   .hero-avatar .avatar-img{
     display:block; height:clamp(380px,56vh,560px); width:auto; max-width:100%;
     object-fit:contain;
-    filter:drop-shadow(0 30px 40px rgba(120,86,48,0.22));
+    filter:drop-shadow(0 30px 40px rgba(124,92,240,0.22));
+  }
+  .hero-avatar .eye{
+    position:absolute;
+    border-radius:50%;
+    pointer-events:none;
+    will-change:transform;
+  }
+  .hero-avatar .eye img{
+    display:block; width:100%; height:100%;
+  }
+  @media (pointer:coarse), (prefers-reduced-motion: reduce){
+    .hero-avatar .eye{display:none}
   }
 
   @keyframes glowDrift{
@@ -433,7 +445,7 @@
   .hero-blob-field{
     position:absolute; z-index:0; pointer-events:none;
     width:min(420px, 58vw); height:min(420px, 58vw);
-    left:14%; top:560px;
+    left:76%; top:481px;
     transform:translate(-50%,-50%);
   }
   @media (max-width:900px){
@@ -442,7 +454,7 @@
   .hero-blob{
     position:absolute; inset:0;
     border-radius:42% 58% 65% 35% / 45% 45% 55% 55%;
-    background:linear-gradient(135deg, #e8b98a 0%, #e49a7a 50%, #d98a8a 100%);
+    background:linear-gradient(135deg, #7c5cf0 0%, #b84fd4 50%, #ef4f9e 100%);
     filter:blur(85px);
     opacity:0.6;
     mix-blend-mode:multiply;
@@ -774,11 +786,9 @@
       </div>
     </div>
     <div class="hero-avatar reveal" id="heroAvatar">
-      <img class="avatar-img" id="avatarFallback" src="assets/avatar-hero.webp" alt="Estelle Lavenac" width="718" height="2199">
-      <video class="avatar-img" id="avatarVideo" muted loop playsinline autoplay preload="auto" style="display:none" width="320" height="712" aria-label="Estelle Lavenac">
-        <source src="assets/avatar-hero-loop.webm" type="video/webm">
-        <source src="assets/avatar-hero-loop.mp4" type="video/mp4">
-      </video>
+      <img class="avatar-img" src="assets/avatar-hero.webp" alt="Estelle Lavenac" width="718" height="2199">
+      <div class="eye" id="eyeLeft" aria-hidden="true"><img src="assets/avatar-eye-left.webp" alt="" draggable="false"></div>
+      <div class="eye" id="eyeRight" aria-hidden="true"><img src="assets/avatar-eye-right.webp" alt="" draggable="false"></div>
     </div>
   </div>
 </div>
@@ -1170,26 +1180,18 @@
   // Avatar: height stays proportional to the text column (two-column layout only)
   var heroAvatar = document.getElementById('heroAvatar');
   var heroTextCol = document.querySelector('.hero-text');
-  var avatarEls = heroAvatar ? Array.prototype.slice.call(heroAvatar.querySelectorAll('.avatar-img')) : [];
-
-  function getVisibleAvatarEl(){
-    for (var i = 0; i < avatarEls.length; i++) {
-      if (getComputedStyle(avatarEls[i]).display !== 'none') return avatarEls[i];
-    }
-    return avatarEls[0] || null;
-  }
+  var avatarImg = heroAvatar ? heroAvatar.querySelector('.avatar-img') : null;
 
   function syncAvatarHeight(){
-    var avatarImg = getVisibleAvatarEl();
     if (!heroAvatar || !heroTextCol || !avatarImg) return;
     if (matchMedia('(max-width:900px)').matches) {
-      avatarEls.forEach(function(el){ el.style.height = ''; }); // mobile: fixed stacked size from CSS
+      avatarImg.style.height = ''; // mobile: fixed stacked size from CSS
       heroAvatar.style.transform = '';
       return;
     }
     heroAvatar.style.transform = '';
     var h = heroTextCol.getBoundingClientRect().height;
-    if (h > 0) avatarEls.forEach(function(el){ el.style.height = (h * 1.65) + 'px'; });
+    if (h > 0) avatarImg.style.height = (h * 1.65) + 'px';
 
     // vertically center the avatar on the title, not on the whole text block
     var titleEl = heroTextCol.querySelector('.hero-title');
@@ -1205,38 +1207,74 @@
   window.addEventListener('resize', syncAvatarHeight);
   if (document.fonts && document.fonts.ready) { document.fonts.ready.then(syncAvatarHeight); }
 
-  // Avatar: looping video (its own beige backdrop matches the hero background,
-  // so no cutout/compositing is needed), falls back to the static image if the
-  // video can't play.
-  (function(){
-    var video = document.getElementById('avatarVideo');
-    var fallback = document.getElementById('avatarFallback');
-    if (!video || !fallback) return;
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return; // keep static image
+  // Avatar: only the eyes follow the cursor, within a small radius
+  var eyeLeft = document.getElementById('eyeLeft');
+  var eyeRight = document.getElementById('eyeRight');
+  if (heroAvatar && eyeLeft && eyeRight && matchMedia('(pointer:fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    // anchor points as a fraction of the base image's own width/height
+    var EYES = [
+      { el: eyeLeft,  fx: 0.4071, fy: 0.1130 },
+      { el: eyeRight, fx: 0.5737, fy: 0.1109 }
+    ];
+    var eyeTargetX = 0, eyeTargetY = 0;
+    var eyeCurrentX = 0, eyeCurrentY = 0;
+    var eyeRaf = null;
+    var MAX_SHIFT = 3; // px, at native avatar scale
 
-    var shown = false;
-    function show(){
-      if (shown) return;
-      shown = true;
-      video.style.display = '';
-      fallback.style.display = 'none';
-      if (typeof syncAvatarHeight === 'function') syncAvatarHeight();
+    function layoutEyes(){
+      if (matchMedia('(max-width:900px)').matches) {
+        EYES.forEach(function(eye){ eye.el.style.display = 'none'; });
+        return;
+      }
+      var w = avatarImg.clientWidth, h = avatarImg.clientHeight;
+      if (!w || !h) return;
+      var eyeSize = w * 0.092;
+      EYES.forEach(function(eye){
+        eye.el.style.display = '';
+        eye.el.style.width = eyeSize + 'px';
+        eye.el.style.height = eyeSize + 'px';
+        eye.el.style.left = (eye.fx * w - eyeSize / 2) + 'px';
+        eye.el.style.top = (eye.fy * h - eyeSize / 2) + 'px';
+      });
     }
 
-    video.addEventListener('playing', show);
-    // 'playing' may already have fired (autoplay) before this listener was
-    // attached, so also catch the case where the video is already rolling.
-    (function waitForPlayback(){
-      if (shown) return;
-      if (video.readyState >= 2 && !video.paused) { show(); return; }
-      requestAnimationFrame(waitForPlayback);
-    })();
-
-    var playPromise = video.play();
-    if (playPromise && playPromise.catch) {
-      playPromise.catch(function(){ /* autoplay blocked: keep static fallback */ });
+    function eyeTick(){
+      eyeCurrentX += (eyeTargetX - eyeCurrentX) * 0.22;
+      eyeCurrentY += (eyeTargetY - eyeCurrentY) * 0.22;
+      var scale = (avatarImg.clientWidth || 380) / 380;
+      var tx = eyeCurrentX * scale, ty = eyeCurrentY * scale;
+      EYES.forEach(function(eye){
+        eye.el.style.transform = 'translate(' + tx + 'px,' + ty + 'px)';
+      });
+      if (Math.abs(eyeTargetX - eyeCurrentX) > 0.02 || Math.abs(eyeTargetY - eyeCurrentY) > 0.02) {
+        eyeRaf = requestAnimationFrame(eyeTick);
+      } else {
+        eyeRaf = null;
+      }
     }
-  })();
+
+    function onMouseMoveForEyes(e){
+      var r = heroAvatar.getBoundingClientRect();
+      var cx = r.left + r.width * 0.52, cy = r.top + r.height * 0.1;
+      var dx = e.clientX - cx, dy = e.clientY - cy;
+      var dist = Math.sqrt(dx * dx + dy * dy) || 1;
+      var amt = Math.min(1, dist / 320);
+      eyeTargetX = (dx / dist) * amt * MAX_SHIFT;
+      eyeTargetY = (dy / dist) * amt * MAX_SHIFT * 0.6;
+      if (!eyeRaf) eyeRaf = requestAnimationFrame(eyeTick);
+    }
+
+    function resetEyes(){
+      eyeTargetX = 0; eyeTargetY = 0;
+      if (!eyeRaf) eyeRaf = requestAnimationFrame(eyeTick);
+    }
+
+    if (avatarImg.complete) { layoutEyes(); } else { avatarImg.addEventListener('load', layoutEyes); }
+    window.addEventListener('resize', layoutEyes);
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(layoutEyes); }
+    heroWrap.addEventListener('pointermove', onMouseMoveForEyes);
+    heroWrap.addEventListener('pointerleave', resetEyes);
+  }
   var contactBg = document.getElementById('contactBg');
   var progressBar = document.getElementById('scrollProgress');
   var ticking = false;
