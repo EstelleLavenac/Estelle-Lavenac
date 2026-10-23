@@ -390,7 +390,7 @@
   .hero-glow{
     position:absolute; width:640px; height:640px; border-radius:50%;
     background:radial-gradient(circle, rgba(255,255,255,0.55), rgba(255,255,255,0) 70%);
-    top:360px; left:80%;
+    top:220px; left:28%;
     z-index:0; pointer-events:none;
     animation:glowDrift 14s ease-in-out infinite;
   }
@@ -1193,10 +1193,22 @@
     if (!heroAvatar || !heroTextCol || !avatarImg) return;
     if (matchMedia('(max-width:900px)').matches) {
       avatarImg.style.height = ''; // mobile: fixed stacked size from CSS
+      heroAvatar.style.transform = '';
       return;
     }
+    heroAvatar.style.transform = '';
     var h = heroTextCol.getBoundingClientRect().height;
     if (h > 0) avatarImg.style.height = (h * 1.65) + 'px';
+
+    // vertically center the avatar on the title, not on the whole text block
+    var titleEl = heroTextCol.querySelector('.hero-title');
+    if (titleEl) {
+      var titleRect = titleEl.getBoundingClientRect();
+      var avatarRect = avatarImg.getBoundingClientRect();
+      var titleCenter = titleRect.top + titleRect.height / 2;
+      var avatarCenter = avatarRect.top + avatarRect.height / 2;
+      heroAvatar.style.transform = 'translateY(' + (titleCenter - avatarCenter) + 'px)';
+    }
   }
   syncAvatarHeight();
   window.addEventListener('resize', syncAvatarHeight);
