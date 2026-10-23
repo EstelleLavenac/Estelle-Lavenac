@@ -365,7 +365,9 @@
 
   /* ---------- hero ---------- */
   .top-wrap{
-    position:relative;
+    position:sticky;
+    top:0;
+    z-index:0;
   }
   .hero-wrap{
     position:relative;
@@ -502,6 +504,15 @@
   /* ---------- sections ---------- */
   section{padding:96px 24px}
   .container{max-width:1296px; margin:0 auto}
+
+  #competences{
+    position:sticky;
+    top:0;
+    z-index:1;
+    background:#fff;
+    border-radius:32px 32px 0 0;
+    box-shadow:0 -24px 60px rgba(17,17,17,0.08);
+  }
   .section-header{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:44px; gap:16px; flex-wrap:wrap}
   .section-header h2{font-weight:700; font-size:clamp(26px,3.4vw,34px); letter-spacing:-0.02em}
   .eyebrow{
