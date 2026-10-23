@@ -56,7 +56,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23c7c3ec'/%3E%3Cstop offset='55%25' stop-color='%23dcc3e6'/%3E%3Cstop offset='100%25' stop-color='%23f0c8dc'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='8' y='8' width='104' height='104' rx='30' fill='url(%23g)'/%3E%3Cg transform='rotate(-7 60 62)'%3E%3Ctext x='60' y='79' font-family='Arial' font-weight='700' font-size='54' letter-spacing='-4' fill='%23fff' text-anchor='middle'%3EEL%3C/text%3E%3C/g%3E%3Ccircle cx='93' cy='27' r='7' fill='%23fff'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Assistant:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Assistant:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,500;1,9..144,600&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#111111;
@@ -407,21 +407,28 @@
     .cursor-glow{display:none}
   }
 
-  .mascot-head{
-    width:132px; height:170px;
-    margin:0 auto 6px;
-    background-image:url('assets/mascot-sprite.png');
-    background-repeat:no-repeat;
-    background-size:1700% 100%; /* 17 frames */
-    background-position:50% 0; /* frame 8 of 17 = centered/front-facing */
-    filter:drop-shadow(0 10px 22px rgba(124,92,240,0.25));
-    position:relative; z-index:1;
+  .hero-avatar{
+    position:relative;
+    width:100%;
+    max-width:380px;
+    justify-self:end;
+    pointer-events:none;
+  }
+  .hero-avatar img{
+    display:block; width:100%; height:auto;
+    filter:drop-shadow(0 30px 40px rgba(124,92,240,0.22));
+  }
+  .hero-avatar .eye{
+    position:absolute;
+    border-radius:50%;
+    pointer-events:none;
+    will-change:transform;
+  }
+  .hero-avatar .eye img{
+    display:block; width:100%; height:100%;
   }
   @media (pointer:coarse), (prefers-reduced-motion: reduce){
-    .mascot-head{display:none}
-  }
-  @media (max-width:640px){
-    .mascot-head{width:104px; height:134px}
+    .hero-avatar .eye{display:none}
   }
   @keyframes glowDrift{
     0%{transform:translate(-50%,0) scale(1); opacity:0.85}
@@ -447,10 +454,13 @@
 
   .hero-inner{
     position:relative; z-index:1;
-    max-width:1000px; margin:0 auto;
+    max-width:1120px; margin:0 auto;
     padding:184px 24px 0 24px;
-    display:flex; flex-direction:column; align-items:center; text-align:center; gap:26px;
+    display:grid; grid-template-columns:1.15fr 0.85fr; align-items:center; gap:32px;
     will-change:transform;
+  }
+  .hero-text{
+    display:flex; flex-direction:column; align-items:flex-start; text-align:left; gap:22px;
   }
   .badge{
     display:flex; align-items:center; gap:10px;
@@ -459,38 +469,23 @@
   .badge-dot{width:8px; height:8px; border-radius:50%; background:var(--ink); animation:pulse 2.4s ease-in-out infinite}
   @keyframes pulse{0%,100%{opacity:1} 50%{opacity:.35}}
 
+  .hero-name{
+    font-family:'Poppins',sans-serif; font-weight:700; font-size:clamp(14px,1.5vw,16px);
+    letter-spacing:0.14em; text-transform:uppercase; color:#5c5c5c;
+    margin:0;
+  }
   .hero-title{
-    font-weight:700; font-size:clamp(48px,7vw,84px); line-height:1.02; letter-spacing:-0.03em; color:var(--ink);
-  }
-  .hero-title .word{display:inline-block; white-space:nowrap}
-  .hero-title .letter{
-    display:inline-block;
-    transition:transform .3s cubic-bezier(.34,1.56,.64,1), filter .35s ease;
-  }
-  @media (pointer:fine){
-    .hero-title .letter:hover{
-      transform:translateY(-6px);
-      background-image:
-        linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.95) 48%, rgba(255,255,255,0.95) 52%, transparent 70%),
-        linear-gradient(135deg, var(--lav) 0%, #b84fd4 50%, var(--pink) 100%);
-      background-size:260% 100%, 100% 100%;
-      background-position:160% 0, 0 0;
-      background-repeat:no-repeat;
-      background-blend-mode:overlay, normal;
-      -webkit-background-clip:text; background-clip:text;
-      -webkit-text-fill-color:transparent; color:transparent;
-      filter:drop-shadow(0 6px 16px rgba(184,79,212,0.45));
-      animation:letterShine .6s ease forwards;
-    }
-  }
-  @keyframes letterShine{
-    from{ background-position:160% 0, 0 0; }
-    to{ background-position:-60% 0, 0 0; }
+    margin:0;
+    font-family:'Fraunces','Assistant',serif; font-style:italic; font-weight:560;
+    font-size:clamp(40px,5.6vw,68px); line-height:1.08; letter-spacing:-0.01em;
+    max-width:620px;
+    background-image:linear-gradient(120deg, #7c5cf0 0%, #b84fd4 50%, #ef4f9e 100%);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:transparent;
   }
 
   .hero-role{
-    display:flex; align-items:center; gap:14px; flex-wrap:wrap; justify-content:center;
-    margin-top:-10px;
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap; justify-content:flex-start;
   }
   .hero-role-main{
     font-family:'Poppins',sans-serif; font-weight:600; font-size:clamp(18px,2.2vw,24px); color:var(--ink);
@@ -498,11 +493,7 @@
   .hero-role-tags{
     font-size:clamp(16px,1.6vw,19px); font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:#5c5c5c;
   }
-  .hero-sub{
-    font-size:clamp(17px,2vw,22px); font-weight:500; color:#262626; max-width:600px;
-    margin-top:-14px;
-  }
-  .hero-actions{display:flex; gap:14px; margin-top:8px; flex-wrap:wrap; justify-content:center}
+  .hero-actions{display:flex; gap:14px; margin-top:8px; flex-wrap:wrap; justify-content:flex-start}
   .hero-actions .btn{padding:15px 30px; font-size:14px}
 
   /* ---------- sections ---------- */
@@ -711,6 +702,8 @@
     .degrees{grid-template-columns:repeat(2,1fr)}
     .exp-row{grid-template-columns:1fr; gap:8px}
     .exp-row-simple{grid-template-columns:1fr; gap:4px}
+    .hero-inner{grid-template-columns:1fr; padding-top:150px}
+    .hero-avatar{order:-1; max-width:220px; margin:0 auto; justify-self:center}
   }
   @media (max-width:560px){
     .degrees{grid-template-columns:1fr}
@@ -778,15 +771,21 @@
     <div class="hero-blob" id="heroBlob"></div>
   </div>
   <div class="hero-inner" id="heroInner">
-    <div class="mascot-head" id="mascotHead" aria-hidden="true"></div>
-    <div class="hero-role reveal">
-      <span class="hero-role-tags">Print · Web · Motion</span>
+    <div class="hero-text">
+      <div class="hero-role reveal">
+        <span class="hero-role-tags">Print · Web · Motion</span>
+      </div>
+      <p class="hero-name reveal">Estelle Lavenac</p>
+      <h1 class="hero-title reveal">Je transforme les idées en visuels qui ont quelque chose à dire.</h1>
+      <div class="hero-actions reveal">
+        <a href="book.html" class="btn btn-solid">Voir mon book →</a>
+        <a href="CV-Estelle-Lavenac-2026.pdf" download="CV-Estelle-Lavenac-2026.pdf" class="btn btn-ghost">Télécharger mon CV ↓</a>
+      </div>
     </div>
-    <h1 class="hero-title reveal">Estelle Lavenac</h1>
-    <p class="hero-sub reveal">Je transforme les idées en visuels qui ont quelque chose à dire.</p>
-    <div class="hero-actions reveal">
-      <a href="book.html" class="btn btn-solid">Voir mon book →</a>
-      <a href="CV-Estelle-Lavenac-2026.pdf" download="CV-Estelle-Lavenac-2026.pdf" class="btn btn-ghost">Télécharger mon CV ↓</a>
+    <div class="hero-avatar reveal" id="heroAvatar" aria-hidden="true">
+      <img src="assets/avatar-hero.webp" alt="" width="798" height="2198">
+      <div class="eye" id="eyeLeft"><img src="assets/avatar-eye-left.webp" alt="" draggable="false"></div>
+      <div class="eye" id="eyeRight"><img src="assets/avatar-eye-right.webp" alt="" draggable="false"></div>
     </div>
   </div>
 </div>
@@ -1175,46 +1174,69 @@
     });
   }
 
-  // Mascot head: turns toward the cursor across the hero section
-  var mascotHead = document.getElementById('mascotHead');
-  if (mascotHead && matchMedia('(pointer:fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    var MASCOT_FRAMES = 17;
-    var mascotTarget = (MASCOT_FRAMES - 1) / 2; // centered, front-facing
-    var mascotCurrent = mascotTarget;
-    var mascotRaf = null;
+  // Avatar: only the eyes follow the cursor, within a small radius
+  var heroAvatar = document.getElementById('heroAvatar');
+  var eyeLeft = document.getElementById('eyeLeft');
+  var eyeRight = document.getElementById('eyeRight');
+  if (heroAvatar && eyeLeft && eyeRight && matchMedia('(pointer:fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var avatarImg = heroAvatar.querySelector('img');
+    // anchor points as a fraction of the base image's own width/height
+    var EYES = [
+      { el: eyeLeft,  fx: 0.4611, fy: 0.1130 },
+      { el: eyeRight, fx: 0.6109, fy: 0.1088 }
+    ];
+    var eyeTargetX = 0, eyeTargetY = 0;
+    var eyeCurrentX = 0, eyeCurrentY = 0;
+    var eyeRaf = null;
+    var MAX_SHIFT = 5; // px, at native avatar scale
 
-    function setMascotFrame(index){
-      var rounded = Math.max(0, Math.min(MASCOT_FRAMES - 1, Math.round(index)));
-      var pct = (rounded / (MASCOT_FRAMES - 1)) * 100;
-      mascotHead.style.backgroundPositionX = pct + '%';
+    function layoutEyes(){
+      var w = avatarImg.clientWidth, h = avatarImg.clientHeight;
+      if (!w || !h) return;
+      var eyeSize = w * 0.092;
+      EYES.forEach(function(eye){
+        eye.el.style.width = eyeSize + 'px';
+        eye.el.style.height = eyeSize + 'px';
+        eye.el.style.left = (eye.fx * w - eyeSize / 2) + 'px';
+        eye.el.style.top = (eye.fy * h - eyeSize / 2) + 'px';
+      });
     }
 
-    function mascotTick(){
-      mascotCurrent += (mascotTarget - mascotCurrent) * 0.18;
-      setMascotFrame(mascotCurrent);
-      if (Math.abs(mascotTarget - mascotCurrent) > 0.03) {
-        mascotRaf = requestAnimationFrame(mascotTick);
+    function eyeTick(){
+      eyeCurrentX += (eyeTargetX - eyeCurrentX) * 0.22;
+      eyeCurrentY += (eyeTargetY - eyeCurrentY) * 0.22;
+      var scale = (avatarImg.clientWidth || 380) / 380;
+      var tx = eyeCurrentX * scale, ty = eyeCurrentY * scale;
+      EYES.forEach(function(eye){
+        eye.el.style.transform = 'translate(' + tx + 'px,' + ty + 'px)';
+      });
+      if (Math.abs(eyeTargetX - eyeCurrentX) > 0.02 || Math.abs(eyeTargetY - eyeCurrentY) > 0.02) {
+        eyeRaf = requestAnimationFrame(eyeTick);
       } else {
-        mascotRaf = null;
+        eyeRaf = null;
       }
     }
 
-    function onMouseMoveForMascot(e){
-      var r = heroWrap.getBoundingClientRect();
-      var frac = (e.clientX - r.left) / r.width; // 0..1 across the hero width
-      frac = Math.max(0, Math.min(1, frac));
-      mascotTarget = frac * (MASCOT_FRAMES - 1);
-      if (!mascotRaf) mascotRaf = requestAnimationFrame(mascotTick);
+    function onMouseMoveForEyes(e){
+      var r = heroAvatar.getBoundingClientRect();
+      var cx = r.left + r.width * 0.52, cy = r.top + r.height * 0.1;
+      var dx = e.clientX - cx, dy = e.clientY - cy;
+      var dist = Math.sqrt(dx * dx + dy * dy) || 1;
+      var amt = Math.min(1, dist / 320);
+      eyeTargetX = (dx / dist) * amt * MAX_SHIFT;
+      eyeTargetY = (dy / dist) * amt * MAX_SHIFT * 0.6;
+      if (!eyeRaf) eyeRaf = requestAnimationFrame(eyeTick);
     }
 
-    function resetMascot(){
-      mascotTarget = (MASCOT_FRAMES - 1) / 2;
-      if (!mascotRaf) mascotRaf = requestAnimationFrame(mascotTick);
+    function resetEyes(){
+      eyeTargetX = 0; eyeTargetY = 0;
+      if (!eyeRaf) eyeRaf = requestAnimationFrame(eyeTick);
     }
 
-    setMascotFrame(mascotCurrent);
-    heroWrap.addEventListener('pointermove', onMouseMoveForMascot);
-    heroWrap.addEventListener('pointerleave', resetMascot);
+    if (avatarImg.complete) { layoutEyes(); } else { avatarImg.addEventListener('load', layoutEyes); }
+    window.addEventListener('resize', layoutEyes);
+    heroWrap.addEventListener('pointermove', onMouseMoveForEyes);
+    heroWrap.addEventListener('pointerleave', resetEyes);
   }
   var contactBg = document.getElementById('contactBg');
   var progressBar = document.getElementById('scrollProgress');
@@ -1272,19 +1294,6 @@
     }
   }, { passive: true });
   onScroll();
-
-  // Split the hero title into per-letter spans for the gradient hover effect
-  var heroTitleEl = document.querySelector('.hero-title');
-  if (heroTitleEl) {
-    var titleText = heroTitleEl.textContent;
-    heroTitleEl.setAttribute('aria-label', titleText);
-    heroTitleEl.innerHTML = titleText.split(' ').map(function(word){
-      var letters = word.split('').map(function(ch){
-        return '<span class="letter" aria-hidden="true">' + ch + '</span>';
-      }).join('');
-      return '<span class="word">' + letters + '</span>';
-    }).join(' ');
-  }
 
   // Reveal on scroll
   var revealEls = document.querySelectorAll('.reveal');
