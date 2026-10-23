@@ -370,7 +370,7 @@
   .hero-wrap{
     position:relative;
     overflow:hidden;
-    padding-bottom:230px;
+    padding-bottom:100px;
   }
   .hero-bg{
     position:absolute; top:0; left:0; right:0; height:130%;
@@ -390,9 +390,12 @@
   .hero-glow{
     position:absolute; width:640px; height:640px; border-radius:50%;
     background:radial-gradient(circle, rgba(255,255,255,0.55), rgba(255,255,255,0) 70%);
-    top:-220px; left:50%;
+    top:-120px; left:80%;
     z-index:0; pointer-events:none;
     animation:glowDrift 14s ease-in-out infinite;
+  }
+  @media (max-width:900px){
+    .hero-glow{ left:50%; top:-180px; }
   }
   .cursor-glow{
     position:absolute; width:520px; height:520px; border-radius:50%;
@@ -409,13 +412,17 @@
 
   .hero-avatar{
     position:relative;
-    width:100%;
-    max-width:380px;
+    height:100%;
+    max-width:100%;
     justify-self:end;
     pointer-events:none;
+    display:flex;
+    align-items:flex-end;
+    justify-content:flex-end;
   }
-  .hero-avatar img{
-    display:block; width:100%; height:auto;
+  .hero-avatar .avatar-img{
+    display:block; height:clamp(380px,56vh,560px); width:auto; max-width:100%;
+    object-fit:contain;
     filter:drop-shadow(0 30px 40px rgba(124,92,240,0.22));
   }
   .hero-avatar .eye{
@@ -429,6 +436,29 @@
   }
   @media (pointer:coarse), (prefers-reduced-motion: reduce){
     .hero-avatar .eye{display:none}
+  }
+
+  .avatar-chip{
+    position:absolute;
+    white-space:nowrap;
+    font-family:'Poppins',sans-serif; font-weight:700; font-size:13px; letter-spacing:0.02em;
+    color:var(--ink);
+    background:rgba(255,255,255,0.55);
+    border:1px solid rgba(255,255,255,0.75);
+    border-radius:999px;
+    padding:9px 18px;
+    backdrop-filter:blur(14px) saturate(160%);
+    -webkit-backdrop-filter:blur(14px) saturate(160%);
+    box-shadow:0 10px 26px rgba(124,92,240,0.14);
+  }
+  .chip-name{ top:-5%; left:6px; }
+  .chip-loc{ top:44%; left:-32px; }
+  .chip-tags{ top:80%; left:-54px; }
+  @media (max-width:900px){
+    .avatar-chip{ font-size:12px; padding:7px 14px; }
+    .chip-name{ top:-7%; left:10px; }
+    .chip-loc{ top:42%; left:-10px; }
+    .chip-tags{ top:84%; left:-10px; }
   }
   @keyframes glowDrift{
     0%{transform:translate(-50%,0) scale(1); opacity:0.85}
@@ -456,7 +486,7 @@
     position:relative; z-index:1;
     max-width:1120px; margin:0 auto;
     padding:184px 24px 0 24px;
-    display:grid; grid-template-columns:1.15fr 0.85fr; align-items:center; gap:32px;
+    display:grid; grid-template-columns:1.15fr 0.85fr; align-items:stretch; gap:32px;
     will-change:transform;
   }
   .hero-text{
@@ -469,30 +499,19 @@
   .badge-dot{width:8px; height:8px; border-radius:50%; background:var(--ink); animation:pulse 2.4s ease-in-out infinite}
   @keyframes pulse{0%,100%{opacity:1} 50%{opacity:.35}}
 
-  .hero-name{
-    font-family:'Poppins',sans-serif; font-weight:700; font-size:clamp(14px,1.5vw,16px);
-    letter-spacing:0.14em; text-transform:uppercase; color:#5c5c5c;
-    margin:0;
-  }
   .hero-title{
     margin:0;
+    font-family:'Poppins',sans-serif; font-weight:700;
+    font-size:clamp(30px,3.6vw,46px); line-height:1.2; letter-spacing:-0.02em; color:var(--ink);
+    max-width:600px;
+  }
+  .hero-title .accent{
     font-family:'Fraunces','Assistant',serif; font-style:italic; font-weight:560;
-    font-size:clamp(40px,5.6vw,68px); line-height:1.08; letter-spacing:-0.01em;
-    max-width:620px;
     background-image:linear-gradient(120deg, #7c5cf0 0%, #b84fd4 50%, #ef4f9e 100%);
     -webkit-background-clip:text; background-clip:text;
     -webkit-text-fill-color:transparent; color:transparent;
   }
 
-  .hero-role{
-    display:flex; align-items:center; gap:14px; flex-wrap:wrap; justify-content:flex-start;
-  }
-  .hero-role-main{
-    font-family:'Poppins',sans-serif; font-weight:600; font-size:clamp(18px,2.2vw,24px); color:var(--ink);
-  }
-  .hero-role-tags{
-    font-size:clamp(16px,1.6vw,19px); font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:#5c5c5c;
-  }
   .hero-actions{display:flex; gap:14px; margin-top:8px; flex-wrap:wrap; justify-content:flex-start}
   .hero-actions .btn{padding:15px 30px; font-size:14px}
 
@@ -703,7 +722,8 @@
     .exp-row{grid-template-columns:1fr; gap:8px}
     .exp-row-simple{grid-template-columns:1fr; gap:4px}
     .hero-inner{grid-template-columns:1fr; padding-top:150px}
-    .hero-avatar{order:-1; max-width:220px; margin:0 auto; justify-self:center}
+    .hero-avatar{order:-1; height:260px; width:100%; margin:0 auto; justify-self:center; justify-content:center}
+    .hero-avatar .avatar-img{height:100%}
   }
   @media (max-width:560px){
     .degrees{grid-template-columns:1fr}
@@ -772,20 +792,19 @@
   </div>
   <div class="hero-inner" id="heroInner">
     <div class="hero-text">
-      <div class="hero-role reveal">
-        <span class="hero-role-tags">Print · Web · Motion</span>
-      </div>
-      <p class="hero-name reveal">Estelle Lavenac</p>
-      <h1 class="hero-title reveal">Je transforme les idées en visuels qui ont quelque chose à dire.</h1>
+      <h1 class="hero-title reveal">Je <span class="accent">transforme</span> les idées en visuels qui ont quelque chose à dire.</h1>
       <div class="hero-actions reveal">
         <a href="book.html" class="btn btn-solid">Voir mon book →</a>
         <a href="CV-Estelle-Lavenac-2026.pdf" download="CV-Estelle-Lavenac-2026.pdf" class="btn btn-ghost">Télécharger mon CV ↓</a>
       </div>
     </div>
-    <div class="hero-avatar reveal" id="heroAvatar" aria-hidden="true">
-      <img src="assets/avatar-hero.webp" alt="" width="798" height="2198">
-      <div class="eye" id="eyeLeft"><img src="assets/avatar-eye-left.webp" alt="" draggable="false"></div>
-      <div class="eye" id="eyeRight"><img src="assets/avatar-eye-right.webp" alt="" draggable="false"></div>
+    <div class="hero-avatar reveal" id="heroAvatar">
+      <img class="avatar-img" src="assets/avatar-hero.webp" alt="Estelle Lavenac" width="798" height="2198">
+      <div class="eye" id="eyeLeft" aria-hidden="true"><img src="assets/avatar-eye-left.webp" alt="" draggable="false"></div>
+      <div class="eye" id="eyeRight" aria-hidden="true"><img src="assets/avatar-eye-right.webp" alt="" draggable="false"></div>
+      <span class="avatar-chip chip-name">Estelle Lavenac</span>
+      <span class="avatar-chip chip-loc">Var</span>
+      <span class="avatar-chip chip-tags">Print · Web · Motion · UI/UX</span>
     </div>
   </div>
 </div>
@@ -1174,12 +1193,28 @@
     });
   }
 
-  // Avatar: only the eyes follow the cursor, within a small radius
+  // Avatar: height stays proportional to the text column (two-column layout only)
   var heroAvatar = document.getElementById('heroAvatar');
+  var heroTextCol = document.querySelector('.hero-text');
+  var avatarImg = heroAvatar ? heroAvatar.querySelector('.avatar-img') : null;
+
+  function syncAvatarHeight(){
+    if (!heroAvatar || !heroTextCol || !avatarImg) return;
+    if (matchMedia('(max-width:900px)').matches) {
+      avatarImg.style.height = ''; // mobile: fixed stacked size from CSS
+      return;
+    }
+    var h = heroTextCol.getBoundingClientRect().height;
+    if (h > 0) avatarImg.style.height = h + 'px';
+  }
+  syncAvatarHeight();
+  window.addEventListener('resize', syncAvatarHeight);
+  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(syncAvatarHeight); }
+
+  // Avatar: only the eyes follow the cursor, within a small radius
   var eyeLeft = document.getElementById('eyeLeft');
   var eyeRight = document.getElementById('eyeRight');
   if (heroAvatar && eyeLeft && eyeRight && matchMedia('(pointer:fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    var avatarImg = heroAvatar.querySelector('img');
     // anchor points as a fraction of the base image's own width/height
     var EYES = [
       { el: eyeLeft,  fx: 0.4611, fy: 0.1130 },
@@ -1191,10 +1226,15 @@
     var MAX_SHIFT = 5; // px, at native avatar scale
 
     function layoutEyes(){
+      if (matchMedia('(max-width:900px)').matches) {
+        EYES.forEach(function(eye){ eye.el.style.display = 'none'; });
+        return;
+      }
       var w = avatarImg.clientWidth, h = avatarImg.clientHeight;
       if (!w || !h) return;
       var eyeSize = w * 0.092;
       EYES.forEach(function(eye){
+        eye.el.style.display = '';
         eye.el.style.width = eyeSize + 'px';
         eye.el.style.height = eyeSize + 'px';
         eye.el.style.left = (eye.fx * w - eyeSize / 2) + 'px';
@@ -1235,6 +1275,7 @@
 
     if (avatarImg.complete) { layoutEyes(); } else { avatarImg.addEventListener('load', layoutEyes); }
     window.addEventListener('resize', layoutEyes);
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(layoutEyes); }
     heroWrap.addEventListener('pointermove', onMouseMoveForEyes);
     heroWrap.addEventListener('pointerleave', resetEyes);
   }
