@@ -422,18 +422,6 @@
     object-fit:contain;
     filter:drop-shadow(0 30px 40px rgba(124,92,240,0.22));
   }
-  .hero-avatar .eye{
-    position:absolute;
-    border-radius:50%;
-    pointer-events:none;
-    will-change:transform;
-  }
-  .hero-avatar .eye img{
-    display:block; width:100%; height:100%;
-  }
-  @media (pointer:coarse), (prefers-reduced-motion: reduce){
-    .hero-avatar .eye{display:none}
-  }
 
   @keyframes glowDrift{
     0%{transform:translate(-50%,0) scale(1); opacity:0.85}
@@ -786,9 +774,12 @@
       </div>
     </div>
     <div class="hero-avatar reveal" id="heroAvatar">
-      <img class="avatar-img" src="assets/avatar-hero.webp" alt="Estelle Lavenac" width="718" height="2199">
-      <div class="eye" id="eyeLeft" aria-hidden="true"><img src="assets/avatar-eye-left.webp" alt="" draggable="false"></div>
-      <div class="eye" id="eyeRight" aria-hidden="true"><img src="assets/avatar-eye-right.webp" alt="" draggable="false"></div>
+      <img class="avatar-img" id="avatarFallback" src="assets/avatar-hero.webp" alt="Estelle Lavenac" width="718" height="2199">
+      <canvas class="avatar-img" id="avatarCanvas" width="409" height="701" aria-label="Estelle Lavenac" style="display:none"></canvas>
+      <video id="avatarVideo" muted loop playsinline autoplay preload="auto" style="display:none">
+        <source src="assets/avatar-hero-loop.webm" type="video/webm">
+        <source src="assets/avatar-hero-loop.mp4" type="video/mp4">
+      </video>
     </div>
   </div>
 </div>
@@ -1180,18 +1171,26 @@
   // Avatar: height stays proportional to the text column (two-column layout only)
   var heroAvatar = document.getElementById('heroAvatar');
   var heroTextCol = document.querySelector('.hero-text');
-  var avatarImg = heroAvatar ? heroAvatar.querySelector('.avatar-img') : null;
+  var avatarEls = heroAvatar ? Array.prototype.slice.call(heroAvatar.querySelectorAll('.avatar-img')) : [];
+
+  function getVisibleAvatarEl(){
+    for (var i = 0; i < avatarEls.length; i++) {
+      if (getComputedStyle(avatarEls[i]).display !== 'none') return avatarEls[i];
+    }
+    return avatarEls[0] || null;
+  }
 
   function syncAvatarHeight(){
+    var avatarImg = getVisibleAvatarEl();
     if (!heroAvatar || !heroTextCol || !avatarImg) return;
     if (matchMedia('(max-width:900px)').matches) {
-      avatarImg.style.height = ''; // mobile: fixed stacked size from CSS
+      avatarEls.forEach(function(el){ el.style.height = ''; }); // mobile: fixed stacked size from CSS
       heroAvatar.style.transform = '';
       return;
     }
     heroAvatar.style.transform = '';
     var h = heroTextCol.getBoundingClientRect().height;
-    if (h > 0) avatarImg.style.height = (h * 1.65) + 'px';
+    if (h > 0) avatarEls.forEach(function(el){ el.style.height = (h * 1.65) + 'px'; });
 
     // vertically center the avatar on the title, not on the whole text block
     var titleEl = heroTextCol.querySelector('.hero-title');
@@ -1207,74 +1206,98 @@
   window.addEventListener('resize', syncAvatarHeight);
   if (document.fonts && document.fonts.ready) { document.fonts.ready.then(syncAvatarHeight); }
 
-  // Avatar: only the eyes follow the cursor, within a small radius
-  var eyeLeft = document.getElementById('eyeLeft');
-  var eyeRight = document.getElementById('eyeRight');
-  if (heroAvatar && eyeLeft && eyeRight && matchMedia('(pointer:fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    // anchor points as a fraction of the base image's own width/height
-    var EYES = [
-      { el: eyeLeft,  fx: 0.4071, fy: 0.1130 },
-      { el: eyeRight, fx: 0.5737, fy: 0.1109 }
-    ];
-    var eyeTargetX = 0, eyeTargetY = 0;
-    var eyeCurrentX = 0, eyeCurrentY = 0;
-    var eyeRaf = null;
-    var MAX_SHIFT = 3; // px, at native avatar scale
+  // Avatar: looping video (background removed live via canvas chroma-key),
+  // falls back to the static image if video/canvas isn't usable.
+  (function(){
+    var video = document.getElementById('avatarVideo');
+    var canvas = document.getElementById('avatarCanvas');
+    var fallback = document.getElementById('avatarFallback');
+    if (!video || !canvas || !fallback) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return; // keep static image
 
-    function layoutEyes(){
-      if (matchMedia('(max-width:900px)').matches) {
-        EYES.forEach(function(eye){ eye.el.style.display = 'none'; });
-        return;
+    var ctx = canvas.getContext('2d', { willReadFrequently: true });
+    if (!ctx) return;
+
+    // chroma-key: solid magenta background sampled from the source footage.
+    // Keyed in chromaticity space (color ratios, brightness-independent) rather
+    // than raw RGB distance, so the footage's own soft contact-shadow under her
+    // feet (a darkened, same-hue version of the magenta) keys out cleanly too —
+    // a plain RGB distance treats "darker" as "different" and leaves it as a
+    // faint pink smudge.
+    var KEY = { r: 235, g: 3, b: 143 };
+    var KEY_SUM = KEY.r + KEY.g + KEY.b + 1e-5;
+    var KEY_NR = KEY.r / KEY_SUM, KEY_NB = KEY.b / KEY_SUM;
+    var D_LO = 0.055, D_HI = 0.15; // chromaticity-distance thresholds for the alpha feather
+
+    function keyFrame(){
+      var w = canvas.width, h = canvas.height;
+      ctx.drawImage(video, 0, 0, w, h);
+      var frame = ctx.getImageData(0, 0, w, h);
+      var d = frame.data;
+      for (var i = 0; i < d.length; i += 4) {
+        var r = d[i], g = d[i + 1], b = d[i + 2];
+        var sum = r + g + b + 1e-5;
+        var nr = r / sum, nb = b / sum;
+        var dnr = nr - KEY_NR, dnb = nb - KEY_NB;
+        var dist = Math.sqrt(dnr * dnr + dnb * dnb);
+        var a = (dist - D_LO) / (D_HI - D_LO);
+        if (a < 0) a = 0; else if (a > 1) a = 1;
+        if (a < 1) {
+          // suppress magenta spill on the soft edge instead of just fading it
+          var avgRB = (r + b) / 2;
+          var excess = avgRB - g;
+          if (excess > 0) {
+            var pull = excess * (1 - a);
+            d[i] = r - pull * 0.6;
+            d[i + 2] = b - pull * 0.6;
+          }
+        }
+        d[i + 3] = a * 255;
       }
-      var w = avatarImg.clientWidth, h = avatarImg.clientHeight;
-      if (!w || !h) return;
-      var eyeSize = w * 0.092;
-      EYES.forEach(function(eye){
-        eye.el.style.display = '';
-        eye.el.style.width = eyeSize + 'px';
-        eye.el.style.height = eyeSize + 'px';
-        eye.el.style.left = (eye.fx * w - eyeSize / 2) + 'px';
-        eye.el.style.top = (eye.fy * h - eyeSize / 2) + 'px';
-      });
+      ctx.putImageData(frame, 0, 0);
     }
 
-    function eyeTick(){
-      eyeCurrentX += (eyeTargetX - eyeCurrentX) * 0.22;
-      eyeCurrentY += (eyeTargetY - eyeCurrentY) * 0.22;
-      var scale = (avatarImg.clientWidth || 380) / 380;
-      var tx = eyeCurrentX * scale, ty = eyeCurrentY * scale;
-      EYES.forEach(function(eye){
-        eye.el.style.transform = 'translate(' + tx + 'px,' + ty + 'px)';
-      });
-      if (Math.abs(eyeTargetX - eyeCurrentX) > 0.02 || Math.abs(eyeTargetY - eyeCurrentY) > 0.02) {
-        eyeRaf = requestAnimationFrame(eyeTick);
-      } else {
-        eyeRaf = null;
-      }
+    var useRVFC = typeof video.requestVideoFrameCallback === 'function';
+    var running = false;
+    function loop(){
+      if (!running) return;
+      keyFrame();
+      if (useRVFC) { video.requestVideoFrameCallback(loop); }
+      else { requestAnimationFrame(loop); }
     }
 
-    function onMouseMoveForEyes(e){
-      var r = heroAvatar.getBoundingClientRect();
-      var cx = r.left + r.width * 0.52, cy = r.top + r.height * 0.1;
-      var dx = e.clientX - cx, dy = e.clientY - cy;
-      var dist = Math.sqrt(dx * dx + dy * dy) || 1;
-      var amt = Math.min(1, dist / 320);
-      eyeTargetX = (dx / dist) * amt * MAX_SHIFT;
-      eyeTargetY = (dy / dist) * amt * MAX_SHIFT * 0.6;
-      if (!eyeRaf) eyeRaf = requestAnimationFrame(eyeTick);
+    function start(){
+      if (running) return;
+      running = true;
+      canvas.style.display = '';
+      fallback.style.display = 'none';
+      if (typeof syncAvatarHeight === 'function') syncAvatarHeight();
+      if (useRVFC) { video.requestVideoFrameCallback(loop); }
+      else { loop(); }
     }
 
-    function resetEyes(){
-      eyeTargetX = 0; eyeTargetY = 0;
-      if (!eyeRaf) eyeRaf = requestAnimationFrame(eyeTick);
-    }
+    video.addEventListener('loadedmetadata', function(){
+      canvas.width = video.videoWidth || canvas.width;
+      canvas.height = video.videoHeight || canvas.height;
+    });
+    video.addEventListener('playing', start);
+    video.addEventListener('error', function(){ running = false; });
 
-    if (avatarImg.complete) { layoutEyes(); } else { avatarImg.addEventListener('load', layoutEyes); }
-    window.addEventListener('resize', layoutEyes);
-    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(layoutEyes); }
-    heroWrap.addEventListener('pointermove', onMouseMoveForEyes);
-    heroWrap.addEventListener('pointerleave', resetEyes);
-  }
+    // 'playing' may have already fired (autoplay) before these listeners were
+    // attached, or may fire in a tick this polling misses in some browsers —
+    // so also start as soon as the video reports it has usable frame data.
+    var HAVE_CURRENT_DATA = 2;
+    (function waitForData(){
+      if (running) return;
+      if (video.readyState >= HAVE_CURRENT_DATA && !video.paused) { start(); return; }
+      requestAnimationFrame(waitForData);
+    })();
+
+    var playPromise = video.play();
+    if (playPromise && playPromise.catch) {
+      playPromise.catch(function(){ /* autoplay blocked: keep static fallback */ });
+    }
+  })();
   var contactBg = document.getElementById('contactBg');
   var progressBar = document.getElementById('scrollProgress');
   var ticking = false;
