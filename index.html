@@ -445,8 +445,11 @@
   .hero-blob-field{
     position:absolute; z-index:0; pointer-events:none;
     width:min(420px, 58vw); height:min(420px, 58vw);
-    left:50%; top:52%;
+    left:81%; top:461px;
     transform:translate(-50%,-50%);
+  }
+  @media (max-width:900px){
+    .hero-blob-field{ left:50%; top:280px; }
   }
   .hero-blob{
     position:absolute; inset:0;
@@ -1195,7 +1198,7 @@
       var avatarRect = avatarImg.getBoundingClientRect();
       var titleCenter = titleRect.top + titleRect.height / 2;
       var avatarCenter = avatarRect.top + avatarRect.height / 2;
-      heroAvatar.style.transform = 'translateY(' + (titleCenter - avatarCenter) * 0.45 + 'px)';
+      heroAvatar.style.transform = 'translate(-60px,' + (titleCenter - avatarCenter) * 0.45 + 'px)';
     }
   }
   syncAvatarHeight();
