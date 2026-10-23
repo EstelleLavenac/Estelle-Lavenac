@@ -463,7 +463,7 @@
   .hero-inner{
     position:relative; z-index:1;
     max-width:1296px; margin:0 auto;
-    padding:184px 24px 0 24px;
+    padding:130px 24px 0 24px;
     display:grid; grid-template-columns:1.25fr 0.75fr; align-items:start; gap:4px;
     will-change:transform;
   }
@@ -784,7 +784,7 @@
       </div>
     </div>
     <div class="hero-avatar reveal" id="heroAvatar">
-      <img class="avatar-img" src="assets/avatar-hero.webp" alt="Estelle Lavenac" width="798" height="2198">
+      <img class="avatar-img" src="assets/avatar-hero.webp" alt="Estelle Lavenac" width="717" height="2198">
       <div class="eye" id="eyeLeft" aria-hidden="true"><img src="assets/avatar-eye-left.webp" alt="" draggable="false"></div>
       <div class="eye" id="eyeRight" aria-hidden="true"><img src="assets/avatar-eye-right.webp" alt="" draggable="false"></div>
     </div>
@@ -1211,13 +1211,13 @@
   if (heroAvatar && eyeLeft && eyeRight && matchMedia('(pointer:fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
     // anchor points as a fraction of the base image's own width/height
     var EYES = [
-      { el: eyeLeft,  fx: 0.4611, fy: 0.1130 },
-      { el: eyeRight, fx: 0.6109, fy: 0.1088 }
+      { el: eyeLeft,  fx: 0.4071, fy: 0.1130 },
+      { el: eyeRight, fx: 0.5737, fy: 0.1109 }
     ];
     var eyeTargetX = 0, eyeTargetY = 0;
     var eyeCurrentX = 0, eyeCurrentY = 0;
     var eyeRaf = null;
-    var MAX_SHIFT = 5; // px, at native avatar scale
+    var MAX_SHIFT = 3; // px, at native avatar scale
 
     function layoutEyes(){
       if (matchMedia('(max-width:900px)').matches) {
