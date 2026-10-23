@@ -374,7 +374,7 @@
   }
   .hero-bg{
     position:absolute; top:0; left:0; right:0; height:130%;
-    background:linear-gradient(180deg, var(--lav) 0%, #d6c5ea 17%, #ecc9df 36%, var(--pink2) 54%, #ffffff 70%, #ffffff 100%);
+    background:linear-gradient(180deg, #eddcc4 0%, #eddcc4 78%, #f3e8d4 90%, #ffffff 100%);
     will-change:transform;
     z-index:0;
   }
@@ -389,8 +389,8 @@
   }
   .hero-glow{
     position:absolute; width:640px; height:640px; border-radius:50%;
-    background:radial-gradient(circle, rgba(255,255,255,0.55), rgba(255,255,255,0) 70%);
-    top:140px; left:85%;
+    background:radial-gradient(circle, rgba(255,255,255,0.3), rgba(255,255,255,0) 70%);
+    top:60px; left:16%;
     z-index:0; pointer-events:none;
     animation:glowDrift 14s ease-in-out infinite;
   }
@@ -399,7 +399,7 @@
   }
   .cursor-glow{
     position:absolute; width:520px; height:520px; border-radius:50%;
-    background:radial-gradient(circle, rgba(139,92,246,0.3), rgba(239,94,168,0.16) 45%, rgba(239,94,168,0) 72%);
+    background:radial-gradient(circle, rgba(201,140,90,0.18), rgba(239,189,148,0.12) 45%, rgba(239,189,148,0) 72%);
     left:60%; top:38%;
     z-index:0; pointer-events:none;
     mix-blend-mode:multiply;
@@ -420,7 +420,7 @@
   .hero-avatar .avatar-img{
     display:block; height:clamp(380px,56vh,560px); width:auto; max-width:100%;
     object-fit:contain;
-    filter:drop-shadow(0 30px 40px rgba(124,92,240,0.22));
+    filter:drop-shadow(0 30px 40px rgba(120,86,48,0.22));
   }
 
   @keyframes glowDrift{
@@ -433,7 +433,7 @@
   .hero-blob-field{
     position:absolute; z-index:0; pointer-events:none;
     width:min(420px, 58vw); height:min(420px, 58vw);
-    left:76%; top:481px;
+    left:14%; top:560px;
     transform:translate(-50%,-50%);
   }
   @media (max-width:900px){
@@ -442,7 +442,7 @@
   .hero-blob{
     position:absolute; inset:0;
     border-radius:42% 58% 65% 35% / 45% 45% 55% 55%;
-    background:linear-gradient(135deg, #7c5cf0 0%, #b84fd4 50%, #ef4f9e 100%);
+    background:linear-gradient(135deg, #e8b98a 0%, #e49a7a 50%, #d98a8a 100%);
     filter:blur(85px);
     opacity:0.6;
     mix-blend-mode:multiply;
@@ -775,8 +775,7 @@
     </div>
     <div class="hero-avatar reveal" id="heroAvatar">
       <img class="avatar-img" id="avatarFallback" src="assets/avatar-hero.webp" alt="Estelle Lavenac" width="718" height="2199">
-      <canvas class="avatar-img" id="avatarCanvas" width="409" height="701" aria-label="Estelle Lavenac" style="display:none"></canvas>
-      <video id="avatarVideo" muted loop playsinline autoplay preload="auto" style="display:none">
+      <video class="avatar-img" id="avatarVideo" muted loop playsinline autoplay preload="auto" style="display:none" width="320" height="712" aria-label="Estelle Lavenac">
         <source src="assets/avatar-hero-loop.webm" type="video/webm">
         <source src="assets/avatar-hero-loop.mp4" type="video/mp4">
       </video>
@@ -1206,91 +1205,31 @@
   window.addEventListener('resize', syncAvatarHeight);
   if (document.fonts && document.fonts.ready) { document.fonts.ready.then(syncAvatarHeight); }
 
-  // Avatar: looping video (background removed live via canvas chroma-key),
-  // falls back to the static image if video/canvas isn't usable.
+  // Avatar: looping video (its own beige backdrop matches the hero background,
+  // so no cutout/compositing is needed), falls back to the static image if the
+  // video can't play.
   (function(){
     var video = document.getElementById('avatarVideo');
-    var canvas = document.getElementById('avatarCanvas');
     var fallback = document.getElementById('avatarFallback');
-    if (!video || !canvas || !fallback) return;
+    if (!video || !fallback) return;
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return; // keep static image
 
-    var ctx = canvas.getContext('2d', { willReadFrequently: true });
-    if (!ctx) return;
-
-    // chroma-key: solid magenta background sampled from the source footage.
-    // Keyed in chromaticity space (color ratios, brightness-independent) rather
-    // than raw RGB distance, so the footage's own soft contact-shadow under her
-    // feet (a darkened, same-hue version of the magenta) keys out cleanly too —
-    // a plain RGB distance treats "darker" as "different" and leaves it as a
-    // faint pink smudge.
-    var KEY = { r: 235, g: 3, b: 143 };
-    var KEY_SUM = KEY.r + KEY.g + KEY.b + 1e-5;
-    var KEY_NR = KEY.r / KEY_SUM, KEY_NB = KEY.b / KEY_SUM;
-    var D_LO = 0.055, D_HI = 0.15; // chromaticity-distance thresholds for the alpha feather
-
-    function keyFrame(){
-      var w = canvas.width, h = canvas.height;
-      ctx.drawImage(video, 0, 0, w, h);
-      var frame = ctx.getImageData(0, 0, w, h);
-      var d = frame.data;
-      for (var i = 0; i < d.length; i += 4) {
-        var r = d[i], g = d[i + 1], b = d[i + 2];
-        var sum = r + g + b + 1e-5;
-        var nr = r / sum, nb = b / sum;
-        var dnr = nr - KEY_NR, dnb = nb - KEY_NB;
-        var dist = Math.sqrt(dnr * dnr + dnb * dnb);
-        var a = (dist - D_LO) / (D_HI - D_LO);
-        if (a < 0) a = 0; else if (a > 1) a = 1;
-        if (a < 1) {
-          // suppress magenta spill on the soft edge instead of just fading it
-          var avgRB = (r + b) / 2;
-          var excess = avgRB - g;
-          if (excess > 0) {
-            var pull = excess * (1 - a);
-            d[i] = r - pull * 0.6;
-            d[i + 2] = b - pull * 0.6;
-          }
-        }
-        d[i + 3] = a * 255;
-      }
-      ctx.putImageData(frame, 0, 0);
-    }
-
-    var useRVFC = typeof video.requestVideoFrameCallback === 'function';
-    var running = false;
-    function loop(){
-      if (!running) return;
-      keyFrame();
-      if (useRVFC) { video.requestVideoFrameCallback(loop); }
-      else { requestAnimationFrame(loop); }
-    }
-
-    function start(){
-      if (running) return;
-      running = true;
-      canvas.style.display = '';
+    var shown = false;
+    function show(){
+      if (shown) return;
+      shown = true;
+      video.style.display = '';
       fallback.style.display = 'none';
       if (typeof syncAvatarHeight === 'function') syncAvatarHeight();
-      if (useRVFC) { video.requestVideoFrameCallback(loop); }
-      else { loop(); }
     }
 
-    video.addEventListener('loadedmetadata', function(){
-      canvas.width = video.videoWidth || canvas.width;
-      canvas.height = video.videoHeight || canvas.height;
-    });
-    video.addEventListener('playing', start);
-    video.addEventListener('error', function(){ running = false; });
-
-    // 'playing' may have already fired (autoplay) before these listeners were
-    // attached, or may fire in a tick this polling misses in some browsers —
-    // so also start as soon as the video reports it has usable frame data.
-    var HAVE_CURRENT_DATA = 2;
-    (function waitForData(){
-      if (running) return;
-      if (video.readyState >= HAVE_CURRENT_DATA && !video.paused) { start(); return; }
-      requestAnimationFrame(waitForData);
+    video.addEventListener('playing', show);
+    // 'playing' may already have fired (autoplay) before this listener was
+    // attached, so also catch the case where the video is already rolling.
+    (function waitForPlayback(){
+      if (shown) return;
+      if (video.readyState >= 2 && !video.paused) { show(); return; }
+      requestAnimationFrame(waitForPlayback);
     })();
 
     var playPromise = video.play();
