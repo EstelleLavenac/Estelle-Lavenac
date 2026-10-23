@@ -1309,7 +1309,8 @@
     // Parallax: background drifts slower than scroll, content drifts slightly + fades
     heroBg.style.transform = 'translate3d(0,' + (y * 0.18) + 'px,0)';
     heroGlow.style.transform = 'translate3d(-50%,' + (y * 0.28) + 'px,0)';
-    heroInner.style.transform = 'translate3d(0,' + (y * -0.08) + 'px,0)';
+    var heroScale = Math.max(1 - y * 0.00035, 0.82);
+    heroInner.style.transform = 'translate3d(0,' + (y * -0.08) + 'px,0) scale(' + heroScale + ')';
     heroInner.style.opacity = Math.max(1 - y / 620, 0);
 
     var contactRect = contactBg.parentElement.getBoundingClientRect();
