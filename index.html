@@ -445,7 +445,7 @@
   .hero-blob-field{
     position:absolute; z-index:0; pointer-events:none;
     width:min(420px, 58vw); height:min(420px, 58vw);
-    left:81%; top:461px;
+    left:76%; top:481px;
     transform:translate(-50%,-50%);
   }
   @media (max-width:900px){
@@ -480,7 +480,7 @@
   .hero-title{
     margin:0;
     font-family:'Poppins',sans-serif; font-weight:700;
-    font-size:clamp(40px,4.9vw,64px); line-height:1.14; letter-spacing:-0.02em; color:var(--ink);
+    font-size:clamp(44px,5.6vw,72px); line-height:1.12; letter-spacing:-0.02em; color:var(--ink);
     max-width:600px;
   }
   .hero-title .accent{
@@ -1198,7 +1198,7 @@
       var avatarRect = avatarImg.getBoundingClientRect();
       var titleCenter = titleRect.top + titleRect.height / 2;
       var avatarCenter = avatarRect.top + avatarRect.height / 2;
-      heroAvatar.style.transform = 'translate(-60px,' + (titleCenter - avatarCenter) * 0.45 + 'px)';
+      heroAvatar.style.transform = 'translate(-120px,' + (titleCenter - avatarCenter) * 0.45 + 'px)';
     }
   }
   syncAvatarHeight();
