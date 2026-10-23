@@ -390,7 +390,7 @@
   .hero-glow{
     position:absolute; width:640px; height:640px; border-radius:50%;
     background:radial-gradient(circle, rgba(255,255,255,0.55), rgba(255,255,255,0) 70%);
-    top:90px; left:80%;
+    top:360px; left:80%;
     z-index:0; pointer-events:none;
     animation:glowDrift 14s ease-in-out infinite;
   }
@@ -449,13 +449,9 @@
     box-shadow:0 10px 26px rgba(124,92,240,0.14);
   }
   .chip-name{ top:44%; left:-32px; }
-  .chip-loc{ top:14%; right:-30px; left:auto; }
-  .chip-tags{ top:80%; left:-54px; }
   @media (max-width:900px){
     .avatar-chip{ font-size:12px; padding:7px 14px; }
     .chip-name{ top:42%; left:-10px; }
-    .chip-loc{ top:10%; right:-10px; left:auto; }
-    .chip-tags{ top:84%; left:-10px; }
   }
   @keyframes glowDrift{
     0%{transform:translate(-50%,0) scale(1); opacity:0.85}
@@ -499,7 +495,7 @@
   .hero-title{
     margin:0;
     font-family:'Poppins',sans-serif; font-weight:700;
-    font-size:clamp(30px,3.6vw,46px); line-height:1.2; letter-spacing:-0.02em; color:var(--ink);
+    font-size:clamp(36px,4.4vw,58px); line-height:1.16; letter-spacing:-0.02em; color:var(--ink);
     max-width:600px;
   }
   .hero-title .accent{
@@ -800,8 +796,6 @@
       <div class="eye" id="eyeLeft" aria-hidden="true"><img src="assets/avatar-eye-left.webp" alt="" draggable="false"></div>
       <div class="eye" id="eyeRight" aria-hidden="true"><img src="assets/avatar-eye-right.webp" alt="" draggable="false"></div>
       <span class="avatar-chip chip-name">Estelle Lavenac</span>
-      <span class="avatar-chip chip-loc">Var</span>
-      <span class="avatar-chip chip-tags">Print · Web · Motion · UI/UX</span>
     </div>
   </div>
 </div>
