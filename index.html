@@ -1204,21 +1204,15 @@
   window.addEventListener('resize', syncAvatarHeight);
   if (document.fonts && document.fonts.ready) { document.fonts.ready.then(syncAvatarHeight); }
 
-  // Avatar: only the eyes follow the cursor, within a small radius
+  // Avatar: static; the eyes are positioned over the base image (no cursor tracking)
   var eyeLeft = document.getElementById('eyeLeft');
   var eyeRight = document.getElementById('eyeRight');
   if (heroAvatar && eyeLeft && eyeRight) {
-    var eyesTrack = matchMedia('(pointer:fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches;
     // anchor points as a fraction of the base image's own width/height
     var EYES = [
       { el: eyeLeft,  fx: 0.4071, fy: 0.1130 },
       { el: eyeRight, fx: 0.5737, fy: 0.1109 }
     ];
-    var eyeTargetX = 0, eyeTargetY = 0;
-    var eyeCurrentX = 0, eyeCurrentY = 0;
-    var eyeRaf = null;
-    var MAX_SHIFT = 3; // px, at native avatar scale
-
     function layoutEyes(){
       var w = avatarImg.clientWidth, h = avatarImg.clientHeight;
       if (!w || !h) return;
@@ -1232,44 +1226,9 @@
       });
     }
 
-    function eyeTick(){
-      eyeCurrentX += (eyeTargetX - eyeCurrentX) * 0.22;
-      eyeCurrentY += (eyeTargetY - eyeCurrentY) * 0.22;
-      var scale = (avatarImg.clientWidth || 380) / 380;
-      var tx = eyeCurrentX * scale, ty = eyeCurrentY * scale;
-      EYES.forEach(function(eye){
-        eye.el.style.transform = 'translate(' + tx + 'px,' + ty + 'px)';
-      });
-      if (Math.abs(eyeTargetX - eyeCurrentX) > 0.02 || Math.abs(eyeTargetY - eyeCurrentY) > 0.02) {
-        eyeRaf = requestAnimationFrame(eyeTick);
-      } else {
-        eyeRaf = null;
-      }
-    }
-
-    function onMouseMoveForEyes(e){
-      var r = heroAvatar.getBoundingClientRect();
-      var cx = r.left + r.width * 0.52, cy = r.top + r.height * 0.1;
-      var dx = e.clientX - cx, dy = e.clientY - cy;
-      var dist = Math.sqrt(dx * dx + dy * dy) || 1;
-      var amt = Math.min(1, dist / 320);
-      eyeTargetX = (dx / dist) * amt * MAX_SHIFT;
-      eyeTargetY = (dy / dist) * amt * MAX_SHIFT * 0.6;
-      if (!eyeRaf) eyeRaf = requestAnimationFrame(eyeTick);
-    }
-
-    function resetEyes(){
-      eyeTargetX = 0; eyeTargetY = 0;
-      if (!eyeRaf) eyeRaf = requestAnimationFrame(eyeTick);
-    }
-
     if (avatarImg.complete) { layoutEyes(); } else { avatarImg.addEventListener('load', layoutEyes); }
     window.addEventListener('resize', layoutEyes);
     if (document.fonts && document.fonts.ready) { document.fonts.ready.then(layoutEyes); }
-    if (eyesTrack) {
-      heroWrap.addEventListener('pointermove', onMouseMoveForEyes);
-      heroWrap.addEventListener('pointerleave', resetEyes);
-    }
   }
   var contactBg = document.getElementById('contactBg');
   var progressBar = document.getElementById('scrollProgress');
