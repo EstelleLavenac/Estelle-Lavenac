@@ -49,7 +49,7 @@
       {"@type": "EducationalOrganization", "name": "GRETA Toulouse"},
       {"@type": "EducationalOrganization", "name": "LISAA Nantes"}
     ],
-    "sameAs": ["https://www.behance.net/estellelavenac"]
+    "sameAs": ["https://www.linkedin.com/in/estelle-lavenac-43485596"]
   }
 }
 </script>
@@ -1305,6 +1305,7 @@
         <a href="tel:0648374822">06 48 37 48 22</a>
         <span>Pierrefeu-du-Var, 83390</span>
         <a href="book.html">Mon book en ligne →</a>
+        <a href="https://www.linkedin.com/in/estelle-lavenac-43485596" target="_blank" rel="noopener">linkedin.com/in/estelle-lavenac</a>
       </div>
     </div>
     <div class="footer-line">
@@ -1615,20 +1616,28 @@
   try { alreadyDismissed = sessionStorage.getItem(DISMISS_KEY) === '1'; } catch(e){}
 
   if (!alreadyDismissed) {
-    var shown = false;
+    var shown = false, autoOpened = false;
     function autoShow(){
-      if (shown) return; shown = true;
+      if (shown) return; shown = true; autoOpened = true;
       window.removeEventListener('scroll', onScrollShow);
       bubble.classList.add('is-visible');
       fab.setAttribute('aria-expanded', 'true');
       hideTimer = setTimeout(dismiss, 12000);
     }
+    function footerVisible(){
+      var c = document.getElementById('contact');
+      return !!c && c.getBoundingClientRect().top < window.innerHeight * 0.92;
+    }
     function onScrollShow(){
       var t = document.getElementById('et-maintenant');
-      if (t && window.scrollY + window.innerHeight * 0.6 > t.offsetTop) autoShow();
+      if (t && !footerVisible() && window.scrollY + window.innerHeight * 0.6 > t.offsetTop) autoShow();
     }
+    // si la bulle s'est ouverte toute seule et qu'on arrive sur les coordonnées, on la referme
+    window.addEventListener('scroll', function(){
+      if (autoOpened && bubble.classList.contains('is-visible') && footerVisible()) dismiss();
+    }, {passive:true});
     window.addEventListener('scroll', onScrollShow, {passive:true});
-    showTimer = setTimeout(autoShow, 35000);
+    showTimer = setTimeout(function(){ if (!footerVisible()) autoShow(); }, 35000);
   }
 
   closeBtn.addEventListener('click', dismiss);
