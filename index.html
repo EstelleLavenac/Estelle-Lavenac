@@ -431,9 +431,6 @@
   .hero-avatar .eye img{
     display:block; width:100%; height:100%;
   }
-  @media (pointer:coarse), (prefers-reduced-motion: reduce){
-    .hero-avatar .eye{display:none}
-  }
 
   @keyframes glowDrift{
     0%{transform:translate(-50%,0) scale(1); opacity:0.85}
@@ -1210,7 +1207,8 @@
   // Avatar: only the eyes follow the cursor, within a small radius
   var eyeLeft = document.getElementById('eyeLeft');
   var eyeRight = document.getElementById('eyeRight');
-  if (heroAvatar && eyeLeft && eyeRight && matchMedia('(pointer:fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (heroAvatar && eyeLeft && eyeRight) {
+    var eyesTrack = matchMedia('(pointer:fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches;
     // anchor points as a fraction of the base image's own width/height
     var EYES = [
       { el: eyeLeft,  fx: 0.4071, fy: 0.1130 },
@@ -1222,10 +1220,6 @@
     var MAX_SHIFT = 3; // px, at native avatar scale
 
     function layoutEyes(){
-      if (matchMedia('(max-width:900px)').matches) {
-        EYES.forEach(function(eye){ eye.el.style.display = 'none'; });
-        return;
-      }
       var w = avatarImg.clientWidth, h = avatarImg.clientHeight;
       if (!w || !h) return;
       var eyeSize = w * 0.092;
@@ -1233,8 +1227,8 @@
         eye.el.style.display = '';
         eye.el.style.width = eyeSize + 'px';
         eye.el.style.height = eyeSize + 'px';
-        eye.el.style.left = (eye.fx * w - eyeSize / 2) + 'px';
-        eye.el.style.top = (eye.fy * h - eyeSize / 2) + 'px';
+        eye.el.style.left = (avatarImg.offsetLeft + eye.fx * w - eyeSize / 2) + 'px';
+        eye.el.style.top = (avatarImg.offsetTop + eye.fy * h - eyeSize / 2) + 'px';
       });
     }
 
@@ -1272,8 +1266,10 @@
     if (avatarImg.complete) { layoutEyes(); } else { avatarImg.addEventListener('load', layoutEyes); }
     window.addEventListener('resize', layoutEyes);
     if (document.fonts && document.fonts.ready) { document.fonts.ready.then(layoutEyes); }
-    heroWrap.addEventListener('pointermove', onMouseMoveForEyes);
-    heroWrap.addEventListener('pointerleave', resetEyes);
+    if (eyesTrack) {
+      heroWrap.addEventListener('pointermove', onMouseMoveForEyes);
+      heroWrap.addEventListener('pointerleave', resetEyes);
+    }
   }
   var contactBg = document.getElementById('contactBg');
   var progressBar = document.getElementById('scrollProgress');
