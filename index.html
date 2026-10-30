@@ -890,12 +890,12 @@
       <a href="#et-maintenant">Et maintenant</a>
       <a href="#contact">Contact</a>
     </nav>
-    <a href="book.html" class="btn btn-solid">Voir mon book →</a>
+    <a href="#contact" class="btn btn-solid">Me contacter →</a>
     <button class="nav-burger" id="navBurger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobileNav">
       <span></span><span></span><span></span>
     </button>
     <nav class="mobile-nav" id="mobileNav">
-      <a href="book.html" class="mobile-nav-cta">Voir mon book →</a>
+      <a href="#contact" class="mobile-nav-cta">Me contacter →</a>
       <a href="#projets">Projets</a>
       <a href="#competences">Compétences</a>
       <a href="#points-forts">Points forts</a>
@@ -1076,7 +1076,7 @@
         </div>
         <div>
           <div class="strength-title">Réactive &amp; organisée</div>
-          <div class="strength-sub">Print, digital et motion menés en parallèle, avec budget et freelances à coordonner, sans transformer le planning en scène de crime</div>
+          <div class="strength-sub">Print, digital et motion menés en parallèle, avec budget et freelances à coordonner, sans que le planning parte en vrille</div>
         </div>
       </div>
       <div class="strength reveal" style="--i:2">
@@ -1094,7 +1094,7 @@
         </div>
         <div>
           <div class="strength-title">Bonne humeur incluse</div>
-          <div class="strength-sub">Parce qu'on peut être pro, tenir ses deadlines et rigoler avec les copaings</div>
+          <div class="strength-sub">Parce qu'on peut être pro, tenir ses deadlines et rire avec toute l'équipe</div>
         </div>
       </div>
     </div>
@@ -1104,9 +1104,10 @@
 <section id="experience" class="experience-section">
   <div class="container">
     <div class="section-header reveal">
-      <h2>Les quêtes accomplies</h2>
+      <h2>Expérience</h2>
       <span class="eyebrow">04 — Expérience</span>
     </div>
+    <p class="section-lead reveal">Les quêtes accomplies, de la plus récente à la plus ancienne.</p>
     <div class="exp-tabs reveal" role="tablist">
       <button type="button" class="exp-tab active" data-tab="design" role="tab" aria-selected="true">Design &amp; motion</button>
       <button type="button" class="exp-tab" data-tab="autres" role="tab" aria-selected="false">Autres</button>
@@ -1263,9 +1264,10 @@
 <section id="formation">
   <div class="container">
     <div class="section-header reveal">
-      <h2>Making-of</h2>
+      <h2>Formation</h2>
       <span class="eyebrow">05 — Formation</span>
     </div>
+    <p class="section-lead reveal">Le making-of : comment on devient designer.</p>
     <div class="degrees reveal-stagger">
       <div class="degree reveal" style="--i:0">
         <div class="degree-icon">
@@ -1665,8 +1667,7 @@
     window.addEventListener('scroll', function(){
       if (autoOpened && bubble.classList.contains('is-visible') && footerVisible()) dismiss();
     }, {passive:true});
-    window.addEventListener('scroll', onScrollShow, {passive:true});
-    showTimer = setTimeout(function(){ if (!footerVisible()) autoShow(); }, 35000);
+    // le chat reste fermé tant qu'on ne clique pas sur la pastille (plus d'ouverture automatique)
   }
 
   closeBtn.addEventListener('click', dismiss);
