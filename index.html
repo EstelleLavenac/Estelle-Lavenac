@@ -496,6 +496,46 @@
   .hero-actions{display:flex; gap:14px; margin-top:8px; flex-wrap:wrap; justify-content:flex-start}
   .hero-actions .btn{padding:15px 30px; font-size:14px}
 
+
+  .hero-sub{margin:0; font-size:clamp(15px,1.5vw,18px); font-weight:500; color:var(--ink-soft); line-height:1.5}
+  .hero-avail{
+    margin:0; display:inline-flex; align-items:center; gap:10px; align-self:flex-start;
+    font-size:13.5px; font-weight:600; color:var(--ink);
+    background:rgba(255,255,255,0.72); border:1px solid rgba(17,17,17,0.08);
+    padding:8px 14px; border-radius:999px; backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  }
+  .hero-avail .dot{width:8px; height:8px; border-radius:50%; background:#22c55e; box-shadow:0 0 0 0 rgba(34,197,94,.5); animation:availPulse 2.4s ease-out infinite}
+  @keyframes availPulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}70%{box-shadow:0 0 0 9px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+  @media (prefers-reduced-motion: reduce){ .hero-avail .dot{animation:none} }
+
+  /* ---------- projets en avant ---------- */
+  .work-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:28px}
+  @media (max-width:980px){ .work-grid{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:620px){ .work-grid{grid-template-columns:1fr; gap:20px} }
+  .project-card{
+    position:relative; display:block; border-radius:20px; overflow:hidden;
+    border:1px solid rgba(17,17,17,0.08); background:#fff;
+    transition:transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s ease, border-color .3s ease;
+  }
+  .project-card:hover{transform:translateY(-8px); box-shadow:0 24px 48px rgba(17,17,17,0.12); border-color:transparent}
+  .project-thumb-wrap{overflow:hidden; aspect-ratio:4/3; background:#f1eef6}
+  .project-thumb{width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s cubic-bezier(.16,1,.3,1)}
+  .project-card:hover .project-thumb{transform:scale(1.05)}
+  .project-body{padding:18px 22px 22px 22px; display:flex; flex-direction:column; gap:6px}
+  .project-title{font-family:'Poppins',sans-serif; font-weight:700; font-size:18px}
+  .project-cat{font-size:12.5px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--grey)}
+  .work-more{display:flex; justify-content:center; margin-top:40px}
+  .work-sub{font-family:'Poppins',sans-serif; font-weight:700; font-size:20px; letter-spacing:-0.01em; margin:72px 0 22px 0}
+  .loop-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px}
+  @media (max-width:820px){ .loop-grid{grid-template-columns:1fr} }
+  .loop-card{position:relative; display:block; border-radius:20px; overflow:hidden; background:#111; aspect-ratio:16/10}
+  .loop-card video{width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s cubic-bezier(.16,1,.3,1)}
+  .loop-card:hover video{transform:scale(1.04)}
+  .loop-label{
+    position:absolute; left:14px; top:14px; color:#fff; font-size:13px; font-weight:700;
+    padding:7px 12px; border-radius:999px; background:rgba(17,17,17,0.55); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  }
+
   /* ---------- sections ---------- */
   section{padding:96px 24px}
   .container{max-width:1296px; margin:0 auto}
@@ -741,6 +781,7 @@
       </svg>
     </div>
     <nav class="nav-links">
+      <a href="#projets">Projets</a>
       <a href="#competences">Compétences</a>
       <a href="#points-forts">Points forts</a>
       <a href="#experience">Expérience</a>
@@ -754,6 +795,7 @@
     </button>
     <nav class="mobile-nav" id="mobileNav">
       <a href="book.html" class="mobile-nav-cta">Voir mon book →</a>
+      <a href="#projets">Projets</a>
       <a href="#competences">Compétences</a>
       <a href="#points-forts">Points forts</a>
       <a href="#experience">Expérience</a>
@@ -777,6 +819,8 @@
     <div class="hero-text">
       <p class="hero-name reveal">Estelle Lavenac</p>
       <h1 class="hero-title reveal">Je fais des trucs jolis. Et ils <span class="accent">servent</span> à quelque chose.</h1>
+      <p class="hero-sub reveal">Designer graphique senior · print, web &amp; motion · 9 ans d'expérience</p>
+      <p class="hero-avail reveal"><span class="dot" aria-hidden="true"></span>Disponible · CDI / CDD · hybride ou télétravail</p>
       <div class="hero-actions reveal">
         <a href="book.html" class="btn btn-solid">Voir mon book →</a>
         <a href="CV-Estelle-Lavenac-2026.pdf" download="CV-Estelle-Lavenac-2026.pdf" class="btn btn-ghost">Télécharger mon CV ↓</a>
@@ -793,11 +837,62 @@
 </div>
 <!-- /top-wrap -->
 
+<section id="projets">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>Un aperçu de ce que je fais</h2>
+      <span class="eyebrow">01 — Projets</span>
+    </div>
+    <div class="work-grid">
+      <a class="project-card reveal" style="--i:0" href="projects/marc.html">
+        <div class="project-thumb-wrap"><img class="project-thumb" src="book-assets/marc-01-cover.jpg" alt="Marc ! — les six sachets de café, un par humeur" loading="lazy" decoding="async"></div>
+        <div class="project-body"><span class="project-cat">Identité · Packaging · Web</span><div class="project-title">Marc !</div></div>
+      </a>
+      <a class="project-card reveal" style="--i:1" href="projects/creagency.html">
+        <div class="project-thumb-wrap"><img class="project-thumb" src="book-assets/creagency-01.png" alt="Créagency ! — appli de recrutement créatif" loading="lazy" decoding="async"></div>
+        <div class="project-body"><span class="project-cat">UI/UX · Web &amp; app</span><div class="project-title">Créagency !</div></div>
+      </a>
+      <a class="project-card reveal" style="--i:2" href="projects/evoliz-landing.html">
+        <div class="project-thumb-wrap"><img class="project-thumb" src="book-assets/evoliz-landing-01.png" alt="Evoliz — refonte landing page" loading="lazy" decoding="async"></div>
+        <div class="project-body"><span class="project-cat">Web</span><div class="project-title">Evoliz — Refonte landing page</div></div>
+      </a>
+      <a class="project-card reveal" style="--i:0" href="projects/peau-cible.html">
+        <div class="project-thumb-wrap"><img class="project-thumb" src="book-assets/peau-cible-01-cover.jpg" alt="Peau Cible — charte, packaging, site et newsletter" loading="lazy" decoding="async"></div>
+        <div class="project-body"><span class="project-cat">Identité · Packaging · Web</span><div class="project-title">Peau Cible</div></div>
+      </a>
+      <a class="project-card reveal" style="--i:1" href="projects/good-juice.html">
+        <div class="project-thumb-wrap"><img class="project-thumb" src="book-assets/good-juice-01.png" alt="Good Juice — print et identité" loading="lazy" decoding="async"></div>
+        <div class="project-body"><span class="project-cat">Print · Identité</span><div class="project-title">Good Juice</div></div>
+      </a>
+      <a class="project-card reveal" style="--i:2" href="projects/mon-petit-vert.html">
+        <div class="project-thumb-wrap"><img class="project-thumb" src="book-assets/mon-petit-vert-02-cover.jpg" alt="Mon petit vert — catalogue jardinerie" loading="lazy" decoding="async"></div>
+        <div class="project-body"><span class="project-cat">Print · Identité</span><div class="project-title">Mon petit vert</div></div>
+      </a>
+    </div>
+    <h3 class="work-sub reveal">Et ça bouge aussi</h3>
+    <div class="loop-grid">
+      <a class="loop-card reveal" style="--i:0" href="projects/evoliz-motion.html" aria-label="Evoliz — motion">
+        <video muted loop playsinline preload="none" poster="book-assets/evoliz-motion-01.png" data-src="book-assets/evoliz-motion-02-video.mp4" aria-hidden="true"></video>
+        <span class="loop-label">Evoliz — motion</span>
+      </a>
+      <a class="loop-card reveal" style="--i:1" href="projects/good-juice.html" aria-label="Good Juice — animation">
+        <video muted loop playsinline preload="none" poster="book-assets/good-juice-01.png" data-src="book-assets/good-juice-04-video.mp4" aria-hidden="true"></video>
+        <span class="loop-label">Good Juice — animation</span>
+      </a>
+      <a class="loop-card reveal" style="--i:2" href="projects/peau-cible.html" aria-label="Peau Cible — site au scroll">
+        <video muted loop playsinline preload="none" poster="book-assets/peau-cible-08-scroll-poster.jpg" data-src="book-assets/peau-cible-08-scroll.mp4" aria-hidden="true"></video>
+        <span class="loop-label">Peau Cible — site au scroll</span>
+      </a>
+    </div>
+    <div class="work-more reveal"><a href="book.html" class="btn btn-solid">Voir tout mon book →</a></div>
+  </div>
+</section>
+
 <section id="competences">
   <div class="container">
     <div class="section-header reveal">
       <h2>Ce que je sais (vraiment) faire</h2>
-      <span class="eyebrow">01 — Compétences</span>
+      <span class="eyebrow">02 — Compétences</span>
     </div>
     <div class="cards cards-4 reveal-stagger">
       <div class="card reveal" style="--i:0">
@@ -848,7 +943,7 @@
   <div class="container">
     <div class="section-header reveal">
       <h2>Pourquoi ça peut matcher</h2>
-      <span class="eyebrow">02 — Points forts</span>
+      <span class="eyebrow">03 — Points forts</span>
     </div>
     <div class="strengths reveal-stagger">
       <div class="strength reveal" style="--i:0">
@@ -895,7 +990,7 @@
   <div class="container">
     <div class="section-header reveal">
       <h2>Les quêtes accomplies</h2>
-      <span class="eyebrow">03 — Expérience</span>
+      <span class="eyebrow">04 — Expérience</span>
     </div>
     <div class="exp-tabs reveal" role="tablist">
       <button type="button" class="exp-tab active" data-tab="design" role="tab" aria-selected="true">Design &amp; motion</button>
@@ -1047,7 +1142,7 @@
   <div class="container">
     <div class="section-header reveal">
       <h2>Making-of</h2>
-      <span class="eyebrow">04 — Formation</span>
+      <span class="eyebrow">05 — Formation</span>
     </div>
     <div class="degrees reveal-stagger">
       <div class="degree reveal" style="--i:0">
@@ -1086,7 +1181,7 @@
   <div class="container">
     <div class="section-header reveal">
       <h2>La suite ?</h2>
-      <span class="eyebrow">05 — Et maintenant</span>
+      <span class="eyebrow">06 — Et maintenant</span>
     </div>
     <div class="next-block reveal">
       <p class="next-text">Je cherche une équipe avec laquelle créer, réfléchir et faire de belles choses.</p>
@@ -1116,7 +1211,7 @@
         <a href="mailto:estelle.lavenac@gmail.com">estelle.lavenac@gmail.com</a>
         <a href="tel:0648374822">06 48 37 48 22</a>
         <span>Pierrefeu-du-Var, 83390</span>
-        <a href="https://behance.net/estellelavenac" target="_blank" rel="noopener">behance.net/estellelavenac</a>
+        <a href="book.html">Mon book en ligne →</a>
       </div>
     </div>
     <div class="footer-line">
@@ -1427,11 +1522,20 @@
   try { alreadyDismissed = sessionStorage.getItem(DISMISS_KEY) === '1'; } catch(e){}
 
   if (!alreadyDismissed) {
-    showTimer = setTimeout(function(){
+    var shown = false;
+    function autoShow(){
+      if (shown) return; shown = true;
+      window.removeEventListener('scroll', onScrollShow);
       bubble.classList.add('is-visible');
       fab.setAttribute('aria-expanded', 'true');
       hideTimer = setTimeout(dismiss, 12000);
-    }, 2500);
+    }
+    function onScrollShow(){
+      var t = document.getElementById('et-maintenant');
+      if (t && window.scrollY + window.innerHeight * 0.6 > t.offsetTop) autoShow();
+    }
+    window.addEventListener('scroll', onScrollShow, {passive:true});
+    showTimer = setTimeout(autoShow, 35000);
   }
 
   closeBtn.addEventListener('click', dismiss);
@@ -1539,5 +1643,23 @@
 })();
 </script>
 
+<script>
+(function(){
+  var vids = document.querySelectorAll('.loop-card video[data-src]');
+  if (!vids.length) return;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function start(v){
+    if (!v.src) { v.src = v.getAttribute('data-src'); }
+    var p = v.play(); if (p && p.catch) p.catch(function(){});
+  }
+  if (reduce || !('IntersectionObserver' in window)) return; // poster only
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if (e.isIntersecting) { start(e.target); } else if (e.target.src) { e.target.pause(); }
+    });
+  }, {rootMargin:'120px'});
+  vids.forEach(function(v){ io.observe(v); });
+})();
+</script>
 </body>
 </html>
