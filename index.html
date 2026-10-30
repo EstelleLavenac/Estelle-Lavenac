@@ -426,7 +426,7 @@
     position:absolute;
     border-radius:50%;
     pointer-events:none;
-    will-change:transform;
+    visibility:hidden;
   }
   .hero-avatar .eye img{
     display:block; width:100%; height:100%;
@@ -1218,7 +1218,7 @@
       if (!w || !h) return;
       var eyeSize = w * 0.092;
       EYES.forEach(function(eye){
-        eye.el.style.display = '';
+        eye.el.style.visibility = 'visible';
         eye.el.style.width = eyeSize + 'px';
         eye.el.style.height = eyeSize + 'px';
         eye.el.style.left = (avatarImg.offsetLeft + eye.fx * w - eyeSize / 2) + 'px';
