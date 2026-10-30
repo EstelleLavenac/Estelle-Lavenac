@@ -554,6 +554,51 @@
   .testimonial footer strong{font-weight:700; color:var(--ink)}
   @media (max-width:620px){ .testimonial{padding:34px 20px 24px 20px} .testimonial::before{top:2px; left:16px; font-size:64px} .testimonial p,.testimonial footer{padding-left:0} .testimonial p{padding-top:22px} }
 
+
+  /* ---------- cartes flottantes autour de l'avatar ---------- */
+  .hc{
+    position:absolute; z-index:3; display:flex; align-items:center; gap:10px;
+    width:max-content; max-width:210px; padding:9px 14px 9px 9px;
+    background:#fff; border-radius:16px; border:1px solid rgba(17,17,17,0.06);
+    box-shadow:0 14px 34px rgba(124,92,240,0.18), 0 2px 6px rgba(17,17,17,0.06);
+    pointer-events:auto; color:var(--ink);
+    animation:hcFloat 6s ease-in-out infinite;
+    transition:box-shadow .3s ease;
+  }
+  .hc:hover{box-shadow:0 20px 44px rgba(124,92,240,0.28), 0 2px 6px rgba(17,17,17,0.08)}
+  .hc img{width:46px; height:46px; border-radius:10px; object-fit:cover; flex:none; background:#f1eef6}
+  .hc b{display:block; font-family:'Poppins',sans-serif; font-weight:700; font-size:13.5px; line-height:1.2}
+  .hc span{display:block; font-size:11.5px; color:var(--grey); line-height:1.3; margin-top:2px}
+  .hc-1{right:calc(100% - 46px); top:30%; --r:-3deg}
+  .hc-2{right:calc(100% - 20px); top:46%; --r:2.5deg; animation-delay:-2s}
+  .hc-3{left:calc(100% - 34px); top:38%; --r:3deg; animation-delay:-4s}
+  .hc-4{left:calc(100% - 20px); top:58%; --r:-2deg; animation-delay:-1s}
+  .hc-stat{padding:11px 16px}
+  .hc-stat b{font-size:20px; letter-spacing:-0.02em}
+  @keyframes hcFloat{
+    0%,100%{transform:translateY(0) rotate(var(--r,0deg))}
+    50%{transform:translateY(-9px) rotate(var(--r,0deg))}
+  }
+  @media (prefers-reduced-motion: reduce){ .hc{animation:none; transform:rotate(var(--r,0deg))} }
+  @media (max-width:1100px){
+    .hc{max-width:170px; padding:7px 11px 7px 7px; gap:8px}
+    .hc img{width:38px; height:38px}
+    .hc b{font-size:12.5px} .hc span{font-size:10.5px}
+  }
+  @media (min-width:901px) and (max-width:1220px){
+    .hc-1{right:calc(100% - 100px)}
+    .hc-2{right:calc(100% - 84px)}
+  }
+  @media (max-width:900px){
+    .hc{flex-direction:column; align-items:flex-start; gap:5px; width:94px; max-width:94px; padding:5px 5px 7px 5px; border-radius:13px}
+    .hc img{width:100%; height:50px; border-radius:8px}
+    .hc b{font-size:10.5px; padding:0 3px} .hc span{font-size:9.5px; padding:0 3px; margin-top:0}
+    .hc-1{right:auto; left:0; top:28%}
+    .hc-2{right:auto; left:0; top:66%}
+    .hc-3{left:auto; right:0; top:45%}
+    .hc-4{display:none}
+  }
+
   /* ---------- sections ---------- */
   section{padding:96px 24px}
   .container{max-width:1296px; margin:0 auto}
@@ -848,6 +893,10 @@
       <img class="avatar-img" src="assets/avatar-hero.webp" alt="Estelle Lavenac" width="718" height="2199">
       <div class="eye" id="eyeLeft" aria-hidden="true"><img src="assets/avatar-eye-left.webp" alt="" draggable="false"></div>
       <div class="eye" id="eyeRight" aria-hidden="true"><img src="assets/avatar-eye-right.webp" alt="" draggable="false"></div>
+      <a class="hc hc-1" href="projects/marc.html"><img src="book-assets/marc-01-cover.jpg" alt="" loading="lazy"><div><b>Print &amp; packaging</b><span>Identités · étiquettes</span></div></a>
+      <a class="hc hc-2" href="projects/creagency.html"><img src="book-assets/creagency-01.png" alt="" loading="lazy"><div><b>UI / UX &amp; web</b><span>Apps · landing pages</span></div></a>
+      <a class="hc hc-3" href="projects/evoliz-motion.html"><img src="book-assets/evoliz-motion-01.png" alt="" loading="lazy"><div><b>Motion &amp; vidéo</b><span>Animation · montage</span></div></a>
+      <div class="hc hc-4 hc-stat"><div><b>9 ans</b><span>d'expérience</span></div></div>
     </div>
   </div>
 </div>
