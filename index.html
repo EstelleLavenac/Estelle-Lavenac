@@ -816,6 +816,28 @@
     .hero-wrap{padding-left:20px; padding-right:20px}
     .hero-actions{flex-direction:column; align-items:stretch; width:100%; max-width:320px; margin-left:auto; margin-right:auto}
     .hero-actions .btn{width:100%}
+    /* mobile : titre et bouton principal visibles dès le premier écran */
+    .hero-inner{padding-top:84px; gap:6px}
+    .hero-avatar{height:262px; margin-bottom:0}
+    .hero-text{gap:12px}
+    .hero-name{font-size:12.5px}
+    .hero-title{font-size:34px; line-height:1.14}
+    .hero-sub{font-size:14.5px; line-height:1.4}
+    .hero-actions{margin-top:2px; gap:10px}
+    .hero-actions .btn{padding:14px 24px}
+    .hero-avail{order:5; align-self:center; font-size:12.5px}
+    .hc{width:76px; max-width:76px; padding:4px 4px 6px 4px; border-radius:11px}
+    .hc img{height:36px; border-radius:7px}
+    .hc b{font-size:9.5px; padding:0 2px; line-height:1.15} .hc span{display:none}
+    .hc-1{left:2px; top:22%}
+    .hc-2{display:none}
+    .hc-3{right:2px; top:50%}
+    .hide-m{display:none}
+    .hero-inner{padding-top:78px}
+  }
+  @media (max-width:560px) and (max-height:720px){
+    .hero-avatar{height:210px}
+    .hero-inner{padding-top:72px}
   }
 </style>
 </head>
@@ -882,7 +904,7 @@
     <div class="hero-text">
       <p class="hero-name reveal">Estelle Lavenac</p>
       <h1 class="hero-title reveal">Je fais des trucs jolis. Et ils <span class="accent">servent</span> à quelque chose.</h1>
-      <p class="hero-sub reveal">Designer graphique senior · print, web &amp; motion · 9 ans d'expérience</p>
+      <p class="hero-sub reveal">Designer graphique senior · print, web &amp; motion<span class="hide-m"> · 9 ans d'expérience</span></p>
       <p class="hero-avail reveal"><span class="dot" aria-hidden="true"></span>Disponible · CDI / CDD · hybride ou télétravail</p>
       <div class="hero-actions reveal">
         <a href="book.html" class="btn btn-solid">Voir mon book →</a>
