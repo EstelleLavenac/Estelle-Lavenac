@@ -573,6 +573,10 @@
   .hc-2{right:calc(100% - 20px); top:46%; --r:2.5deg; animation-delay:-2s}
   .hc-3{left:calc(100% - 34px); top:38%; --r:3deg; animation-delay:-4s}
   .hc-4{left:calc(100% - 20px); top:58%; --r:-2deg; animation-delay:-1s}
+  .hc-5{left:calc(100% - 60px); top:16%; --r:-6deg; animation-delay:-3s}
+  .hc .hc-emo{width:46px; height:46px; margin:0; padding:0; border-radius:10px; flex:none; display:grid; place-items:center; font-size:26px; line-height:1;
+    color:inherit; background:linear-gradient(135deg,#FFE9A8,#FFC6E0 55%,#CFC2FF); transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
+  .hc-5{max-width:250px} .hc-5:hover .hc-emo{transform:rotate(-180deg)}
   .hc-stat{padding:11px 16px}
   .hc-stat b{font-size:20px; letter-spacing:-0.02em}
   @keyframes hcFloat{
@@ -584,6 +588,7 @@
     .hc{max-width:170px; padding:7px 11px 7px 7px; gap:8px}
     .hc img{width:38px; height:38px}
     .hc b{font-size:12.5px} .hc span{font-size:10.5px}
+    .hc .hc-emo{width:38px; height:38px; font-size:22px}
   }
   @media (min-width:901px) and (max-width:1220px){
     .hc-1{right:calc(100% - 100px)}
@@ -597,6 +602,8 @@
     .hc-2{right:auto; left:calc(50% - 148px); top:60%}
     .hc-3{left:auto; right:calc(50% - 156px); top:42%}
     .hc-4{display:none}
+    .hc-5{left:auto; right:calc(50% - 156px); top:3%; max-width:94px}
+    .hc .hc-emo{width:100%; height:50px; border-radius:8px; font-size:26px}
   }
 
   /* ---------- sections ---------- */
@@ -837,6 +844,8 @@
     .hc-1{left:calc(50% - 120px); top:24%}
     .hc-2{left:calc(50% - 114px); top:64%}
     .hc-3{right:calc(50% - 120px); top:40%}
+    .hc-5{right:calc(50% - 120px); top:4%; max-width:76px}
+    .hc .hc-emo{display:grid; height:36px; border-radius:7px; font-size:20px}
     .hide-m{display:none}
     .hero-inner{padding-top:78px}
   }
@@ -923,6 +932,7 @@
       <a class="hc hc-1" href="projects/marc.html"><img src="book-assets/marc-01-cover.jpg" alt="" loading="lazy"><div><b>Print &amp; packaging</b><span>Identités · étiquettes</span></div></a>
       <a class="hc hc-2" href="projects/creagency.html"><img src="book-assets/creagency-01.png" alt="" loading="lazy"><div><b>UI / UX &amp; web</b><span>Apps · landing pages</span></div></a>
       <a class="hc hc-3" href="projects/evoliz-motion.html"><img src="book-assets/evoliz-motion-01.png" alt="" loading="lazy"><div><b>Motion &amp; vidéo</b><span>Animation · montage</span></div></a>
+      <div class="hc hc-5"><span class="hc-emo" aria-hidden="true">🙃</span><div><b>Humour décalé</b><span>Offert avec chaque projet</span></div></div>
       <div class="hc hc-4 hc-stat"><div><b>9 ans</b><span>d'expérience</span></div></div>
     </div>
   </div>
