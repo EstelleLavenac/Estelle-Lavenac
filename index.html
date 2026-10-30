@@ -536,6 +536,24 @@
     padding:7px 12px; border-radius:999px; background:rgba(17,17,17,0.55); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
   }
 
+
+  .testimonial{
+    margin:0 0 40px 0; padding:32px 36px; border-radius:24px;
+    background:linear-gradient(135deg,#ece9fb 0%,#f8e6f0 100%);
+    border:1px solid rgba(17,17,17,0.06); position:relative;
+  }
+  .testimonial::before{
+    content:"\201C"; position:absolute; top:6px; left:22px; font-family:'Poppins',sans-serif;
+    font-weight:800; font-size:84px; line-height:1; color:rgba(124,92,240,0.28);
+  }
+  .testimonial p{
+    margin:0; padding-left:44px; font-family:'Poppins',sans-serif; font-weight:700;
+    font-size:clamp(20px,2.6vw,28px); line-height:1.3; letter-spacing:-0.01em; position:relative;
+  }
+  .testimonial footer{margin-top:14px; padding-left:44px; font-size:14px; color:var(--ink-soft)}
+  .testimonial footer strong{font-weight:700; color:var(--ink)}
+  @media (max-width:620px){ .testimonial{padding:34px 20px 24px 20px} .testimonial::before{top:2px; left:16px; font-size:64px} .testimonial p,.testimonial footer{padding-left:0} .testimonial p{padding-top:22px} }
+
   /* ---------- sections ---------- */
   section{padding:96px 24px}
   .container{max-width:1296px; margin:0 auto}
@@ -945,6 +963,10 @@
       <h2>Pourquoi ça peut matcher</h2>
       <span class="eyebrow">03 — Points forts</span>
     </div>
+    <blockquote class="testimonial reveal">
+      <p>En 20 ans de carrière, c'est indéniablement la meilleure candidature ever !</p>
+      <footer><strong>Responsable marketing</strong> · groupe de négoce de matériaux</footer>
+    </blockquote>
     <div class="strengths reveal-stagger">
       <div class="strength reveal" style="--i:0">
         <div class="icon-box">
