@@ -103,6 +103,8 @@ img,svg,video{display:block}
 .proj-figure img{width:100%; height:auto; border-radius:18px; border:1px solid var(--line); background:var(--line)}
 .proj-figure figcaption{font-size:13.5px; color:var(--grey); padding:0 4px}
 .proj-video video{width:100%; border-radius:18px; border:1px solid var(--line); background:#000; display:block}
+.proj-portrait{max-width:540px; width:100%; margin-inline:auto}
+.proj-portrait video{height:auto; aspect-ratio:1080/1350; background:#FF5A1F; cursor:pointer}
 
 .proj-grid-2{display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start}
 @media (max-width:720px){ .proj-grid-2{grid-template-columns:1fr} }
